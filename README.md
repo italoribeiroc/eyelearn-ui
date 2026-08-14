@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Eye Learn — Frontend
 
-## Getting Started
+AI-powered visual flashcard study app. This is the Next.js frontend; see [`CLAUDE.md`](./CLAUDE.md) for full architecture, design system, and conventions.
 
-First, run the development server:
+## Prerequisites
+
+- Node.js 20.9+ and npm
+- The [Eye Learn Django backend](/Users/italoribeiro/workspace/eyelearn/eyelearn) running locally (or a deployed instance to point at)
+
+## Setup
+
+```bash
+npm install
+cp .env.local.example .env.local
+```
+
+Edit `.env.local` and point `EYELEARN_API_URL` at your running Django backend (defaults to `http://localhost:8000`).
+
+Start the backend in a separate terminal:
+
+```bash
+cd /Users/italoribeiro/workspace/eyelearn/eyelearn
+python manage.py runserver
+```
+
+Then start the frontend:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run dev         # start dev server (Turbopack)
+npm run build        # production build
+npm run start         # serve the production build
+npm run lint          # ESLint
+npx tsc --noEmit      # type-check
+```
 
-## Learn More
+## Environment variables
 
-To learn more about Next.js, take a look at the following resources:
+| Variable | Scope | Notes |
+|---|---|---|
+| `EYELEARN_API_URL` | Server-only | Base URL of the Django backend. Never prefix with `NEXT_PUBLIC_` — the browser never talks to Django directly, only this app's own API routes do (see [`CLAUDE.md`](./CLAUDE.md#3-architecture-bff-proxy-why)). |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploying to Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Import this repo into Vercel (standard Next.js App Router project, auto-detected — no `vercel.json` needed).
+2. In Project Settings → Environment Variables, set `EYELEARN_API_URL` per environment:
+   - **Production** → `https://eyelearn-smoky.vercel.app`
+   - **Preview** → `https://eyelearn-staging.vercel.app`
+   - **Development** (only used by `vercel dev`) → `http://localhost:8000`, or leave unset and rely on `.env.local`
+3. Deploy. No other configuration is required — pushing to `main` deploys to Production against the prod backend, any other branch/PR gets a Preview deployment against the staging backend.
 
-## Deploy on Vercel
+## Project structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [`CLAUDE.md`](./CLAUDE.md) for the full folder structure, design system, i18n/auth conventions, and the key architectural decisions made in this repo (in particular, why API calls go through this app's own `/api/auth/*` routes instead of calling Django directly from the browser).

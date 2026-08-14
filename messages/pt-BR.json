@@ -1,0 +1,297 @@
+{
+  "metadata": {
+    "title": "Eye Learn: Veja. Aprenda. Lembre-se.",
+    "description": "O Eye Learn ajuda você a criar um hábito de estudo consistente com flashcards visuais, cartões gerados por IA e acompanhamento de progresso."
+  },
+  "common": {
+    "switchToLight": "Mudar para tema claro",
+    "switchToDark": "Mudar para tema escuro",
+    "changeLanguage": "Mudar idioma"
+  },
+  "nav": {
+    "primaryNavigation": "Principal",
+    "howItWorks": "Como funciona",
+    "pricing": "Planos",
+    "logIn": "Entrar",
+    "signUp": "Criar conta",
+    "dashboard": "Painel",
+    "openMenu": "Abrir menu"
+  },
+  "hero": {
+    "morph": {
+      "eye": "Eye",
+      "i": "I",
+      "aye": "Ei,",
+      "ai": "AI",
+      "seeIt": "Veja,",
+      "practice": "Pratique,",
+      "remember": "Lembre-se,",
+      "masterIt": "Domine,",
+      "final": "Eye"
+    },
+    "morphSuffix": "Learn.",
+    "headline": "Veja. Estude. Lembre-se.",
+    "subheadline": "O Eye Learn transforma suas anotações em flashcards visuais, mantém você voltando com sequências de estudo e ajuda matérias difíceis finalmente fazerem sentido.",
+    "ctaPrimary": "Comece a estudar de graça",
+    "ctaSecondary": "Entrar",
+    "ctaHint": "Grátis para começar. Sem cartão de crédito.",
+    "previewCard": {
+      "tag": "Biologia · Conjunto 3",
+      "question": "Qual organela produz a maior parte do ATP da célula?",
+      "hint": "Toque para revelar a resposta",
+      "streak": "Sequência de 6 dias",
+      "progress": "12 / 20 cartões",
+      "floatingLabel": "Meta de hoje",
+      "floatingValue": "80% concluído"
+    }
+  },
+  "valueProp": {
+    "title": "Estudar, reconstruído do jeito que você realmente lembra",
+    "subtitle": "O Eye Learn combina flashcards visuais, recordação ativa e IA para tornar o estudo menos cansativo.",
+    "items": {
+      "0": {
+        "title": "Aprenda visualmente",
+        "description": "Veja conceitos como cartões, destaques e imagens em vez de blocos de texto. Feito para quem lembra o que vê."
+      },
+      "1": {
+        "title": "Potencializado por IA",
+        "description": "Transforme suas anotações em flashcards prontos para estudar em segundos, para você estudar em vez de formatar."
+      },
+      "2": {
+        "title": "Baseado em recordação ativa",
+        "description": "Cada cartão pede para você lembrar, não apenas reler. É a técnica comprovada para fixar informações."
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "Como o Eye Learn funciona",
+    "subtitle": "Três passos simples entre você e uma matéria que finalmente faz sentido.",
+    "stepLabel": "Passo {number}",
+    "steps": {
+      "0": {
+        "title": "Adicione seu material",
+        "description": "Cole suas anotações ou comece um conjunto do zero. Organize tudo por matéria ou prova."
+      },
+      "1": {
+        "title": "Deixe a IA criar seus cartões",
+        "description": "O Eye Learn transforma seu material em flashcards visuais claros, prontos para a prática de recordação ativa."
+      },
+      "2": {
+        "title": "Estude um pouco todo dia",
+        "description": "Sessões curtas diárias, sequências e acompanhamento de progresso mantêm você constante. Essa é a verdadeira chave para lembrar."
+      }
+    }
+  },
+  "aiFeature": {
+    "eyebrow": "Flashcards gerados por IA",
+    "title": "Transforme qualquer anotação em flashcards, na hora",
+    "description": "Pare de gastar horas formatando material de estudo. Cole suas anotações ou trechos do livro e o Eye Learn cria um conjunto completo de flashcards para você refinar e começar a estudar imediatamente.",
+    "points": {
+      "0": "Gera pares de pergunta e resposta a partir das suas próprias anotações",
+      "1": "Agrupa cartões em conjuntos por matéria ou prova automaticamente",
+      "2": "Estude do seu jeito: cartões para revelar, múltipla escolha ou digitar a resposta",
+      "3": "Você continua no controle: edite, reordene ou gere novamente qualquer cartão"
+    },
+    "card1": {
+      "eyebrow": "Toque para revelar",
+      "question": "Em que ano o Muro de Berlim caiu?",
+      "hint": "Toque para revelar a resposta"
+    },
+    "card2": {
+      "eyebrow": "Múltipla escolha",
+      "question": "Qual é o pH de uma solução neutra?",
+      "option1": "5",
+      "option2": "7",
+      "option3": "9",
+      "option4": "12"
+    },
+    "card3": {
+      "eyebrow": "Digite a resposta",
+      "question": "Qual câmara bombeia sangue para os pulmões?",
+      "placeholder": "Digite sua resposta…"
+    }
+  },
+  "streakShowcase": {
+    "title": "Pequenas sessões diárias criam um hábito duradouro",
+    "description": "O Eye Learn acompanha sua sequência de estudos para que alguns minutos focados por dia se transformem em progresso real e duradouro. É a mesma mecânica de consistência que cria hábitos, sem trabalho extra.",
+    "streakValue": "6 dias",
+    "streakLabel": "sequência atual",
+    "days": {
+      "mon": "Seg",
+      "tue": "Ter",
+      "wed": "Qua",
+      "thu": "Qui",
+      "fri": "Sex",
+      "sat": "Sáb",
+      "sun": "Dom"
+    }
+  },
+  "productPreview": {
+    "title": "Um olhar mais de perto sobre estudar com o Eye Learn",
+    "subtitle": "Uma prévia da experiência de estudo que estamos construindo: conjuntos de flashcards, sequências e progresso trabalhando juntos.",
+    "setLabel": "Conjunto de estudo",
+    "setName": "Biologia Celular: Prova Parcial",
+    "streak": "Sequência de 6 dias",
+    "dailyGoal": "Meta diária: 20 cartões",
+    "card1": { "eyebrow": "Novo", "question": "Qual é a função da mitocôndria?" },
+    "card2": {
+      "eyebrow": "Revisando",
+      "question": "Defina osmose.",
+      "answer": "O movimento da água através de uma membrana em direção à maior concentração de soluto"
+    },
+    "card3": { "eyebrow": "Dominado", "question": "O que significa DNA?" },
+    "progressLabel": "Progresso de hoje",
+    "progressValue": "13 de 20 cartões",
+    "disclaimer": "Prévia ilustrativa da experiência de estudo do Eye Learn."
+  },
+  "benefits": {
+    "title": "Por que escolher o Eye Learn",
+    "subtitle": "Tudo no Eye Learn é feito para tornar o estudo mais fácil de começar e mais fácil de manter.",
+    "items": {
+      "0": {
+        "title": "Aprendizado visual",
+        "description": "Veja ideias como cartões e destaques em vez de parágrafos densos. Mais fácil de visualizar, mais fácil de lembrar."
+      },
+      "1": {
+        "title": "Flashcards gerados por IA",
+        "description": "Pule o trabalho manual de criar cartões e vá direto para o estudo."
+      },
+      "2": {
+        "title": "Sequências de estudo",
+        "description": "Uma sequência visível mantém você voltando, transformando o estudo em hábito em vez de correria."
+      },
+      "3": {
+        "title": "Acompanhamento de progresso",
+        "description": "Veja exatamente até onde você chegou em cada matéria, para sempre saber o que estudar em seguida."
+      },
+      "4": {
+        "title": "Roteiros personalizados",
+        "description": "Defina uma data-alvo para dominar uma matéria e o Eye Learn organiza um plano de estudos claro para você chegar lá."
+      },
+      "5": {
+        "title": "Vários modos de estudo",
+        "description": "Pratique do jeito que ajuda você a lembrar melhor: toque para revelar, múltipla escolha ou digite a resposta."
+      },
+      "6": {
+        "title": "Conjuntos prontos para provas",
+        "description": "Organize cartões em conjuntos por matéria ou prova, para nada se perder entre as aulas."
+      },
+      "7": {
+        "title": "Sessões curtas",
+        "description": "Alguns minutos focados por dia vencem uma única maratona de estudo. O Eye Learn foi feito para isso."
+      }
+    }
+  },
+  "pricing": {
+    "title": "Planos simples que crescem com você",
+    "subtitle": "Comece de graça. Faça upgrade quando quiser mais cartões gerados por IA e insights mais profundos.",
+    "mostPopular": "Mais popular",
+    "free": "Grátis",
+    "perMonth": "/ mês",
+    "tiers": {
+      "free": {
+        "name": "Grátis",
+        "tagline": "Tudo que você precisa para começar o hábito.",
+        "cta": "Começar de graça",
+        "features": {
+          "0": "Até 3 conjuntos de estudo",
+          "1": "Criação manual de flashcards",
+          "2": "Acompanhamento diário de sequência",
+          "3": "Acompanhamento de progresso básico"
+        }
+      },
+      "pro": {
+        "name": "Pro",
+        "tagline": "Para quem estuda todo dia e quer a IA do seu lado.",
+        "cta": "Começar com o Pro",
+        "features": {
+          "0": "Conjuntos de estudo ilimitados",
+          "1": "Flashcards gerados por IA",
+          "2": "Acompanhamento diário de sequência",
+          "3": "Insights detalhados de progresso",
+          "4": "Lembretes de estudo prioritários"
+        }
+      },
+      "premium": {
+        "name": "Premium",
+        "tagline": "A experiência completa do Eye Learn para provas decisivas.",
+        "cta": "Assinar o Premium",
+        "features": {
+          "0": "Tudo do plano Pro",
+          "1": "Gerações de IA ilimitadas",
+          "2": "Conjuntos avançados para provas",
+          "3": "Análises avançadas de progresso",
+          "4": "Acesso antecipado a novidades",
+          "5": "Suporte prioritário"
+        }
+      }
+    }
+  },
+  "auth": {
+    "register": {
+      "title": "Crie sua conta",
+      "subtitle": "Comece a estudar com o Eye Learn em menos de um minuto.",
+      "usernameLabel": "Nome de usuário",
+      "usernamePlaceholder": "seunome",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "voce@exemplo.com",
+      "passwordLabel": "Senha",
+      "confirmPasswordLabel": "Confirmar senha",
+      "submit": "Criar conta",
+      "submitting": "Criando conta…",
+      "haveAccount": "Já tem uma conta?",
+      "logInLink": "Entrar"
+    },
+    "login": {
+      "title": "Bem-vindo de volta",
+      "subtitle": "Entre para continuar sua sequência de estudos.",
+      "usernameLabel": "Nome de usuário",
+      "passwordLabel": "Senha",
+      "submit": "Entrar",
+      "submitting": "Entrando…",
+      "noAccount": "Ainda não tem uma conta?",
+      "signUpLink": "Criar conta"
+    },
+    "validation": {
+      "required": "Este campo é obrigatório.",
+      "usernameMin": "O nome de usuário deve ter pelo menos 3 caracteres.",
+      "usernameMax": "O nome de usuário deve ter no máximo 150 caracteres.",
+      "usernameInvalid": "Use apenas letras, números e @/./+/-/_.",
+      "emailInvalid": "Digite um e-mail válido.",
+      "passwordMin": "A senha deve ter pelo menos 8 caracteres.",
+      "passwordMismatch": "As senhas não coincidem."
+    },
+    "errors": {
+      "generic": "Algo deu errado. Tente novamente.",
+      "network": "Não foi possível conectar ao Eye Learn. Verifique sua conexão e tente novamente.",
+      "invalidCredentials": "Usuário ou senha inválidos."
+    }
+  },
+  "finalCta": {
+    "title": "Pronto para fazer o estudo fazer sentido?",
+    "subtitle": "Crie sua conta grátis no Eye Learn e comece sua primeira sequência de estudos hoje.",
+    "cta": "Criar minha conta"
+  },
+  "footer": {
+    "copyright": "© {year} Eye Learn. Todos os direitos reservados."
+  },
+  "dashboard": {
+    "welcome": "Bem-vindo de volta, {username} 👋",
+    "subtitle": "Pronto para aprender algo hoje?",
+    "logOut": "Sair",
+    "comingSoon": "Em breve",
+    "stats": {
+      "streak": "Sequência de estudos",
+      "dailyGoal": "Meta de hoje",
+      "cardsStudied": "Flashcards estudados"
+    },
+    "ctaTitle": "Comece sua primeira sessão de estudo",
+    "ctaDescription": "Conjuntos de flashcards e cartões gerados por IA estão chegando em breve. É aqui que seus estudos vão começar.",
+    "ctaButton": "Começar a estudar"
+  },
+  "study": {
+    "title": "Os estudos estão chegando em breve",
+    "description": "Estamos construindo a experiência de estudo com flashcards. Volte em breve para começar sua primeira sessão.",
+    "backToDashboard": "Voltar ao painel"
+  }
+}

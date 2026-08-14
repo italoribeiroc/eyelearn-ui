@@ -1,0 +1,297 @@
+{
+  "metadata": {
+    "title": "Eye Learn: See it. Learn it. Remember it.",
+    "description": "Eye Learn helps you build a consistent study habit with visual flashcards, AI-generated cards, and progress tracking."
+  },
+  "common": {
+    "switchToLight": "Switch to light theme",
+    "switchToDark": "Switch to dark theme",
+    "changeLanguage": "Change language"
+  },
+  "nav": {
+    "primaryNavigation": "Primary",
+    "howItWorks": "How it works",
+    "pricing": "Pricing",
+    "logIn": "Log in",
+    "signUp": "Sign up",
+    "dashboard": "Dashboard",
+    "openMenu": "Open menu"
+  },
+  "hero": {
+    "morph": {
+      "eye": "Eye",
+      "i": "I",
+      "aye": "Aye,",
+      "ai": "AI",
+      "seeIt": "See it,",
+      "practice": "Practice,",
+      "remember": "Remember,",
+      "masterIt": "Master it,",
+      "final": "Eye"
+    },
+    "morphSuffix": "Learn.",
+    "headline": "See it. Study it. Remember it.",
+    "subheadline": "Eye Learn turns your notes into visual flashcards, keeps you coming back with study streaks, and helps difficult subjects finally click.",
+    "ctaPrimary": "Start learning for free",
+    "ctaSecondary": "Log in",
+    "ctaHint": "Free to start. No credit card required.",
+    "previewCard": {
+      "tag": "Biology · Set 3",
+      "question": "What organelle produces most of a cell's ATP?",
+      "hint": "Tap to reveal the answer",
+      "streak": "6-day streak",
+      "progress": "12 / 20 cards",
+      "floatingLabel": "Today's goal",
+      "floatingValue": "80% done"
+    }
+  },
+  "valueProp": {
+    "title": "Studying, rebuilt around how you actually remember",
+    "subtitle": "Eye Learn combines visual flashcards, active recall, and AI to make studying feel less like a chore.",
+    "items": {
+      "0": {
+        "title": "Learn visually",
+        "description": "See concepts as cards, highlights, and images instead of walls of text. Built for people who remember what they see."
+      },
+      "1": {
+        "title": "Powered by AI",
+        "description": "Turn your notes into ready-to-study flashcards in seconds, so you spend your time studying instead of formatting."
+      },
+      "2": {
+        "title": "Built on active recall",
+        "description": "Every card asks you to remember, not just re-read. It's the study technique proven to make information stick."
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "How Eye Learn works",
+    "subtitle": "Three simple steps between you and a subject that finally makes sense.",
+    "stepLabel": "Step {number}",
+    "steps": {
+      "0": {
+        "title": "Add your material",
+        "description": "Paste your notes, or start a set from scratch. Organize everything by subject or exam."
+      },
+      "1": {
+        "title": "Let AI build your cards",
+        "description": "Eye Learn turns your material into clear, visual flashcards ready for active recall practice."
+      },
+      "2": {
+        "title": "Study a little every day",
+        "description": "Short daily sessions, streaks, and progress tracking keep you consistent. That's the real key to remembering."
+      }
+    }
+  },
+  "aiFeature": {
+    "eyebrow": "AI-generated flashcards",
+    "title": "Turn any notes into flashcards, instantly",
+    "description": "Stop spending hours formatting study material. Paste your notes or textbook excerpts and Eye Learn drafts a full set of flashcards you can refine and start studying right away.",
+    "points": {
+      "0": "Generates question-and-answer pairs from your own notes",
+      "1": "Groups cards into sets by subject or exam automatically",
+      "2": "Study your way: tap-to-reveal, multiple-choice, or type-the-answer cards",
+      "3": "You stay in control: edit, reorder, or regenerate any card"
+    },
+    "card1": {
+      "eyebrow": "Tap to reveal",
+      "question": "What year did the Berlin Wall fall?",
+      "hint": "Tap to reveal the answer"
+    },
+    "card2": {
+      "eyebrow": "Multiple choice",
+      "question": "What is the pH of a neutral solution?",
+      "option1": "5",
+      "option2": "7",
+      "option3": "9",
+      "option4": "12"
+    },
+    "card3": {
+      "eyebrow": "Type the answer",
+      "question": "Which chamber pumps blood to the lungs?",
+      "placeholder": "Type your answer…"
+    }
+  },
+  "streakShowcase": {
+    "title": "Small daily sessions build a habit that sticks",
+    "description": "Eye Learn tracks your study streak so a few focused minutes a day turn into real, lasting progress. It's the same consistency mechanics that make habits stick, without the busywork.",
+    "streakValue": "6 days",
+    "streakLabel": "current streak",
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    }
+  },
+  "productPreview": {
+    "title": "A closer look at studying with Eye Learn",
+    "subtitle": "A preview of the study experience we're building: flashcard sets, streaks, and progress tracking working together.",
+    "setLabel": "Study set",
+    "setName": "Cell Biology: Midterm",
+    "streak": "6-day streak",
+    "dailyGoal": "Daily goal: 20 cards",
+    "card1": { "eyebrow": "New", "question": "What is the function of the mitochondria?" },
+    "card2": {
+      "eyebrow": "Reviewing",
+      "question": "Define osmosis.",
+      "answer": "The movement of water across a membrane toward higher solute concentration"
+    },
+    "card3": { "eyebrow": "Mastered", "question": "What does DNA stand for?" },
+    "progressLabel": "Today's progress",
+    "progressValue": "13 of 20 cards",
+    "disclaimer": "Illustrative preview of the Eye Learn study experience."
+  },
+  "benefits": {
+    "title": "Why people choose Eye Learn",
+    "subtitle": "Everything about Eye Learn is built to make studying easier to start and easier to stick with.",
+    "items": {
+      "0": {
+        "title": "Visual learning",
+        "description": "See ideas as cards and highlights instead of dense paragraphs. Easier to picture, easier to recall."
+      },
+      "1": {
+        "title": "AI-generated flashcards",
+        "description": "Skip the busywork of making cards by hand and get straight to studying."
+      },
+      "2": {
+        "title": "Study streaks",
+        "description": "A visible streak keeps you coming back, turning studying into a habit instead of a scramble."
+      },
+      "3": {
+        "title": "Progress tracking",
+        "description": "See exactly how far you've come on each subject, so you always know what to study next."
+      },
+      "4": {
+        "title": "Personalized roadmaps",
+        "description": "Set a target date to master a subject and Eye Learn breaks it into a clear study plan to get you there."
+      },
+      "5": {
+        "title": "Multiple study modes",
+        "description": "Practice the way that helps you remember best: tap-to-reveal, multiple-choice, or type-the-answer."
+      },
+      "6": {
+        "title": "Exam-ready sets",
+        "description": "Organize cards into sets by subject or exam, so nothing gets lost between classes."
+      },
+      "7": {
+        "title": "Bite-sized sessions",
+        "description": "A few focused minutes a day beats a single long cram session. Eye Learn is built around that."
+      }
+    }
+  },
+  "pricing": {
+    "title": "Simple pricing that grows with you",
+    "subtitle": "Start for free. Upgrade when you want more AI-generated cards and deeper insights.",
+    "mostPopular": "Most popular",
+    "free": "Free",
+    "perMonth": "/ month",
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "tagline": "Everything you need to start building the habit.",
+        "cta": "Start for free",
+        "features": {
+          "0": "Up to 3 study sets",
+          "1": "Manual flashcard creation",
+          "2": "Daily streak tracking",
+          "3": "Core progress tracking"
+        }
+      },
+      "pro": {
+        "name": "Pro",
+        "tagline": "For students who study every day and want AI on their side.",
+        "cta": "Start with Pro",
+        "features": {
+          "0": "Unlimited study sets",
+          "1": "AI-generated flashcards",
+          "2": "Daily streak tracking",
+          "3": "Detailed progress insights",
+          "4": "Priority study reminders"
+        }
+      },
+      "premium": {
+        "name": "Premium",
+        "tagline": "The full Eye Learn experience for serious exam prep.",
+        "cta": "Go Premium",
+        "features": {
+          "0": "Everything in Pro",
+          "1": "Unlimited AI generations",
+          "2": "Advanced exam-prep sets",
+          "3": "Deep progress analytics",
+          "4": "Early access to new features",
+          "5": "Priority support"
+        }
+      }
+    }
+  },
+  "auth": {
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Start studying with Eye Learn in less than a minute.",
+      "usernameLabel": "Username",
+      "usernamePlaceholder": "yourname",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Confirm password",
+      "submit": "Create account",
+      "submitting": "Creating account…",
+      "haveAccount": "Already have an account?",
+      "logInLink": "Log in"
+    },
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Log in to keep your study streak going.",
+      "usernameLabel": "Username",
+      "passwordLabel": "Password",
+      "submit": "Log in",
+      "submitting": "Logging in…",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign up"
+    },
+    "validation": {
+      "required": "This field is required.",
+      "usernameMin": "Username must be at least 3 characters.",
+      "usernameMax": "Username must be at most 150 characters.",
+      "usernameInvalid": "Only letters, numbers, and @/./+/-/_ are allowed.",
+      "emailInvalid": "Enter a valid email address.",
+      "passwordMin": "Password must be at least 8 characters.",
+      "passwordMismatch": "Passwords don't match."
+    },
+    "errors": {
+      "generic": "Something went wrong. Please try again.",
+      "network": "We couldn't reach Eye Learn. Check your connection and try again.",
+      "invalidCredentials": "Invalid username or password."
+    }
+  },
+  "finalCta": {
+    "title": "Ready to make studying click?",
+    "subtitle": "Create your free Eye Learn account and start your first study streak today.",
+    "cta": "Create your account"
+  },
+  "footer": {
+    "copyright": "© {year} Eye Learn. All rights reserved."
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {username} 👋",
+    "subtitle": "Ready to learn something today?",
+    "logOut": "Log out",
+    "comingSoon": "Coming soon",
+    "stats": {
+      "streak": "Study streak",
+      "dailyGoal": "Today's goal",
+      "cardsStudied": "Flashcards studied"
+    },
+    "ctaTitle": "Start your first study session",
+    "ctaDescription": "Flashcard sets and AI-generated cards are coming soon. This is where your studying will begin.",
+    "ctaButton": "Start studying"
+  },
+  "study": {
+    "title": "Studying is coming soon",
+    "description": "We're building the flashcard study experience. Check back soon to start your first session.",
+    "backToDashboard": "Back to dashboard"
+  }
+}

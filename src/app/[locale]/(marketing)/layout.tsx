@@ -1,0 +1,16 @@
+import { NavBar } from "@/components/marketing/nav-bar";
+import { Footer } from "@/components/marketing/footer";
+
+export default function MarketingLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex min-h-svh flex-col">
+      <NavBar />
+      <main className="flex-1">{children}</main>
+      <Footer />
+    </div>
+  );
+}
