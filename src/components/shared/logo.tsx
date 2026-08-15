@@ -48,12 +48,12 @@ export function Logo({
   className?: string;
   size?: "default" | "lg";
   /**
-   * "inline" (default): icon + text sized/centered together as one block --
-   * right for a left-aligned nav bar.
-   * "centered": the icon is pulled out of flow and floated to the left of
-   * the text, so a parent's horizontal centering centers the "Eye Learn"
-   * wordmark itself, not the icon+text bounding box (which otherwise reads
-   * as off-center since the icon adds width with nothing to balance it).
+   * "inline" (default): icon beside text, right for a left-aligned nav bar.
+   * "centered": icon mark only (no wordmark) -- used where the icon needs
+   * to read as centered on its own (e.g. above the auth cards), since
+   * icon-beside-text can't be centered as a block without the icon's extra
+   * width throwing the text off-center. "Eye Learn" is still present for
+   * screen readers via sr-only text.
    */
   layout?: "inline" | "centered";
 }) {
@@ -65,15 +65,9 @@ export function Logo({
 
   if (layout === "centered") {
     return (
-      <span className={cn("relative inline-block", className)}>
-        <LogoMark
-          className={cn(
-            "absolute right-full top-1/2 -translate-y-1/2",
-            size === "lg" ? "mr-3" : "mr-2",
-            markSize,
-          )}
-        />
-        <span className={textClassName}>Eye Learn</span>
+      <span className={cn("inline-flex", className)}>
+        <LogoMark className={markSize} />
+        <span className="sr-only">Eye Learn</span>
       </span>
     );
   }
