@@ -20,6 +20,10 @@ export type LoginPayload = {
   password: string;
 };
 
+export type GoogleAuthPayload = {
+  id_token: string;
+};
+
 /** Django/DRF validation errors: field name -> array of messages, plus optional root-level "detail". */
 export type ApiFieldErrors = Record<string, string[] | undefined> & {
   detail?: string;

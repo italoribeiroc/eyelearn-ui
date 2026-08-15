@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
@@ -16,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { GoogleAuthButton } from "@/components/auth/google-auth-button";
 import { useRouter } from "@/i18n/navigation";
 import { loginSchema, type LoginFormValues } from "@/lib/validation/login-schema";
 
@@ -24,7 +26,10 @@ export function LoginForm() {
   const tValidation = useTranslations("auth.validation");
   const tErrors = useTranslations("auth.errors");
   const router = useRouter();
-  const [rootError, setRootError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const [rootError, setRootError] = useState<string | null>(
+    searchParams.get("error") === "google_auth_failed" ? tErrors("googleAuthFailed") : null,
+  );
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -109,6 +114,8 @@ export function LoginForm() {
           ) : null}
           {form.formState.isSubmitting ? t("submitting") : t("submit")}
         </Button>
+
+        <GoogleAuthButton />
       </form>
     </Form>
   );

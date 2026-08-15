@@ -16,6 +16,7 @@ Eye Learn is an AI-powered **visual flashcard study app**. The MVP scope of this
 | POST | `/api/auth/login/` | `{username, password}` → `{access, refresh}` — **login is by username, not email** |
 | POST | `/api/auth/refresh/` | `{refresh}` → `{access}` |
 | GET | `/api/auth/me/` | Bearer auth → `{id, username, email}` |
+| POST | `/api/auth/google/` | `{id_token}` → `{user, access, refresh}` — verifies a Google ID token, finds-or-creates a user by email, links by `google_id` |
 | GET | `/` , `/api/hello/<username>/` | Trivial demo endpoints, unused by the frontend |
 
 There is **no** logout endpoint (stateless JWT, no token blacklist), no password reset, no email verification, no waitlist, and no product/content endpoints. Do not build UI that implies these exist without a clear "coming soon" treatment.
@@ -63,6 +64,7 @@ src/
       (auth)/                     # register, login — redirect-away-if-authenticated
       (app)/                      # dashboard, study — auth-gated
     api/auth/{register,login,refresh,logout,me}/route.ts   # BFF proxy, outside [locale] (JSON, not localized HTML)
+    api/auth/google/{route,callback/route}.ts               # Server-side Google OAuth Authorization Code flow (start + callback)
     globals.css                   # Tailwind v4 tokens, imported by [locale]/layout.tsx
   components/
     ui/                           # shadcn primitives
@@ -138,3 +140,4 @@ No `NEXT_PUBLIC_*` vars are needed since the browser never talks to Django direc
 - **`(app)/dashboard` metrics as "Coming soon" shells**: no backend data source for streak/goal/cards-studied exists yet; a real UI shell was built without pretending the numbers are real.
 - **`getCurrentUser()` wrapped in React `cache()`**: `(app)/layout.tsx`'s auth gate and `dashboard/page.tsx` both need the current user; caching avoids two Django round-trips per request.
 - **Single `StatCard` primitive instead of separate `streak-card`/`progress-card` files**: they'd have been near-identical prop-preset wrappers: avoided per this repo's "no unnecessary abstraction" convention.
+- **Google sign-in as a server-side OAuth Authorization Code flow, not a client-side SDK**: `src/app/api/auth/google/route.ts` redirects to Google, `src/app/api/auth/google/callback/route.ts` exchanges the code and forwards the resulting ID token to Django's `/api/auth/google/`, then sets the same httpOnly cookies as password login. No Google Identity Services JS ever runs in the browser and no `NEXT_PUBLIC_*` var was introduced (`GOOGLE_OAUTH_CLIENT_ID`/`_SECRET`/`_REDIRECT_URI` are server-only), keeping the "browser only ever talks to Next.js" BFF invariant intact.

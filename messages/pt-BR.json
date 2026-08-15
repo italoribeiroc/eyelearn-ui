@@ -228,6 +228,10 @@
     }
   },
   "auth": {
+    "common": {
+      "orDivider": "ou continue com",
+      "continueWithGoogle": "Continuar com o Google"
+    },
     "register": {
       "title": "Crie sua conta",
       "subtitle": "Comece a estudar com o Eye Learn em menos de um minuto.",
@@ -264,7 +268,8 @@
     "errors": {
       "generic": "Algo deu errado. Tente novamente.",
       "network": "Não foi possível conectar ao Eye Learn. Verifique sua conexão e tente novamente.",
-      "invalidCredentials": "Usuário ou senha inválidos."
+      "invalidCredentials": "Usuário ou senha inválidos.",
+      "googleAuthFailed": "Não foi possível entrar com o Google. Tente novamente."
     }
   },
   "finalCta": {

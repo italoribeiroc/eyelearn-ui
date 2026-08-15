@@ -228,6 +228,10 @@
     }
   },
   "auth": {
+    "common": {
+      "orDivider": "or continue with",
+      "continueWithGoogle": "Continue with Google"
+    },
     "register": {
       "title": "Create your account",
       "subtitle": "Start studying with Eye Learn in less than a minute.",
@@ -264,7 +268,8 @@
     "errors": {
       "generic": "Something went wrong. Please try again.",
       "network": "We couldn't reach Eye Learn. Check your connection and try again.",
-      "invalidCredentials": "Invalid username or password."
+      "invalidCredentials": "Invalid username or password.",
+      "googleAuthFailed": "We couldn't sign you in with Google. Please try again."
     }
   },
   "finalCta": {
