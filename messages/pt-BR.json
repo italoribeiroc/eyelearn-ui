@@ -230,6 +230,7 @@
   "auth": {
     "common": {
       "orDivider": "ou continue com",
+      "orSignUpWithEmail": "ou cadastre-se com e-mail",
       "continueWithGoogle": "Continuar com o Google"
     },
     "register": {

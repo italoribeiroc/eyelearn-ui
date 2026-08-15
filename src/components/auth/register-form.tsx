@@ -16,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { GoogleAuthButton } from "@/components/auth/google-auth-button";
 import { useRouter } from "@/i18n/navigation";
 import { registerSchema, type RegisterFormValues } from "@/lib/validation/register-schema";
 import type { ApiFieldErrors } from "@/lib/api/types";
@@ -165,8 +164,6 @@ export function RegisterForm() {
           ) : null}
           {form.formState.isSubmitting ? t("submitting") : t("submit")}
         </Button>
-
-        <GoogleAuthButton />
       </form>
     </Form>
   );
