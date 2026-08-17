@@ -3,11 +3,24 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-import type { PricingTier } from "./pricing";
+import { formatPrice, type PricingTier } from "./pricing";
 
-export function PricingCard({ tier }: { tier: PricingTier }) {
+export function PricingCard({
+  tier,
+  currency,
+  locale,
+  annualDiscountPercent,
+}: {
+  tier: PricingTier;
+  currency: "USD" | "BRL";
+  locale: string;
+  /** Only used by the "annual" card, to show what it saves vs. paying monthly. */
+  annualDiscountPercent: number;
+}) {
   const t = useTranslations("pricing");
   const features = Array.from({ length: tier.featureCount }, (_, i) => i);
+  const isFree = tier.id === "free";
+  const isAnnual = tier.id === "annual";
 
   return (
     <div
@@ -31,16 +44,35 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
         {t(`tiers.${tier.id}.tagline`)}
       </p>
 
-      <p className="mt-6 flex items-baseline gap-1">
-        <span className="font-heading text-4xl font-extrabold text-foreground">
-          {tier.monthlyPrice === 0 ? t("free") : `$${tier.monthlyPrice}`}
-        </span>
-        {tier.monthlyPrice > 0 ? (
-          <span className="text-sm text-foreground-muted">{t("perMonth")}</span>
-        ) : null}
-      </p>
+      <div className="mt-6">
+        <p className="flex items-baseline gap-1">
+          <span className="font-heading text-4xl font-extrabold text-foreground">
+            {isFree ? t("free") : formatPrice(tier.price, currency, locale)}
+          </span>
+          {!isFree ? (
+            <span className="text-sm text-foreground-muted">
+              {isAnnual ? t("perYear") : t("perMonth")}
+            </span>
+          ) : null}
+        </p>
 
-      <ul className="mt-6 flex-1 space-y-3">
+        {isAnnual ? (
+          <p className="mt-1.5 flex items-center gap-2 text-xs text-foreground-muted">
+            {t("equivalentPerMonth", {
+              price: formatPrice(tier.price / 12, currency, locale),
+            })}
+            {annualDiscountPercent > 0 ? (
+              <span className="rounded-full bg-brand-accent/15 px-2 py-0.5 font-semibold text-brand-accent">
+                {t("save", { percent: annualDiscountPercent })}
+              </span>
+            ) : null}
+          </p>
+        ) : (
+          <span className="mt-1.5 block h-4" aria-hidden="true" />
+        )}
+      </div>
+
+      <ul className="mt-4 flex-1 space-y-3">
         {features.map((index) => (
           <li key={index} className="flex items-start gap-2.5 text-sm text-foreground-muted">
             <Check className="mt-0.5 size-4 shrink-0 text-brand-turquoise" aria-hidden="true" />

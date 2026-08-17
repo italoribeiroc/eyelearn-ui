@@ -188,6 +188,9 @@
     "mostPopular": "Mais popular",
     "free": "Grátis",
     "perMonth": "/ mês",
+    "perYear": "/ ano",
+    "equivalentPerMonth": "equivalente a {price}/mês",
+    "save": "Economize {percent}%",
     "tiers": {
       "free": {
         "name": "Grátis",
@@ -200,10 +203,10 @@
           "3": "Acompanhamento de progresso básico"
         }
       },
-      "pro": {
-        "name": "Pro",
-        "tagline": "Para quem estuda todo dia e quer a IA do seu lado.",
-        "cta": "Começar com o Pro",
+      "monthly": {
+        "name": "Mensal",
+        "tagline": "Acesso completo ao Eye Learn, cobrado todo mês.",
+        "cta": "Assinar mensal",
         "features": {
           "0": "Conjuntos de estudo ilimitados",
           "1": "Flashcards gerados por IA",
@@ -212,17 +215,16 @@
           "4": "Lembretes de estudo prioritários"
         }
       },
-      "premium": {
-        "name": "Premium",
-        "tagline": "A experiência completa do Eye Learn para provas decisivas.",
-        "cta": "Assinar o Premium",
+      "annual": {
+        "name": "Anual",
+        "tagline": "O mesmo acesso completo, cobrado uma vez por ano por menos.",
+        "cta": "Assinar anual",
         "features": {
-          "0": "Tudo do plano Pro",
-          "1": "Gerações de IA ilimitadas",
-          "2": "Conjuntos avançados para provas",
-          "3": "Análises avançadas de progresso",
-          "4": "Acesso antecipado a novidades",
-          "5": "Suporte prioritário"
+          "0": "Conjuntos de estudo ilimitados",
+          "1": "Flashcards gerados por IA",
+          "2": "Acompanhamento diário de sequência",
+          "3": "Insights detalhados de progresso",
+          "4": "Lembretes de estudo prioritários"
         }
       }
     }

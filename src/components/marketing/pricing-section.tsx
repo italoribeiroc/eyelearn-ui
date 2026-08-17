@@ -1,9 +1,13 @@
-import { useTranslations } from "next-intl";
-import { PRICING_TIERS } from "./pricing";
+import { getLocale, getTranslations } from "next-intl/server";
+import { annualDiscountPercent, getPricingForLocale } from "./pricing";
 import { PricingCard } from "./pricing-card";
 
-export function PricingSection() {
-  const t = useTranslations("pricing");
+export async function PricingSection() {
+  const t = await getTranslations("pricing");
+  const locale = await getLocale();
+
+  const { currency, tiers } = getPricingForLocale(locale);
+  const savePercent = annualDiscountPercent(tiers);
 
   return (
     <section id="pricing" className="scroll-mt-20 border-t border-border bg-surface-muted/50 py-16 sm:py-24">
@@ -16,8 +20,14 @@ export function PricingSection() {
         </div>
 
         <div className="mt-14 grid gap-6 lg:grid-cols-3">
-          {PRICING_TIERS.map((tier) => (
-            <PricingCard key={tier.id} tier={tier} />
+          {tiers.map((tier) => (
+            <PricingCard
+              key={tier.id}
+              tier={tier}
+              currency={currency}
+              locale={locale}
+              annualDiscountPercent={savePercent}
+            />
           ))}
         </div>
       </div>

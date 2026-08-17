@@ -188,6 +188,9 @@
     "mostPopular": "Most popular",
     "free": "Free",
     "perMonth": "/ month",
+    "perYear": "/ year",
+    "equivalentPerMonth": "equivalent to {price}/month",
+    "save": "Save {percent}%",
     "tiers": {
       "free": {
         "name": "Free",
@@ -200,10 +203,10 @@
           "3": "Core progress tracking"
         }
       },
-      "pro": {
-        "name": "Pro",
-        "tagline": "For students who study every day and want AI on their side.",
-        "cta": "Start with Pro",
+      "monthly": {
+        "name": "Monthly",
+        "tagline": "Full access to Eye Learn, billed every month.",
+        "cta": "Start monthly",
         "features": {
           "0": "Unlimited study sets",
           "1": "AI-generated flashcards",
@@ -212,17 +215,16 @@
           "4": "Priority study reminders"
         }
       },
-      "premium": {
-        "name": "Premium",
-        "tagline": "The full Eye Learn experience for serious exam prep.",
-        "cta": "Go Premium",
+      "annual": {
+        "name": "Annual",
+        "tagline": "The same full access, billed once a year for less.",
+        "cta": "Start annual",
         "features": {
-          "0": "Everything in Pro",
-          "1": "Unlimited AI generations",
-          "2": "Advanced exam-prep sets",
-          "3": "Deep progress analytics",
-          "4": "Early access to new features",
-          "5": "Priority support"
+          "0": "Unlimited study sets",
+          "1": "AI-generated flashcards",
+          "2": "Daily streak tracking",
+          "3": "Detailed progress insights",
+          "4": "Priority study reminders"
         }
       }
     }
