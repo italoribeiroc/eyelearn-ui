@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { ThemeProvider } from "@/components/shared/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/context/auth-context";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
@@ -68,6 +69,7 @@ export default async function LocaleLayout({
             disableTransitionOnChange
           >
             <AuthProvider>{children}</AuthProvider>
+            <Toaster />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

@@ -1,10 +1,14 @@
 import { Suspense } from "react";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { LoginForm } from "@/components/auth/login-form";
 import { Link } from "@/i18n/navigation";
 
-export default function LoginPage() {
-  const t = useTranslations("auth.login");
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ plan?: string }>;
+}) {
+  const [t, { plan }] = await Promise.all([getTranslations("auth.login"), searchParams]);
 
   return (
     <div>
@@ -19,7 +23,10 @@ export default function LoginPage() {
 
       <p className="mt-6 text-center text-sm text-foreground-muted">
         {t("noAccount")}{" "}
-        <Link href="/register" className="font-medium text-brand-turquoise hover:underline">
+        <Link
+          href={plan ? `/register?plan=${plan}` : "/register"}
+          className="font-medium text-brand-turquoise hover:underline"
+        >
           {t("signUpLink")}
         </Link>
       </p>

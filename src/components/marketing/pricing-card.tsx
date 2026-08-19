@@ -1,7 +1,9 @@
 import { useTranslations } from "next-intl";
 import { Check } from "lucide-react";
+import { BillingActionButton } from "@/components/billing/billing-action-button";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
+import type { SubscriptionPlan } from "@/lib/api/types";
 import { cn } from "@/lib/utils";
 import { formatPrice, type PricingTier } from "./pricing";
 
@@ -10,12 +12,16 @@ export function PricingCard({
   currency,
   locale,
   annualDiscountPercent,
+  isAuthenticated,
+  currentPlan,
 }: {
   tier: PricingTier;
   currency: "USD" | "BRL";
   locale: string;
   /** Only used by the "annual" card, to show what it saves vs. paying monthly. */
   annualDiscountPercent: number;
+  isAuthenticated: boolean;
+  currentPlan: SubscriptionPlan;
 }) {
   const t = useTranslations("pricing");
   const features = Array.from({ length: tier.featureCount }, (_, i) => i);
@@ -81,14 +87,39 @@ export function PricingCard({
         ))}
       </ul>
 
-      <Button
-        asChild
-        size="lg"
-        variant={tier.highlighted ? "default" : "outline"}
-        className="mt-8"
-      >
-        <Link href="/register">{t(`tiers.${tier.id}.cta`)}</Link>
-      </Button>
+      {!isAuthenticated ? (
+        <Button
+          asChild
+          size="lg"
+          variant={tier.highlighted ? "default" : "outline"}
+          className="mt-8"
+        >
+          <Link href={isFree ? "/register" : `/register?plan=${tier.id}`}>
+            {t(`tiers.${tier.id}.cta`)}
+          </Link>
+        </Button>
+      ) : tier.id === currentPlan ? (
+        <Button size="lg" variant="outline" className="mt-8" disabled>
+          {t("currentPlan")}
+        </Button>
+      ) : currentPlan !== "free" ? (
+        // Already on the other paid tier -- route to the Portal, never a
+        // second Checkout. Also covers viewing the free card while
+        // subscribed: downgrading happens in the Portal too.
+        <BillingActionButton mode="portal" size="lg" variant="outline" className="mt-8">
+          {t("manageSubscription")}
+        </BillingActionButton>
+      ) : (
+        <BillingActionButton
+          mode="checkout"
+          plan={tier.id as "monthly" | "annual"}
+          size="lg"
+          variant={tier.highlighted ? "default" : "outline"}
+          className="mt-8"
+        >
+          {t(`tiers.${tier.id}.cta`)}
+        </BillingActionButton>
+      )}
     </div>
   );
 }

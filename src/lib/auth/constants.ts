@@ -12,3 +12,11 @@ export const REFRESH_TOKEN_MAX_AGE_SECONDS = 24 * 60 * 60; // 1 day
 /** CSRF-protection cookie for the Google OAuth Authorization Code flow's `state` param. */
 export const GOOGLE_OAUTH_STATE_COOKIE = "eyelearn_google_oauth_state";
 export const GOOGLE_OAUTH_STATE_MAX_AGE_SECONDS = 5 * 60; // 5 minutes
+
+/**
+ * Carries the pricing card's `?plan=` intent across the redirect to Google
+ * and back, since Google's callback can't read the originating page's URL.
+ * Same short lifetime as the state cookie -- it only needs to survive one
+ * round trip.
+ */
+export const GOOGLE_OAUTH_PLAN_COOKIE = "eyelearn_google_oauth_plan";

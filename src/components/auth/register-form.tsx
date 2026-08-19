@@ -20,7 +20,7 @@ import { useRouter } from "@/i18n/navigation";
 import { registerSchema, type RegisterFormValues } from "@/lib/validation/register-schema";
 import type { ApiFieldErrors } from "@/lib/api/types";
 
-export function RegisterForm() {
+export function RegisterForm({ plan }: { plan?: string }) {
   const t = useTranslations("auth.register");
   const tValidation = useTranslations("auth.validation");
   const tErrors = useTranslations("auth.errors");
@@ -32,12 +32,22 @@ export function RegisterForm() {
     defaultValues: { username: "", email: "", password: "", confirmPassword: "" },
   });
 
-  const translateMessage = (code?: string) => {
-    if (!code) return undefined;
+  /**
+   * Zod's own validators (registerSchema) set short keys ("usernameMin",
+   * "required", ...) as the error message, translated here. Django's field
+   * errors (set below with type: "server") are already human-readable
+   * English sentences and must be rendered as-is, never run through
+   * tValidation -- there's no matching key for them and next-intl's
+   * fallback for a missing key is "auth.validation.<the raw sentence>".
+   */
+  const translateFieldError = (fieldState: { error?: { type?: string; message?: string } }) => {
+    const { error } = fieldState;
+    if (!error?.message) return undefined;
+    if (error.type === "server") return error.message;
     try {
-      return tValidation(code as never);
+      return tValidation(error.message as never);
     } catch {
-      return code;
+      return error.message;
     }
   };
 
@@ -56,7 +66,7 @@ export function RegisterForm() {
       });
 
       if (res.ok) {
-        router.push("/dashboard");
+        router.push(plan ? `/dashboard?startCheckout=${plan}` : "/dashboard");
         router.refresh();
         return;
       }
@@ -68,7 +78,7 @@ export function RegisterForm() {
         (["username", "email", "password"] as const).forEach((field) => {
           const messages = body[field];
           if (messages?.length) {
-            form.setError(field, { message: messages[0] });
+            form.setError(field, { type: "server", message: messages[0] });
             mappedAnyField = true;
           }
         });
@@ -106,7 +116,7 @@ export function RegisterForm() {
                   {...field}
                 />
               </FormControl>
-              <FormMessage>{translateMessage(fieldState.error?.message)}</FormMessage>
+              <FormMessage>{translateFieldError(fieldState)}</FormMessage>
             </FormItem>
           )}
         />
@@ -125,7 +135,7 @@ export function RegisterForm() {
                   {...field}
                 />
               </FormControl>
-              <FormMessage>{translateMessage(fieldState.error?.message)}</FormMessage>
+              <FormMessage>{translateFieldError(fieldState)}</FormMessage>
             </FormItem>
           )}
         />
@@ -139,7 +149,7 @@ export function RegisterForm() {
               <FormControl>
                 <Input type="password" autoComplete="new-password" {...field} />
               </FormControl>
-              <FormMessage>{translateMessage(fieldState.error?.message)}</FormMessage>
+              <FormMessage>{translateFieldError(fieldState)}</FormMessage>
             </FormItem>
           )}
         />
@@ -153,7 +163,7 @@ export function RegisterForm() {
               <FormControl>
                 <Input type="password" autoComplete="new-password" {...field} />
               </FormControl>
-              <FormMessage>{translateMessage(fieldState.error?.message)}</FormMessage>
+              <FormMessage>{translateFieldError(fieldState)}</FormMessage>
             </FormItem>
           )}
         />
