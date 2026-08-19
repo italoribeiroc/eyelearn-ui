@@ -1,25 +1,69 @@
 import { getLocale, getTranslations } from "next-intl/server";
+import { getCurrentUser } from "@/lib/auth/session";
+import { getSubscriptionStatus } from "@/lib/billing/subscription";
+import { cn } from "@/lib/utils";
 import { annualDiscountPercent, getPricingForLocale } from "./pricing";
 import { PricingCard } from "./pricing-card";
 
-export async function PricingSection() {
-  const t = await getTranslations("pricing");
-  const locale = await getLocale();
+/**
+ * "marketing" is the full-bleed landing-page section (its own background,
+ * border, and vertical padding, anchored at #pricing). "embedded" drops
+ * that chrome so the same heading/copy/cards can be reused inside an
+ * already-padded page (e.g. the account page) without doubling up padding.
+ */
+export async function PricingSection({
+  variant = "marketing",
+}: {
+  variant?: "marketing" | "embedded";
+} = {}) {
+  const [t, locale, user] = await Promise.all([
+    getTranslations("pricing"),
+    getLocale(),
+    getCurrentUser(),
+  ]);
+  // Only fetch subscription status for signed-in visitors -- skips a
+  // wasted Django round-trip for anonymous marketing-page traffic.
+  const subscription = user ? await getSubscriptionStatus() : null;
 
   const { currency, tiers } = getPricingForLocale(locale);
   const savePercent = annualDiscountPercent(tiers);
 
+  const Wrapper = variant === "marketing" ? "section" : "div";
+
   return (
-    <section id="pricing" className="scroll-mt-20 border-t border-border bg-surface-muted/50 py-16 sm:py-24">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+    <Wrapper
+      {...(variant === "marketing" ? { id: "pricing" } : {})}
+      className={cn(
+        variant === "marketing" &&
+          "scroll-mt-20 border-t border-border bg-surface-muted/50 py-16 sm:py-24",
+      )}
+    >
+      <div className={cn(variant === "marketing" && "mx-auto max-w-6xl px-4 sm:px-6")}>
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2
+            className={cn(
+              "font-heading font-bold tracking-tight text-foreground",
+              variant === "marketing" ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl",
+            )}
+          >
             {t("title")}
           </h2>
-          <p className="mt-4 text-lg text-foreground-muted">{t("subtitle")}</p>
+          <p
+            className={cn(
+              "text-foreground-muted",
+              variant === "marketing" ? "mt-4 text-lg" : "mt-2 text-base",
+            )}
+          >
+            {t("subtitle")}
+          </p>
         </div>
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+        <div
+          className={cn(
+            "grid gap-4 sm:gap-6",
+            variant === "marketing" ? "mt-14 lg:grid-cols-3" : "mt-8 sm:grid-cols-2 lg:grid-cols-3",
+          )}
+        >
           {tiers.map((tier) => (
             <PricingCard
               key={tier.id}
@@ -27,10 +71,12 @@ export async function PricingSection() {
               currency={currency}
               locale={locale}
               annualDiscountPercent={savePercent}
+              isAuthenticated={!!user}
+              currentPlan={subscription?.plan ?? "free"}
             />
           ))}
         </div>
       </div>
-    </section>
+    </Wrapper>
   );
 }

@@ -8,7 +8,7 @@ Eye Learn is an AI-powered **visual flashcard study app**. The MVP scope of this
 
 **Brand wordplay**: Eye → I → Aye → AI → Learn. The hero animates this progression, then flows into short phrases ending in "Learn" (e.g. "See it. Learn."). Personality: playful, energetic, motivating, modern, **credible** — inspired by Duolingo's consistency mechanics (streaks, daily goals) without copying its visual identity or tone. Never childish.
 
-**Backend is a separate repo** (`/Users/italoribeiro/workspace/eyelearn/eyelearn`, Django 4.2 + DRF + `djangorestframework-simplejwt`). This repo never modifies it. Only six backend endpoints exist:
+**Backend is a separate repo** (`/Users/italoribeiro/workspace/eyelearn/eyelearn`, Django 4.2 + DRF + `djangorestframework-simplejwt`). This repo never modifies it. These backend endpoints exist:
 
 | Method | Path | Notes |
 |---|---|---|
@@ -17,9 +17,13 @@ Eye Learn is an AI-powered **visual flashcard study app**. The MVP scope of this
 | POST | `/api/auth/refresh/` | `{refresh}` → `{access}` |
 | GET | `/api/auth/me/` | Bearer auth → `{id, username, email}` |
 | POST | `/api/auth/google/` | `{id_token}` → `{user, access, refresh}` — verifies a Google ID token, finds-or-creates a user by email, links by `google_id` |
+| POST | `/api/billing/checkout-session/` | Bearer auth, `{plan, currency, success_url, cancel_url}` → `{checkout_url}`. 409 if already subscribed. |
+| POST | `/api/billing/portal-session/` | Bearer auth, `{return_url}` → `{portal_url}`. 404 if no billing customer yet. |
+| GET | `/api/billing/subscription/` | Bearer auth → `{plan, status, current_period_end, cancel_at_period_end}`. `plan: "free"` when unsubscribed. |
+| POST | `/api/billing/webhook/<provider>/` | Stripe-signed webhook, never called by this frontend directly. |
 | GET | `/` , `/api/hello/<username>/` | Trivial demo endpoints, unused by the frontend |
 
-There is **no** logout endpoint (stateless JWT, no token blacklist), no password reset, no email verification, no waitlist, and no product/content endpoints. Do not build UI that implies these exist without a clear "coming soon" treatment.
+There is **no** logout endpoint (stateless JWT, no token blacklist), no password reset, no email verification, no waitlist, and no other product/content endpoints. Do not build UI that implies unbuilt endpoints exist without a clear "coming soon" treatment.
 
 ## 2. Tech stack
 
@@ -41,7 +45,7 @@ Browser → Next.js Route Handlers (src/app/api/auth/*) → Django (EYELEARN_API
 ```
 
 - `lib/api/django-client.ts` — the only file allowed to read `EYELEARN_API_URL`; `import "server-only"` enforced.
-- `lib/auth/session.ts` — `getCurrentUser()` (wrapped in React `cache()` so one Django request per render pass) and `refreshAccessToken()`, used both by Route Handlers and by Server Component layouts.
+- `lib/auth/session.ts` — `getCurrentUser()` (wrapped in React `cache()` so one Django request per render pass), `refreshAccessToken()`, and `getValidAccessToken()` (the "read cookie, else refresh" logic `getCurrentUser()` is built on, extracted so other server-only code -- e.g. `lib/billing/subscription.ts` -- can get a bearer token without also fetching the full user object). Used both by Route Handlers and by Server Component layouts.
 - Cookie **writes** only work inside Route Handlers/Server Actions (a Next.js restriction) — `lib/auth/cookies.ts` wraps every `cookies.set()` in a try/catch so a silent refresh triggered from a Server Component render (e.g. `(app)/layout.tsx`) can still fetch and use a fresh token for that render without crashing; persisting it back as a cookie happens moments later via the client-side `useAuth()` hook's request to the `/api/auth/me` Route Handler, which can write cookies.
 - Auth cookie lifetimes mirror simplejwt's **defaults** (Django has no `SIMPLE_JWT` override): access 5 min, refresh 1 day. If the backend ever sets `SIMPLE_JWT` lifetimes, update `lib/auth/constants.ts` to match.
 - **Logout is cookie-clear-only** (`app/api/auth/logout/route.ts`) — there's no backend endpoint to call.
@@ -65,14 +69,17 @@ src/
       (app)/                      # dashboard, study — auth-gated
     api/auth/{register,login,refresh,logout,me}/route.ts   # BFF proxy, outside [locale] (JSON, not localized HTML)
     api/auth/google/{route,callback/route}.ts               # Server-side Google OAuth Authorization Code flow (start + callback)
+    api/billing/{checkout,portal,subscription}/route.ts     # BFF proxy to Django's billing endpoints
     globals.css                   # Tailwind v4 tokens, imported by [locale]/layout.tsx
   components/
     ui/                           # shadcn primitives
     marketing/ auth/ dashboard/   # feature-scoped components
+    billing/                      # billing-action-button, subscription-summary-card
     shared/                       # logo, theme-toggle, language-switcher, mock-flashcard (cross-feature)
   lib/
     api/{django-client,types}.ts  # server-only Django fetch wrapper + shared response types
     auth/{constants,cookies,session}.ts
+    billing/{subscription,locale}.ts
     validation/{register,login}-schema.ts
   hooks/use-auth.ts
   context/auth-context.tsx
@@ -142,3 +149,6 @@ No `NEXT_PUBLIC_*` vars are needed since the browser never talks to Django direc
 - **Single `StatCard` primitive instead of separate `streak-card`/`progress-card` files**: they'd have been near-identical prop-preset wrappers: avoided per this repo's "no unnecessary abstraction" convention.
 - **Google sign-in as a server-side OAuth Authorization Code flow, not a client-side SDK**: `src/app/api/auth/google/route.ts` redirects to Google, `src/app/api/auth/google/callback/route.ts` exchanges the code and forwards the resulting ID token to Django's `/api/auth/google/`, then sets the same httpOnly cookies as password login. No Google Identity Services JS ever runs in the browser and no `NEXT_PUBLIC_*` var was introduced (`GOOGLE_OAUTH_CLIENT_ID`/`_SECRET`/`_REDIRECT_URI` are server-only), keeping the "browser only ever talks to Next.js" BFF invariant intact.
 - **Pricing is priced per locale, not converted at render time**: `components/marketing/pricing.ts` has a separate USD (`en`) and BRL (`pt-BR`) tier table, each with its own round-number monthly/annual prices and its own discount, rather than computing BRL as a currency conversion of the USD price. `PricingSection` is a client component (`"use client"`, needs `useState` for the Monthly/Annual toggle) that reads `useLocale()` to pick the right table and formats amounts via `Intl.NumberFormat(locale, { style: "currency", currency })`. Still fully illustrative -- no billing backend exists.
+- **Billing wired to real Stripe pricing, hosted Checkout only**: `pricing-card.tsx`'s CTA buttons now drive real checkout/portal sessions via `components/billing/billing-action-button.tsx`, which POSTs to `api/billing/checkout` or `api/billing/portal` and redirects to the URL Django/Stripe returns. Deliberately **Stripe-hosted Checkout and Billing Portal, not Stripe Elements** -- no card form is ever rendered in this app, so no `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` (or any `NEXT_PUBLIC_*` var) was introduced; the Stripe secret key only ever lives in the Django repo. The illustrative USD/BRL amounts in `pricing.ts` now correspond to real Stripe Prices selected by `(plan, currency)` on the backend, currency chosen from the visitor's locale.
+- **Route to the Portal instead of ever offering a second Checkout**: once a user has any active paid subscription, every pricing card except their current plan renders a "Manage subscription" button (`mode="portal"`) instead of a Checkout button -- switching plans or canceling always happens inside the Stripe Billing Portal. This mirrors a 409 the backend itself enforces (`checkout-session/` rejects a second checkout for an already-subscribed user), so the UI restriction isn't just cosmetic.
+- **`GET /api/billing/subscription/` kept separate from `/api/auth/me/`**: `getCurrentUser()` (and the `EyeLearnUser` type) backs the `(app)` auth gate and runs on nearly every authenticated render; folding subscription data into it would mean every such call also hits the `Subscription`/`PaymentCustomer` tables and would be a breaking shape change for every existing consumer. `lib/billing/subscription.ts`'s `getSubscriptionStatus()` mirrors `getCurrentUser()`'s shape (same `cache()` + `getValidAccessToken()` pattern) but stays opt-in, called only from `pricing-section.tsx` (and only for signed-in visitors) and `dashboard/page.tsx`.

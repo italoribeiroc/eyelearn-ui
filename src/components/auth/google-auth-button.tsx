@@ -25,8 +25,15 @@ function GoogleIcon() {
   );
 }
 
-export function GoogleAuthButton({ hideDivider = false }: { hideDivider?: boolean }) {
+export function GoogleAuthButton({
+  hideDivider = false,
+  plan,
+}: {
+  hideDivider?: boolean;
+  plan?: string;
+}) {
   const t = useTranslations("auth.common");
+  const href = plan ? `/api/auth/google?plan=${plan}` : "/api/auth/google";
 
   return (
     <div className="space-y-5">
@@ -42,8 +49,7 @@ export function GoogleAuthButton({ hideDivider = false }: { hideDivider?: boolea
         {/* Intentionally a plain <a>, not next/link's Link: this must be a
             full navigation to a Route Handler that redirects to Google, not
             a client-side route. */}
-        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        <a href="/api/auth/google" data-icon="inline-start">
+        <a href={href} data-icon="inline-start">
           <GoogleIcon />
           {t("continueWithGoogle")}
         </a>

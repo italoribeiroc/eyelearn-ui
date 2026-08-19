@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { LogOut } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/shared/logo";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
@@ -29,6 +29,12 @@ export function AppNav() {
         <div className="flex items-center gap-1.5 sm:gap-2">
           <ThemeToggle />
           <LanguageSwitcher />
+          <Button asChild type="button" variant="ghost" size="sm">
+            <Link href="/account">
+              <User className="size-4" aria-hidden="true" />
+              {t("account")}
+            </Link>
+          </Button>
           <Button type="button" variant="ghost" size="sm" onClick={handleLogout}>
             <LogOut className="size-4" aria-hidden="true" />
             {t("logOut")}

@@ -28,3 +28,21 @@ export type GoogleAuthPayload = {
 export type ApiFieldErrors = Record<string, string[] | undefined> & {
   detail?: string;
 };
+
+export type SubscriptionPlan = "free" | "monthly" | "annual";
+
+export type SubscriptionStatus = {
+  plan: SubscriptionPlan;
+  status:
+    | "active"
+    | "trialing"
+    | "past_due"
+    | "canceled"
+    | "incomplete"
+    | "incomplete_expired"
+    | "unpaid"
+    | "paused"
+    | null;
+  current_period_end: string | null;
+  cancel_at_period_end: boolean;
+};

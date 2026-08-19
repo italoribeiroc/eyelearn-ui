@@ -27,6 +27,7 @@ export function LoginForm() {
   const tErrors = useTranslations("auth.errors");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const plan = searchParams.get("plan") ?? undefined;
   const [rootError, setRootError] = useState<string | null>(
     searchParams.get("error") === "google_auth_failed" ? tErrors("googleAuthFailed") : null,
   );
@@ -56,7 +57,7 @@ export function LoginForm() {
       });
 
       if (res.ok) {
-        router.push("/dashboard");
+        router.push(plan ? `/dashboard?startCheckout=${plan}` : "/dashboard");
         router.refresh();
         return;
       }
@@ -115,7 +116,7 @@ export function LoginForm() {
           {form.formState.isSubmitting ? t("submitting") : t("submit")}
         </Button>
 
-        <GoogleAuthButton />
+        <GoogleAuthButton plan={plan} />
       </form>
     </Form>
   );

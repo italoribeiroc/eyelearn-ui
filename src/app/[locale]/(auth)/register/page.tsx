@@ -1,12 +1,19 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { RegisterForm } from "@/components/auth/register-form";
 import { GoogleAuthButton } from "@/components/auth/google-auth-button";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "@/i18n/navigation";
 
-export default function RegisterPage() {
-  const t = useTranslations("auth.register");
-  const tCommon = useTranslations("auth.common");
+export default async function RegisterPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ plan?: string }>;
+}) {
+  const [t, tCommon, { plan }] = await Promise.all([
+    getTranslations("auth.register"),
+    getTranslations("auth.common"),
+    searchParams,
+  ]);
 
   return (
     <div>
@@ -14,10 +21,13 @@ export default function RegisterPage() {
       <p className="mt-1.5 text-sm text-foreground-muted">{t("subtitle")}</p>
 
       <div className="mt-6 space-y-4">
-        <GoogleAuthButton hideDivider />
+        <GoogleAuthButton hideDivider plan={plan} />
         <p className="text-center text-sm text-foreground-muted">
           {t("haveAccount")}{" "}
-          <Link href="/login" className="font-medium text-brand-turquoise hover:underline">
+          <Link
+            href={plan ? `/login?plan=${plan}` : "/login"}
+            className="font-medium text-brand-turquoise hover:underline"
+          >
             {t("logInLink")}
           </Link>
         </p>
@@ -29,7 +39,7 @@ export default function RegisterPage() {
         <Separator className="flex-1" />
       </div>
 
-      <RegisterForm />
+      <RegisterForm plan={plan} />
     </div>
   );
 }

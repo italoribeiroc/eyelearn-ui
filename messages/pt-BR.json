@@ -191,6 +191,8 @@
     "perYear": "/ ano",
     "equivalentPerMonth": "equivalente a {price}/mês",
     "save": "Economize {percent}%",
+    "currentPlan": "Plano atual",
+    "manageSubscription": "Gerenciar assinatura",
     "tiers": {
       "free": {
         "name": "Grátis",
@@ -283,11 +285,45 @@
   "footer": {
     "copyright": "© {year} Eye Learn. Todos os direitos reservados."
   },
+  "billing": {
+    "error": "Algo deu errado. Tente novamente.",
+    "summary": {
+      "title": "Seu plano",
+      "renewsOn": "Renova em {date}",
+      "cancelingOn": "Cancela em {date}",
+      "manage": "Gerenciar cobrança",
+      "switchToAnnual": "Mudar para anual",
+      "switchToMonthly": "Mudar para mensal",
+      "upsell": "Faça upgrade para desbloquear conjuntos de estudo ilimitados e cartões gerados por IA.",
+      "upsellCta": "Ver planos"
+    },
+    "redirecting": "Redirecionando para o checkout seguro..."
+  },
+  "account": {
+    "title": "Conta",
+    "subtitle": "Gerencie seu perfil e assinatura.",
+    "backToDashboard": "Voltar ao painel",
+    "profile": {
+      "title": "Perfil",
+      "edit": "Editar",
+      "cancel": "Cancelar",
+      "usernameLabel": "Nome de usuário",
+      "emailLabel": "E-mail",
+      "submit": "Salvar alterações",
+      "submitting": "Salvando...",
+      "success": "Perfil atualizado."
+    },
+    "plans": {
+      "title": "Mude seu plano"
+    }
+  },
   "dashboard": {
     "welcome": "Bem-vindo de volta, {username} 👋",
     "subtitle": "Pronto para aprender algo hoje?",
     "logOut": "Sair",
+    "account": "Conta",
     "comingSoon": "Em breve",
+    "checkoutSuccess": "Você está inscrito. Bem-vindo ao Eye Learn Pro.",
     "stats": {
       "streak": "Sequência de estudos",
       "dailyGoal": "Meta de hoje",

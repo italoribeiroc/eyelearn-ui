@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { djangoFetchJson } from "@/lib/api/django-client";
 import type { AuthTokens, GoogleAuthPayload } from "@/lib/api/types";
 import { setAuthCookies } from "@/lib/auth/cookies";
-import { GOOGLE_OAUTH_STATE_COOKIE } from "@/lib/auth/constants";
+import { GOOGLE_OAUTH_PLAN_COOKIE, GOOGLE_OAUTH_STATE_COOKIE } from "@/lib/auth/constants";
 
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 
@@ -27,7 +27,9 @@ export async function GET(request: Request) {
 
   const cookieStore = await cookies();
   const expectedState = cookieStore.get(GOOGLE_OAUTH_STATE_COOKIE)?.value;
+  const plan = cookieStore.get(GOOGLE_OAUTH_PLAN_COOKIE)?.value;
   cookieStore.delete(GOOGLE_OAUTH_STATE_COOKIE);
+  cookieStore.delete(GOOGLE_OAUTH_PLAN_COOKIE);
 
   if (!code || !state || !expectedState || state !== expectedState) {
     return loginErrorRedirect(request);
@@ -77,7 +79,9 @@ export async function GET(request: Request) {
 
     setAuthCookies(cookieStore, tokens);
 
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(
+      new URL(plan ? `/dashboard?startCheckout=${plan}` : "/dashboard", request.url),
+    );
   } catch {
     return loginErrorRedirect(request);
   }

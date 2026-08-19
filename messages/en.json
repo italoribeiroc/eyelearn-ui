@@ -191,6 +191,8 @@
     "perYear": "/ year",
     "equivalentPerMonth": "equivalent to {price}/month",
     "save": "Save {percent}%",
+    "currentPlan": "Current plan",
+    "manageSubscription": "Manage subscription",
     "tiers": {
       "free": {
         "name": "Free",
@@ -283,11 +285,45 @@
   "footer": {
     "copyright": "© {year} Eye Learn. All rights reserved."
   },
+  "billing": {
+    "error": "Something went wrong. Please try again.",
+    "summary": {
+      "title": "Your plan",
+      "renewsOn": "Renews on {date}",
+      "cancelingOn": "Cancels on {date}",
+      "manage": "Manage billing",
+      "switchToAnnual": "Switch to annual",
+      "switchToMonthly": "Switch to monthly",
+      "upsell": "Upgrade to unlock unlimited study sets and AI-generated cards.",
+      "upsellCta": "View plans"
+    },
+    "redirecting": "Redirecting to secure checkout..."
+  },
+  "account": {
+    "title": "Account",
+    "subtitle": "Manage your profile and subscription.",
+    "backToDashboard": "Back to dashboard",
+    "profile": {
+      "title": "Profile",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "usernameLabel": "Username",
+      "emailLabel": "Email",
+      "submit": "Save changes",
+      "submitting": "Saving...",
+      "success": "Profile updated."
+    },
+    "plans": {
+      "title": "Change your plan"
+    }
+  },
   "dashboard": {
     "welcome": "Welcome back, {username} 👋",
     "subtitle": "Ready to learn something today?",
     "logOut": "Log out",
+    "account": "Account",
     "comingSoon": "Coming soon",
+    "checkoutSuccess": "You're subscribed. Welcome to Eye Learn Pro.",
     "stats": {
       "streak": "Study streak",
       "dailyGoal": "Today's goal",
