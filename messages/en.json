@@ -329,6 +329,24 @@
       "dailyGoal": "Today's goal",
       "cardsStudied": "Flashcards studied"
     },
+    "timer": {
+      "openLabel": "Open study timer",
+      "title": "Study timer",
+      "pomodoro": "Pomodoro",
+      "shortBreak": "Short break",
+      "custom": "Custom",
+      "minutesLabel": "Minutes",
+      "secondsLabel": "Seconds",
+      "setButton": "Set",
+      "start": "Start",
+      "pause": "Pause",
+      "reset": "Reset",
+      "sound": "Sound",
+      "on": "On",
+      "off": "Off",
+      "finishedTitle": "Time's up",
+      "finishedDescription": "Your study timer has finished."
+    },
     "ctaTitle": "Start your first study session",
     "ctaDescription": "Flashcard sets and AI-generated cards are coming soon. This is where your studying will begin.",
     "ctaButton": "Start studying"

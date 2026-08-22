@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/shared/logo";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { LanguageSwitcher } from "@/components/shared/language-switcher";
+import { StudyTimerPopover } from "@/components/dashboard/study-timer-popover";
 import { useAuthContext } from "@/context/auth-context";
 import { Link, useRouter } from "@/i18n/navigation";
 
@@ -27,6 +28,7 @@ export function AppNav() {
           <Logo />
         </Link>
         <div className="flex items-center gap-1.5 sm:gap-2">
+          <StudyTimerPopover />
           <ThemeToggle />
           <LanguageSwitcher />
           <Button asChild type="button" variant="ghost" size="sm">

@@ -329,6 +329,24 @@
       "dailyGoal": "Meta de hoje",
       "cardsStudied": "Flashcards estudados"
     },
+    "timer": {
+      "openLabel": "Abrir cronômetro de estudo",
+      "title": "Cronômetro de estudo",
+      "pomodoro": "Pomodoro",
+      "shortBreak": "Pausa curta",
+      "custom": "Personalizado",
+      "minutesLabel": "Minutos",
+      "secondsLabel": "Segundos",
+      "setButton": "Definir",
+      "start": "Iniciar",
+      "pause": "Pausar",
+      "reset": "Reiniciar",
+      "sound": "Som",
+      "on": "Ativado",
+      "off": "Desativado",
+      "finishedTitle": "Tempo esgotado",
+      "finishedDescription": "Seu cronômetro de estudo terminou."
+    },
     "ctaTitle": "Comece sua primeira sessão de estudo",
     "ctaDescription": "Conjuntos de flashcards e cartões gerados por IA estão chegando em breve. É aqui que seus estudos vão começar.",
     "ctaButton": "Começar a estudar"
