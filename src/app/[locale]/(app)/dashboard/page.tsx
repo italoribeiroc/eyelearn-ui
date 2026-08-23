@@ -1,13 +1,11 @@
 import { getTranslations } from "next-intl/server";
 import { Flame, LayoutGrid, Target } from "lucide-react";
 import { CheckoutRedirect } from "@/components/billing/checkout-redirect";
-import { SubscriptionSummaryCard } from "@/components/billing/subscription-summary-card";
 import { WelcomeHeader } from "@/components/dashboard/welcome-header";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { StartStudyingCta } from "@/components/dashboard/start-studying-cta";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getCurrentUser } from "@/lib/auth/session";
-import { getSubscriptionStatus } from "@/lib/billing/subscription";
 
 const CHECKOUT_PLANS = ["monthly", "annual"] as const;
 
@@ -16,10 +14,9 @@ export default async function DashboardPage({
 }: {
   searchParams: Promise<{ checkout?: string; startCheckout?: string }>;
 }) {
-  const [user, t, subscription, { checkout, startCheckout }] = await Promise.all([
+  const [user, t, { checkout, startCheckout }] = await Promise.all([
     getCurrentUser(),
     getTranslations("dashboard"),
-    getSubscriptionStatus(),
     searchParams,
   ]);
 
@@ -65,8 +62,6 @@ export default async function DashboardPage({
           comingSoonLabel={t("comingSoon")}
         />
       </div>
-
-      {subscription ? <SubscriptionSummaryCard subscription={subscription} /> : null}
 
       <StartStudyingCta />
     </div>

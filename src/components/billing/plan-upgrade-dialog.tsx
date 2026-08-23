@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 /**
  * Wraps the (Server Component) pricing cards passed as `children` in a
  * modal, so upgrading/switching plans works from wherever
- * SubscriptionSummaryCard is rendered (dashboard, account page) without a
+ * SubscriptionSummaryCard is rendered (account page) without a
  * page navigation. See CLAUDE.md for why this replaced a plain link.
  *
  * `title` only feeds the required (but visually hidden) DialogTitle for

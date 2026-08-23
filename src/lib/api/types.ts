@@ -46,3 +46,70 @@ export type SubscriptionStatus = {
   current_period_end: string | null;
   cancel_at_period_end: boolean;
 };
+
+export type Collection = {
+  id: number;
+  name: string;
+  description: string;
+  parent: number | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type CardType = "basic" | "multiple_choice" | "typed_answer";
+
+export type FlashcardOption = {
+  text: string;
+  is_correct: boolean;
+};
+
+export type MediaType = "image" | "audio" | "video";
+export type MediaSide = "prompt" | "answer";
+
+export type FlashcardMediaItem = {
+  id: number;
+  media_type: MediaType;
+  side: MediaSide;
+  content_type: string;
+  size_bytes: number;
+  url: string;
+  created_at: string;
+};
+
+export type Flashcard = {
+  id: number;
+  collection: number;
+  card_type: CardType;
+  prompt: string;
+  answer: string;
+  options: FlashcardOption[];
+  accepted_answers: string[];
+  media: FlashcardMediaItem[];
+  created_at: string;
+  updated_at: string;
+};
+
+export type ReviewSchedulingState = "new" | "learning" | "review" | "relearning";
+
+export type StudyQueueItem = {
+  flashcard: Flashcard;
+  due: string;
+  state: ReviewSchedulingState;
+  reps: number;
+};
+
+/** fsrs.Rating: 1 Again, 2 Hard, 3 Good, 4 Easy -- only meaningful for BASIC cards. */
+export type ReviewRating = 1 | 2 | 3 | 4;
+
+export type ReviewSubmission =
+  | { rating: ReviewRating }
+  | { selected_option: number }
+  | { submitted_answer: string };
+
+export type ReviewResult = {
+  correct: boolean | null;
+  due: string;
+  state: ReviewSchedulingState;
+  reps: number;
+  lapses: number;
+};

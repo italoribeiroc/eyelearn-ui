@@ -6,7 +6,10 @@
   "common": {
     "switchToLight": "Mudar para tema claro",
     "switchToDark": "Mudar para tema escuro",
-    "changeLanguage": "Mudar idioma"
+    "changeLanguage": "Mudar idioma",
+    "light": "Tema claro",
+    "dark": "Tema escuro",
+    "language": "Idioma"
   },
   "nav": {
     "primaryNavigation": "Principal",
@@ -133,13 +136,19 @@
     "setName": "Biologia Celular: Prova Parcial",
     "streak": "Sequência de 6 dias",
     "dailyGoal": "Meta diária: 20 cartões",
-    "card1": { "eyebrow": "Novo", "question": "Qual é a função da mitocôndria?" },
+    "card1": {
+      "eyebrow": "Novo",
+      "question": "Qual é a função da mitocôndria?"
+    },
     "card2": {
       "eyebrow": "Revisando",
       "question": "Defina osmose.",
       "answer": "O movimento da água através de uma membrana em direção à maior concentração de soluto"
     },
-    "card3": { "eyebrow": "Dominado", "question": "O que significa DNA?" },
+    "card3": {
+      "eyebrow": "Dominado",
+      "question": "O que significa DNA?"
+    },
     "progressLabel": "Progresso de hoje",
     "progressValue": "13 de 20 cartões",
     "disclaimer": "Prévia ilustrativa da experiência de estudo do Eye Learn."
@@ -348,12 +357,119 @@
       "finishedDescription": "Seu cronômetro de estudo terminou."
     },
     "ctaTitle": "Comece sua primeira sessão de estudo",
-    "ctaDescription": "Conjuntos de flashcards e cartões gerados por IA estão chegando em breve. É aqui que seus estudos vão começar.",
-    "ctaButton": "Começar a estudar"
+    "ctaDescription": "Organize suas anotações em coleções de flashcards e estude quando estiver pronto.",
+    "ctaButton": "Ir para os flashcards",
+    "flashcards": "Flashcards",
+    "menu": "Menu"
   },
-  "study": {
-    "title": "Os estudos estão chegando em breve",
-    "description": "Estamos construindo a experiência de estudo com flashcards. Volte em breve para começar sua primeira sessão.",
-    "backToDashboard": "Voltar ao painel"
+  "flashcards": {
+    "title": "Seus flashcards",
+    "subtitle": "Organize seus cartões em coleções e estude quando estiver pronto.",
+    "newCollection": "Nova coleção",
+    "newSubcollection": "Nova subcoleção",
+    "emptyTitle": "Nenhuma coleção ainda",
+    "emptyDescription": "Crie sua primeira coleção para começar a adicionar flashcards.",
+    "subcollectionsTitle": "Subcoleções",
+    "noSubcollections": "Nenhuma subcoleção ainda.",
+    "flashcardsTitle": "Flashcards",
+    "newFlashcard": "Novo flashcard",
+    "noFlashcards": "Nenhum flashcard ainda. Adicione o primeiro para começar a estudar.",
+    "common": {
+      "open": "Abrir",
+      "study": "Estudar",
+      "edit": "Editar",
+      "delete": "Excluir",
+      "cancel": "Cancelar",
+      "back": "Voltar"
+    },
+    "deleteCollection": {
+      "title": "Excluir coleção?",
+      "description": "Isso exclui permanentemente \"{name}\" e tudo o que há dentro, incluindo subcoleções e flashcards."
+    },
+    "deleteFlashcard": {
+      "title": "Excluir flashcard?",
+      "description": "Isso exclui permanentemente este flashcard e seu histórico de estudo."
+    },
+    "collectionForm": {
+      "createTitle": "Nova coleção",
+      "editTitle": "Editar coleção",
+      "nameLabel": "Nome",
+      "descriptionLabel": "Descrição",
+      "save": "Salvar",
+      "createSuccess": "Coleção criada.",
+      "updateSuccess": "Coleção atualizada."
+    },
+    "cardType": {
+      "basic": "Básico",
+      "multiple_choice": "Múltipla escolha",
+      "typed_answer": "Resposta digitada"
+    },
+    "cardForm": {
+      "createTitle": "Novo flashcard",
+      "editTitle": "Editar flashcard",
+      "typeLabel": "Tipo de cartão",
+      "promptLabel": "Pergunta",
+      "answerLabel": "Resposta",
+      "canonicalAnswerLabel": "Resposta correta",
+      "acceptedAnswersLabel": "Outras respostas aceitas",
+      "acceptedAnswersPlaceholder": "Alternativas separadas por vírgula, ex.: mitocôndria, mitocôndrias",
+      "optionsLabel": "Opções",
+      "optionsHint": "Selecione o botão ao lado da opção correta.",
+      "optionPlaceholder": "Opção {number}",
+      "markCorrect": "Marcar como resposta correta",
+      "removeOption": "Remover opção",
+      "addOption": "Adicionar opção",
+      "save": "Salvar",
+      "createSuccess": "Flashcard criado.",
+      "updateSuccess": "Flashcard atualizado.",
+      "saveAndAddAnother": "Salvar e adicionar outro",
+      "createdCount": "{count} cartões adicionados nesta sessão",
+      "done": "Concluído",
+      "promptMediaLabel": "Mídia da pergunta (opcional)",
+      "answerMediaLabel": "Mídia da resposta (opcional)",
+      "mediaUploadPartialFailure": "{count} anexo(s) não puderam ser enviados. Você pode adicioná-los na edição do cartão."
+    },
+    "study": {
+      "caughtUpTitle": "Você está em dia",
+      "caughtUpDescription": "Nenhum cartão está pendente de revisão nesta coleção agora. Volte mais tarde ou adicione mais cartões.",
+      "backToCollection": "Voltar para a coleção",
+      "progress": "Cartão {current} de {total}",
+      "showAnswer": "Mostrar resposta",
+      "ratingRecorded": "Entendido. Carregando o próximo cartão...",
+      "ratings": {
+        "again": "De novo",
+        "hard": "Difícil",
+        "good": "Bom",
+        "easy": "Fácil"
+      },
+      "correct": "Correto!",
+      "incorrect": "Não foi dessa vez.",
+      "typedAnswerPlaceholder": "Digite sua resposta",
+      "submitAnswer": "Enviar",
+      "correctAnswerWas": "A resposta correta era \"{answer}\".",
+      "nextCard": "Próximo cartão",
+      "finish": "Finalizar sessão",
+      "sessionCompleteTitle": "Sessão concluída",
+      "sessionCompleteDescription": "Você revisou {count} cartões. Bom trabalho."
+    },
+    "importExport": {
+      "importButton": "Importar",
+      "exportButton": "Exportar",
+      "hint": "Importe de CSV, TSV ou um arquivo .apkg do Anki. Exportar baixa esta coleção como CSV.",
+      "importSuccess": "{count} cartões importados.",
+      "importPartial": "{created} cartões importados, {skipped} ignorados.",
+      "importFailed": "Não foi possível importar nenhum cartão desse arquivo."
+    },
+    "limit": {
+      "title": "Você atingiu o limite do plano gratuito",
+      "description": "Contas gratuitas podem ter até 3 coleções. Faça upgrade para o Pro e tenha coleções e flashcards ilimitados."
+    },
+    "media": {
+      "addMedia": "Adicionar imagem, áudio ou vídeo",
+      "remove": "Remover",
+      "uploadSuccess": "Mídia adicionada.",
+      "unsupportedType": "Esse tipo de arquivo não é suportado.",
+      "fileTooLarge": "Esse arquivo é muito grande."
+    }
   }
 }

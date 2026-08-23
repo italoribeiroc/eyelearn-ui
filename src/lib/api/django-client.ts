@@ -45,3 +45,17 @@ export async function djangoFetchJson<T>(
 
   return body as T;
 }
+
+/**
+ * Maps a DjangoApiError (or any other thrown error) to the
+ * {status, body} shape route handlers pass to NextResponse.json --
+ * shared by the flashcards BFF routes, which all follow the same
+ * try/djangoFetchJson/catch pattern as the billing routes.
+ */
+export function djangoErrorResponse(error: unknown): { status: number; body: unknown } {
+  if (error instanceof DjangoApiError) {
+    return { status: error.status, body: error.body };
+  }
+
+  return { status: 502, body: { detail: "Network error while reaching Eye Learn." } };
+}

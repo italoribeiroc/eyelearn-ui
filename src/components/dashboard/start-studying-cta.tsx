@@ -20,7 +20,7 @@ export function StartStudyingCta() {
         </div>
       </div>
       <Button asChild size="lg" className="w-full shrink-0 sm:w-auto">
-        <Link href="/study">{t("ctaButton")}</Link>
+        <Link href="/flashcards">{t("ctaButton")}</Link>
       </Button>
     </div>
   );

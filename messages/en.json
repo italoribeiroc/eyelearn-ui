@@ -6,7 +6,10 @@
   "common": {
     "switchToLight": "Switch to light theme",
     "switchToDark": "Switch to dark theme",
-    "changeLanguage": "Change language"
+    "changeLanguage": "Change language",
+    "light": "Light mode",
+    "dark": "Dark mode",
+    "language": "Language"
   },
   "nav": {
     "primaryNavigation": "Primary",
@@ -133,13 +136,19 @@
     "setName": "Cell Biology: Midterm",
     "streak": "6-day streak",
     "dailyGoal": "Daily goal: 20 cards",
-    "card1": { "eyebrow": "New", "question": "What is the function of the mitochondria?" },
+    "card1": {
+      "eyebrow": "New",
+      "question": "What is the function of the mitochondria?"
+    },
     "card2": {
       "eyebrow": "Reviewing",
       "question": "Define osmosis.",
       "answer": "The movement of water across a membrane toward higher solute concentration"
     },
-    "card3": { "eyebrow": "Mastered", "question": "What does DNA stand for?" },
+    "card3": {
+      "eyebrow": "Mastered",
+      "question": "What does DNA stand for?"
+    },
     "progressLabel": "Today's progress",
     "progressValue": "13 of 20 cards",
     "disclaimer": "Illustrative preview of the Eye Learn study experience."
@@ -348,12 +357,119 @@
       "finishedDescription": "Your study timer has finished."
     },
     "ctaTitle": "Start your first study session",
-    "ctaDescription": "Flashcard sets and AI-generated cards are coming soon. This is where your studying will begin.",
-    "ctaButton": "Start studying"
+    "ctaDescription": "Organize your notes into flashcard collections, then study whenever you're ready.",
+    "ctaButton": "Go to flashcards",
+    "flashcards": "Flashcards",
+    "menu": "Menu"
   },
-  "study": {
-    "title": "Studying is coming soon",
-    "description": "We're building the flashcard study experience. Check back soon to start your first session.",
-    "backToDashboard": "Back to dashboard"
+  "flashcards": {
+    "title": "Your flashcards",
+    "subtitle": "Organize your cards into collections and study whenever you're ready.",
+    "newCollection": "New collection",
+    "newSubcollection": "New subcollection",
+    "emptyTitle": "No collections yet",
+    "emptyDescription": "Create your first collection to start adding flashcards.",
+    "subcollectionsTitle": "Subcollections",
+    "noSubcollections": "No subcollections yet.",
+    "flashcardsTitle": "Flashcards",
+    "newFlashcard": "New flashcard",
+    "noFlashcards": "No flashcards yet. Add your first one to start studying.",
+    "common": {
+      "open": "Open",
+      "study": "Study",
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "back": "Back"
+    },
+    "deleteCollection": {
+      "title": "Delete collection?",
+      "description": "This permanently deletes \"{name}\" and everything inside it, including subcollections and flashcards."
+    },
+    "deleteFlashcard": {
+      "title": "Delete flashcard?",
+      "description": "This permanently deletes this flashcard and its study history."
+    },
+    "collectionForm": {
+      "createTitle": "New collection",
+      "editTitle": "Edit collection",
+      "nameLabel": "Name",
+      "descriptionLabel": "Description",
+      "save": "Save",
+      "createSuccess": "Collection created.",
+      "updateSuccess": "Collection updated."
+    },
+    "cardType": {
+      "basic": "Basic",
+      "multiple_choice": "Multiple choice",
+      "typed_answer": "Typed answer"
+    },
+    "cardForm": {
+      "createTitle": "New flashcard",
+      "editTitle": "Edit flashcard",
+      "typeLabel": "Card type",
+      "promptLabel": "Prompt",
+      "answerLabel": "Answer",
+      "canonicalAnswerLabel": "Correct answer",
+      "acceptedAnswersLabel": "Other accepted answers",
+      "acceptedAnswersPlaceholder": "Comma-separated alternates, e.g. mitochondria, mitochondrion",
+      "optionsLabel": "Options",
+      "optionsHint": "Select the radio button next to the correct option.",
+      "optionPlaceholder": "Option {number}",
+      "markCorrect": "Mark as correct answer",
+      "removeOption": "Remove option",
+      "addOption": "Add option",
+      "save": "Save",
+      "createSuccess": "Flashcard created.",
+      "updateSuccess": "Flashcard updated.",
+      "saveAndAddAnother": "Save & add another",
+      "createdCount": "{count} cards added this session",
+      "done": "Done",
+      "promptMediaLabel": "Prompt media (optional)",
+      "answerMediaLabel": "Answer media (optional)",
+      "mediaUploadPartialFailure": "{count} attachment(s) couldn't be uploaded. You can add them from the card's edit view."
+    },
+    "study": {
+      "caughtUpTitle": "You're all caught up",
+      "caughtUpDescription": "No cards are due for review in this collection right now. Check back later or add more cards.",
+      "backToCollection": "Back to collection",
+      "progress": "Card {current} of {total}",
+      "showAnswer": "Show answer",
+      "ratingRecorded": "Got it. Loading the next card...",
+      "ratings": {
+        "again": "Again",
+        "hard": "Hard",
+        "good": "Good",
+        "easy": "Easy"
+      },
+      "correct": "Correct!",
+      "incorrect": "Not quite.",
+      "typedAnswerPlaceholder": "Type your answer",
+      "submitAnswer": "Submit",
+      "correctAnswerWas": "The correct answer was \"{answer}\".",
+      "nextCard": "Next card",
+      "finish": "Finish session",
+      "sessionCompleteTitle": "Session complete",
+      "sessionCompleteDescription": "You reviewed {count} cards. Nice work."
+    },
+    "importExport": {
+      "importButton": "Import",
+      "exportButton": "Export",
+      "hint": "Import from CSV, TSV, or an Anki .apkg file. Export downloads this collection as CSV.",
+      "importSuccess": "Imported {count} cards.",
+      "importPartial": "Imported {created} cards, skipped {skipped}.",
+      "importFailed": "Couldn't import any cards from that file."
+    },
+    "limit": {
+      "title": "You've reached the free plan limit",
+      "description": "Free accounts can have up to 3 collections. Upgrade to Pro for unlimited collections and flashcards."
+    },
+    "media": {
+      "addMedia": "Add image, audio, or video",
+      "remove": "Remove",
+      "uploadSuccess": "Media added.",
+      "unsupportedType": "That file type isn't supported.",
+      "fileTooLarge": "That file is too large."
+    }
   }
 }

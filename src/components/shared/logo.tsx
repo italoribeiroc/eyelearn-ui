@@ -44,6 +44,7 @@ export function Logo({
   className,
   size = "default",
   layout = "inline",
+  hideWordmarkOnMobile = false,
 }: {
   className?: string;
   size?: "default" | "lg";
@@ -56,11 +57,19 @@ export function Logo({
    * screen readers via sr-only text.
    */
   layout?: "inline" | "centered";
+  /**
+   * Collapses to the icon mark only below `sm`, where a crowded nav (many
+   * icon buttons alongside the logo) leaves too little width for the
+   * wordmark and it wraps to a second line. "Eye Learn" stays present for
+   * screen readers via sr-only text.
+   */
+  hideWordmarkOnMobile?: boolean;
 }) {
   const markSize = size === "lg" ? "size-12" : undefined;
   const textClassName = cn(
     "font-heading font-bold tracking-tight text-foreground",
     size === "lg" ? "text-2xl" : "text-lg",
+    hideWordmarkOnMobile && "hidden sm:inline",
   );
 
   if (layout === "centered") {
@@ -82,6 +91,7 @@ export function Logo({
     >
       <LogoMark className={markSize} />
       <span className={textClassName}>Eye Learn</span>
+      {hideWordmarkOnMobile ? <span className="sr-only sm:hidden">Eye Learn</span> : null}
     </span>
   );
 }
