@@ -67,7 +67,7 @@ export function Logo({
 }) {
   const markSize = size === "lg" ? "size-12" : undefined;
   const textClassName = cn(
-    "font-heading font-bold tracking-tight text-foreground",
+    "font-heading font-bold leading-none tracking-tight text-foreground",
     size === "lg" ? "text-2xl" : "text-lg",
     hideWordmarkOnMobile && "hidden sm:inline",
   );

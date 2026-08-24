@@ -6,12 +6,44 @@ import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/navigation";
+import type { ImportStreamEvent, ImportSummary } from "@/app/api/flashcards/collections/[id]/import/route";
 
-type ImportSummary = {
-  created: number;
-  skipped: number;
-  errors: string[];
-};
+/** Reads the import route's newline-delimited JSON stream, reporting each progress event. */
+async function readImportStream(
+  res: Response,
+  onProgress: (progress: { done: number; total: number }) => void,
+): Promise<ImportSummary> {
+  if (!res.body) throw new Error("Response has no body to stream.");
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let summary: ImportSummary | null = null;
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split("\n");
+    buffer = lines.pop() ?? "";
+
+    for (const line of lines) {
+      if (!line.trim()) continue;
+      const event = JSON.parse(line) as ImportStreamEvent;
+      if (event.type === "start") {
+        onProgress({ done: 0, total: event.total });
+      } else if (event.type === "progress") {
+        onProgress({ done: event.done, total: event.total });
+      } else if (event.type === "done") {
+        summary = event.summary;
+      }
+    }
+  }
+
+  if (!summary) throw new Error("Import stream ended without a result.");
+  return summary;
+}
 
 export function ImportExportMenu({ collectionId }: { collectionId: number }) {
   const t = useTranslations("flashcards.importExport");
@@ -19,6 +51,7 @@ export function ImportExportMenu({ collectionId }: { collectionId: number }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [importing, setImporting] = useState(false);
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
 
   async function handleFileSelected(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -26,6 +59,7 @@ export function ImportExportMenu({ collectionId }: { collectionId: number }) {
     if (!file) return;
 
     setImporting(true);
+    setProgress(null);
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -41,7 +75,7 @@ export function ImportExportMenu({ collectionId }: { collectionId: number }) {
         return;
       }
 
-      const summary = (await res.json()) as ImportSummary;
+      const summary = await readImportStream(res, setProgress);
       router.refresh();
 
       if (summary.created > 0 && summary.skipped === 0) {
@@ -57,38 +91,65 @@ export function ImportExportMenu({ collectionId }: { collectionId: number }) {
       toast.error(tErrors("network"));
     } finally {
       setImporting(false);
+      setProgress(null);
     }
   }
 
   return (
-    <div className="flex flex-wrap gap-2">
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".csv,.tsv,.txt,.apkg"
-        onChange={handleFileSelected}
-        className="hidden"
-      />
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        disabled={importing}
-        onClick={() => fileInputRef.current?.click()}
-      >
-        {importing ? (
-          <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
-        ) : (
-          <Upload className="size-3.5" aria-hidden="true" />
-        )}
-        {t("importButton")}
-      </Button>
-      <Button asChild type="button" variant="outline" size="sm">
-        <a href={`/api/flashcards/collections/${collectionId}/export`}>
-          <Download className="size-3.5" aria-hidden="true" />
-          {t("exportButton")}
-        </a>
-      </Button>
+    <div className="space-y-2">
+      <div className="flex flex-wrap gap-2">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".csv,.tsv,.txt,.apkg"
+          onChange={handleFileSelected}
+          className="hidden"
+        />
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          disabled={importing}
+          onClick={() => fileInputRef.current?.click()}
+        >
+          {importing ? (
+            <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
+          ) : (
+            <Upload className="size-3.5" aria-hidden="true" />
+          )}
+          {t("importButton")}
+        </Button>
+        <Button asChild type="button" variant="outline" size="sm">
+          <a href={`/api/flashcards/collections/${collectionId}/export`}>
+            <Download className="size-3.5" aria-hidden="true" />
+            {t("exportButton")}
+          </a>
+        </Button>
+      </div>
+
+      {importing ? (
+        <div className="max-w-xs space-y-1">
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-muted">
+            <div
+              className={
+                progress && progress.total > 0
+                  ? "h-full rounded-full bg-brand-turquoise transition-all duration-200"
+                  : "h-full w-1/3 animate-pulse rounded-full bg-brand-turquoise"
+              }
+              style={
+                progress && progress.total > 0
+                  ? { width: `${Math.round((progress.done / progress.total) * 100)}%` }
+                  : undefined
+              }
+            />
+          </div>
+          <p className="text-xs text-foreground-muted">
+            {progress && progress.total > 0
+              ? t("importProgress", { done: Math.min(progress.done, progress.total), total: progress.total })
+              : t("importPreparing")}
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }

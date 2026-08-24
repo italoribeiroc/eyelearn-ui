@@ -52,6 +52,8 @@ export type Collection = {
   name: string;
   description: string;
   parent: number | null;
+  flashcard_count: number;
+  due_count: number;
   created_at: string;
   updated_at: string;
 };
@@ -112,4 +114,37 @@ export type ReviewResult = {
   state: ReviewSchedulingState;
   reps: number;
   lapses: number;
+};
+
+export type CollectionGoalProgress = {
+  collection: number;
+  target_date: string;
+  total: number;
+  mastered: number;
+  remaining: number;
+  today_target: number;
+  reviewed_today: number;
+  overdue: boolean;
+  days_until: number;
+};
+
+export type ActiveGoal = CollectionGoalProgress & { collection_name: string };
+
+export type GoalsSummary = {
+  streak: number;
+  cards_studied_today: number;
+  active_goals: ActiveGoal[];
+  daily_target_total: number;
+  daily_due_count: number;
+};
+
+export type StreakCalendarDay = {
+  date: string;
+  studied: boolean;
+  cards_reviewed: number;
+};
+
+export type StreakCalendar = {
+  current_streak: number;
+  days: StreakCalendarDay[];
 };

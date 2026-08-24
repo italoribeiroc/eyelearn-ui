@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Check, Languages, Layers, LogOut, Menu, Moon, Sun, User } from "lucide-react";
+import { Check, Languages, LayoutDashboard, Layers, LogOut, Menu, Moon, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
@@ -64,7 +64,7 @@ export function AppNav({ isPro = false }: { isPro?: boolean }) {
     <header className="border-b border-border bg-surface/70 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-2 px-4 sm:px-6">
         <div className="flex shrink-0 items-center gap-1.5">
-          <Link href="/dashboard">
+          <Link href="/dashboard" className="inline-flex items-center">
             <Logo hideWordmarkOnMobile />
           </Link>
           {isPro ? <ProBadge /> : null}
@@ -75,6 +75,19 @@ export function AppNav({ isPro = false }: { isPro?: boolean }) {
           <StudyTimerPopover />
           <ThemeToggle />
           <LanguageSwitcher />
+          <Button
+            asChild
+            type="button"
+            variant="ghost"
+            size="sm"
+            aria-current={pathname === "/dashboard" ? "page" : undefined}
+            className={cn(pathname === "/dashboard" && "bg-muted text-foreground")}
+          >
+            <Link href="/dashboard">
+              <LayoutDashboard className="size-4" aria-hidden="true" />
+              {t("dashboardNav")}
+            </Link>
+          </Button>
           <Button asChild type="button" variant="ghost" size="sm">
             <Link href="/flashcards">
               <Layers className="size-4" aria-hidden="true" />
@@ -108,6 +121,16 @@ export function AppNav({ isPro = false }: { isPro?: boolean }) {
               </SheetHeader>
 
               <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
+                <SheetClose asChild>
+                  <Link
+                    href="/dashboard"
+                    aria-current={pathname === "/dashboard" ? "page" : undefined}
+                    className={cn(menuItemClass, pathname === "/dashboard" && "bg-muted")}
+                  >
+                    <LayoutDashboard className="size-4" aria-hidden="true" />
+                    {t("dashboardNav")}
+                  </Link>
+                </SheetClose>
                 <SheetClose asChild>
                   <Link href="/flashcards" className={menuItemClass}>
                     <Layers className="size-4" aria-hidden="true" />

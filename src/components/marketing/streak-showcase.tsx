@@ -3,6 +3,7 @@ import { Flame } from "lucide-react";
 
 export function StreakShowcase() {
   const t = useTranslations("streakShowcase");
+  const tDays = useTranslations("common.days");
   const days = [
     { key: "mon", done: true },
     { key: "tue", done: true },
@@ -34,7 +35,7 @@ export function StreakShowcase() {
               {days.map((day) => (
                 <div key={day.key} className="flex flex-col items-center gap-1.5">
                   <span className="text-[10px] font-medium uppercase text-foreground-muted">
-                    {t(`days.${day.key}`)}
+                    {tDays(day.key)}
                   </span>
                   <span
                     className={

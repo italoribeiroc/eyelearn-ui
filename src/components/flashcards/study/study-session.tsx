@@ -34,12 +34,14 @@ async function postReview(flashcardId: number, submission: ReviewSubmission): Pr
 }
 
 export function StudySession({
-  collectionId,
-  collectionName,
+  title,
+  backHref,
+  backLabel,
   initialQueue,
 }: {
-  collectionId: number;
-  collectionName: string;
+  title: string;
+  backHref: string;
+  backLabel: string;
   initialQueue: StudyQueueItem[];
 }) {
   const t = useTranslations("flashcards.study");
@@ -88,7 +90,7 @@ export function StudySession({
           {t("sessionCompleteDescription", { count: reviewedCount })}
         </p>
         <Button asChild>
-          <Link href={`/flashcards/${collectionId}`}>{t("backToCollection")}</Link>
+          <Link href={backHref}>{backLabel}</Link>
         </Button>
       </div>
     );
@@ -97,7 +99,7 @@ export function StudySession({
   return (
     <div className="mx-auto max-w-xl space-y-6">
       <div>
-        <p className="text-sm text-foreground-muted">{collectionName}</p>
+        <p className="text-sm text-foreground-muted">{title}</p>
         <p className="mt-1 text-xs font-medium text-foreground-muted">
           {t("progress", { current: index + 1, total: initialQueue.length })}
         </p>

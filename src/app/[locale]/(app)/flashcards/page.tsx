@@ -1,8 +1,10 @@
 import { Layers, Plus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { CollectionAccordionList } from "@/components/flashcards/collection-accordion-list";
 import { CollectionCard } from "@/components/flashcards/collection-card";
 import { CollectionFormDialog } from "@/components/flashcards/collection-form-dialog";
 import { CollectionLimitBanner } from "@/components/flashcards/collection-limit-banner";
+import { CollectionViewToggle, type CollectionViewMode } from "@/components/flashcards/collection-view-toggle";
 import { PlanUpgradeDialog } from "@/components/billing/plan-upgrade-dialog";
 import { PricingSection } from "@/components/marketing/pricing-section";
 import { Button } from "@/components/ui/button";
@@ -11,18 +13,24 @@ import { listCollections } from "@/lib/flashcards/api";
 
 const FREE_COLLECTION_LIMIT = 3;
 
-export default async function FlashcardsPage() {
-  const [t, tBilling, tPlans, allCollections, subscription] = await Promise.all([
+export default async function FlashcardsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ view?: string }>;
+}) {
+  const [t, tBilling, tPlans, allCollections, subscription, { view }] = await Promise.all([
     getTranslations("flashcards"),
     getTranslations("billing.summary"),
     getTranslations("account.plans"),
     listCollections(),
     getSubscriptionStatus(),
+    searchParams,
   ]);
 
   const rootCollections = allCollections.filter((collection) => collection.parent === null);
   const isPro = subscription?.plan !== "free" && subscription?.plan != null;
   const atLimit = !isPro && allCollections.length >= FREE_COLLECTION_LIMIT;
+  const viewMode: CollectionViewMode = view === "list" ? "list" : "grid";
 
   return (
     <div className="space-y-6">
@@ -59,11 +67,20 @@ export default async function FlashcardsPage() {
           <p className="max-w-sm text-sm text-foreground-muted">{t("emptyDescription")}</p>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {rootCollections.map((collection) => (
-            <CollectionCard key={collection.id} collection={collection} />
-          ))}
-        </div>
+        <>
+          <div className="flex justify-end">
+            <CollectionViewToggle view={viewMode} />
+          </div>
+          {viewMode === "list" ? (
+            <CollectionAccordionList items={rootCollections} allCollections={allCollections} />
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {rootCollections.map((collection) => (
+                <CollectionCard key={collection.id} collection={collection} />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

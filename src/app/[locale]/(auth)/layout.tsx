@@ -16,7 +16,7 @@ export default async function AuthLayout({
 
   return (
     <div className="flex min-h-svh flex-col items-center justify-center bg-surface-muted/40 px-4 py-12">
-      <Link href="/" className="mb-4">
+      <Link href="/" className="mb-4 inline-flex items-center">
         <Logo size="lg" layout="centered" />
       </Link>
       <div className="w-full max-w-sm rounded-lg border border-border bg-surface p-8 shadow-[var(--shadow-soft-lg)]">

@@ -9,7 +9,16 @@
     "changeLanguage": "Change language",
     "light": "Light mode",
     "dark": "Dark mode",
-    "language": "Language"
+    "language": "Language",
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    }
   },
   "nav": {
     "primaryNavigation": "Primary",
@@ -118,16 +127,7 @@
     "title": "Small daily sessions build a habit that sticks",
     "description": "Eye Learn tracks your study streak so a few focused minutes a day turn into real, lasting progress. It's the same consistency mechanics that make habits stick, without the busywork.",
     "streakValue": "6 days",
-    "streakLabel": "current streak",
-    "days": {
-      "mon": "Mon",
-      "tue": "Tue",
-      "wed": "Wed",
-      "thu": "Thu",
-      "fri": "Fri",
-      "sat": "Sat",
-      "sun": "Sun"
-    }
+    "streakLabel": "current streak"
   },
   "productPreview": {
     "title": "A closer look at studying with Eye Learn",
@@ -327,6 +327,7 @@
     }
   },
   "dashboard": {
+    "dashboardNav": "Dashboard",
     "welcome": "Welcome back, {username} 👋",
     "subtitle": "Ready to learn something today?",
     "logOut": "Log out",
@@ -337,6 +338,22 @@
       "streak": "Study streak",
       "dailyGoal": "Today's goal",
       "cardsStudied": "Flashcards studied"
+    },
+    "streakWidget": {
+      "streakValue": "{count} day streak",
+      "streakLabel": "current streak",
+      "weekTab": "Week",
+      "monthTab": "Month",
+      "loadingMonth": "Loading..."
+    },
+    "goalIntro": {
+      "title": "Study goals, one collection at a time",
+      "description": "Pick a date you want to have mastered a collection by. Eye Learn works out exactly how many cards you need to study each day to get there, no manual math.",
+      "benefit1": "See a clear daily target instead of an overwhelming pile of cards",
+      "benefit2": "Your daily target adjusts automatically as the deadline gets closer",
+      "benefit3": "Set independent goals per collection, so exam prep and hobby subjects don't compete",
+      "howTo": "Open any collection and tap its \"Goal\" button to set a target date.",
+      "cta": "Go set a goal"
     },
     "timer": {
       "openLabel": "Open study timer",
@@ -356,9 +373,15 @@
       "finishedTitle": "Time's up",
       "finishedDescription": "Your study timer has finished."
     },
+    "setGoalCta": "Set a study goal",
     "ctaTitle": "Start your first study session",
     "ctaDescription": "Organize your notes into flashcard collections, then study whenever you're ready.",
     "ctaButton": "Go to flashcards",
+    "ctaDailyTitle": "Today's study is ready",
+    "ctaDailyDescription": "{count} cards are due across your goals today.",
+    "ctaDailyButton": "Study today's goal",
+    "ctaCustomButton": "Custom study",
+    "ctaProgress": "{completed} of {total} studied today",
     "flashcards": "Flashcards",
     "menu": "Menu"
   },
@@ -399,6 +422,30 @@
       "createSuccess": "Collection created.",
       "updateSuccess": "Collection updated."
     },
+    "view": {
+      "gridView": "Grid view",
+      "listView": "List view",
+      "cardCount": "{count} cards",
+      "dueBadge": "{count} due"
+    },
+    "goal": {
+      "buttonLabel": "Goal",
+      "dialogTitle": "Study goal for {name}",
+      "dialogDescription": "Pick the date you want to have mastered every card in this collection by. We'll work out how many cards you need to study each day to get there.",
+      "loading": "Loading goal...",
+      "noGoalSet": "No goal set yet. Pick a date you want to master this collection by.",
+      "dateLabel": "Target date",
+      "save": "Set goal",
+      "update": "Update",
+      "remove": "Remove goal",
+      "saveSuccess": "Goal saved.",
+      "updateSuccess": "Goal updated.",
+      "removeSuccess": "Goal removed.",
+      "saveError": "Couldn't save the goal. Try again.",
+      "progressSummary": "{mastered} of {total} mastered",
+      "overdueBadge": "Overdue",
+      "todayTargetBadge": "{count} today"
+    },
     "cardType": {
       "basic": "Basic",
       "multiple_choice": "Multiple choice",
@@ -432,7 +479,13 @@
     "study": {
       "caughtUpTitle": "You're all caught up",
       "caughtUpDescription": "No cards are due for review in this collection right now. Check back later or add more cards.",
+      "dailyCaughtUpDescription": "No cards are due across your goals right now. Check back later.",
+      "customCaughtUpDescription": "No cards are due in the collections you selected right now.",
       "backToCollection": "Back to collection",
+      "backToDashboard": "Back to dashboard",
+      "backToPicker": "Back to collection picker",
+      "dailyStudyTitle": "Daily study",
+      "customStudyTitle": "Custom study",
       "progress": "Card {current} of {total}",
       "showAnswer": "Show answer",
       "ratingRecorded": "Got it. Loading the next card...",
@@ -456,6 +509,8 @@
       "importButton": "Import",
       "exportButton": "Export",
       "hint": "Import from CSV, TSV, or an Anki .apkg file. Export downloads this collection as CSV.",
+      "importPreparing": "Reading file...",
+      "importProgress": "Imported {done} of {total} cards...",
       "importSuccess": "Imported {count} cards.",
       "importPartial": "Imported {created} cards, skipped {skipped}.",
       "importFailed": "Couldn't import any cards from that file."
@@ -470,6 +525,17 @@
       "uploadSuccess": "Media added.",
       "unsupportedType": "That file type isn't supported.",
       "fileTooLarge": "That file is too large."
+    }
+  },
+  "study": {
+    "customPicker": {
+      "title": "Choose collections to study",
+      "description": "Pick any combination of collections. Due cards from all of them will be mixed into one session.",
+      "noCollections": "You don't have any collections yet.",
+      "cardCount": "{count} cards",
+      "emptySelectionHint": "Select at least one collection to start.",
+      "selectedCount": "{count} selected",
+      "startButton": "Start studying"
     }
   }
 }

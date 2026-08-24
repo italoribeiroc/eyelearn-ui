@@ -1,10 +1,14 @@
 import { getTranslations } from "next-intl/server";
-import { Flame, LayoutGrid, Target } from "lucide-react";
+import { ArrowRight, LayoutGrid, Target } from "lucide-react";
 import { CheckoutRedirect } from "@/components/billing/checkout-redirect";
 import { WelcomeHeader } from "@/components/dashboard/welcome-header";
+import { GoalIntroDialog } from "@/components/dashboard/goal-intro-dialog";
 import { StatCard } from "@/components/dashboard/stat-card";
+import { StreakWidget } from "@/components/dashboard/streak-widget";
 import { StartStudyingCta } from "@/components/dashboard/start-studying-cta";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { addDaysUTC, isoDate, mostRecentMondayUTC } from "@/lib/flashcards/date-utils";
+import { getGoalsSummary, getStreakCalendar } from "@/lib/flashcards/goals-api";
 import { getCurrentUser } from "@/lib/auth/session";
 
 const CHECKOUT_PLANS = ["monthly", "annual"] as const;
@@ -32,6 +36,12 @@ export default async function DashboardPage({
     return <CheckoutRedirect plan={startCheckout as (typeof CHECKOUT_PLANS)[number]} />;
   }
 
+  const monday = mostRecentMondayUTC();
+  const [summary, week] = await Promise.all([
+    getGoalsSummary(),
+    getStreakCalendar(isoDate(monday), isoDate(addDaysUTC(monday, 6))),
+  ]);
+
   return (
     <div className="space-y-8">
       <WelcomeHeader username={user.username} />
@@ -43,27 +53,40 @@ export default async function DashboardPage({
       ) : null}
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <StatCard
-          icon={Flame}
-          label={t("stats.streak")}
-          comingSoon
-          comingSoonLabel={t("comingSoon")}
-        />
+        <StreakWidget streak={summary.streak} initialWeek={week.days} />
         <StatCard
           icon={Target}
           label={t("stats.dailyGoal")}
-          comingSoon
+          value={summary.active_goals.length > 0 ? String(summary.daily_due_count) : undefined}
+          comingSoon={summary.active_goals.length === 0}
           comingSoonLabel={t("comingSoon")}
+          action={
+            summary.active_goals.length === 0 ? (
+              <GoalIntroDialog
+                trigger={
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-brand-turquoise hover:underline"
+                  >
+                    {t("setGoalCta")}
+                    <ArrowRight className="size-3.5" aria-hidden="true" />
+                  </button>
+                }
+              />
+            ) : undefined
+          }
         />
         <StatCard
           icon={LayoutGrid}
           label={t("stats.cardsStudied")}
-          comingSoon
-          comingSoonLabel={t("comingSoon")}
+          value={String(summary.cards_studied_today)}
         />
       </div>
 
-      <StartStudyingCta />
+      <StartStudyingCta
+        dailyDueCount={summary.daily_due_count}
+        dailyTargetTotal={summary.daily_target_total}
+      />
     </div>
   );
 }

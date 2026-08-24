@@ -9,7 +9,16 @@
     "changeLanguage": "Mudar idioma",
     "light": "Tema claro",
     "dark": "Tema escuro",
-    "language": "Idioma"
+    "language": "Idioma",
+    "days": {
+      "mon": "Seg",
+      "tue": "Ter",
+      "wed": "Qua",
+      "thu": "Qui",
+      "fri": "Sex",
+      "sat": "Sáb",
+      "sun": "Dom"
+    }
   },
   "nav": {
     "primaryNavigation": "Principal",
@@ -118,16 +127,7 @@
     "title": "Pequenas sessões diárias criam um hábito duradouro",
     "description": "O Eye Learn acompanha sua sequência de estudos para que alguns minutos focados por dia se transformem em progresso real e duradouro. É a mesma mecânica de consistência que cria hábitos, sem trabalho extra.",
     "streakValue": "6 dias",
-    "streakLabel": "sequência atual",
-    "days": {
-      "mon": "Seg",
-      "tue": "Ter",
-      "wed": "Qua",
-      "thu": "Qui",
-      "fri": "Sex",
-      "sat": "Sáb",
-      "sun": "Dom"
-    }
+    "streakLabel": "sequência atual"
   },
   "productPreview": {
     "title": "Um olhar mais de perto sobre estudar com o Eye Learn",
@@ -327,6 +327,7 @@
     }
   },
   "dashboard": {
+    "dashboardNav": "Painel",
     "welcome": "Bem-vindo de volta, {username} 👋",
     "subtitle": "Pronto para aprender algo hoje?",
     "logOut": "Sair",
@@ -337,6 +338,22 @@
       "streak": "Sequência de estudos",
       "dailyGoal": "Meta de hoje",
       "cardsStudied": "Flashcards estudados"
+    },
+    "streakWidget": {
+      "streakValue": "{count} dias de sequência",
+      "streakLabel": "sequência atual",
+      "weekTab": "Semana",
+      "monthTab": "Mês",
+      "loadingMonth": "Carregando..."
+    },
+    "goalIntro": {
+      "title": "Metas de estudo, coleção por coleção",
+      "description": "Escolha uma data em que você quer ter dominado uma coleção. O Eye Learn calcula exatamente quantos cartões você precisa estudar por dia para chegar lá, sem contas manuais.",
+      "benefit1": "Veja uma meta diária clara em vez de uma pilha de cartões avassaladora",
+      "benefit2": "Sua meta diária se ajusta automaticamente conforme o prazo se aproxima",
+      "benefit3": "Defina metas independentes por coleção, para que a prova e o hobby não competam entre si",
+      "howTo": "Abra qualquer coleção e toque no botão \"Meta\" para definir uma data alvo.",
+      "cta": "Definir uma meta"
     },
     "timer": {
       "openLabel": "Abrir cronômetro de estudo",
@@ -356,9 +373,15 @@
       "finishedTitle": "Tempo esgotado",
       "finishedDescription": "Seu cronômetro de estudo terminou."
     },
+    "setGoalCta": "Definir uma meta de estudo",
     "ctaTitle": "Comece sua primeira sessão de estudo",
     "ctaDescription": "Organize suas anotações em coleções de flashcards e estude quando estiver pronto.",
     "ctaButton": "Ir para os flashcards",
+    "ctaDailyTitle": "Seu estudo de hoje está pronto",
+    "ctaDailyDescription": "{count} cartões estão pendentes nas suas metas hoje.",
+    "ctaDailyButton": "Estudar a meta de hoje",
+    "ctaCustomButton": "Estudo personalizado",
+    "ctaProgress": "{completed} de {total} estudados hoje",
     "flashcards": "Flashcards",
     "menu": "Menu"
   },
@@ -399,6 +422,30 @@
       "createSuccess": "Coleção criada.",
       "updateSuccess": "Coleção atualizada."
     },
+    "view": {
+      "gridView": "Visualização em grade",
+      "listView": "Visualização em lista",
+      "cardCount": "{count} cartões",
+      "dueBadge": "{count} pendentes"
+    },
+    "goal": {
+      "buttonLabel": "Meta",
+      "dialogTitle": "Meta de estudo para {name}",
+      "dialogDescription": "Escolha a data em que você quer ter dominado todos os cartões desta coleção. Vamos calcular quantos cartões você precisa estudar por dia para chegar lá.",
+      "loading": "Carregando meta...",
+      "noGoalSet": "Nenhuma meta definida ainda. Escolha uma data para dominar esta coleção.",
+      "dateLabel": "Data alvo",
+      "save": "Definir meta",
+      "update": "Atualizar",
+      "remove": "Remover meta",
+      "saveSuccess": "Meta salva.",
+      "updateSuccess": "Meta atualizada.",
+      "removeSuccess": "Meta removida.",
+      "saveError": "Não foi possível salvar a meta. Tente novamente.",
+      "progressSummary": "{mastered} de {total} dominados",
+      "overdueBadge": "Atrasada",
+      "todayTargetBadge": "{count} hoje"
+    },
     "cardType": {
       "basic": "Básico",
       "multiple_choice": "Múltipla escolha",
@@ -432,7 +479,13 @@
     "study": {
       "caughtUpTitle": "Você está em dia",
       "caughtUpDescription": "Nenhum cartão está pendente de revisão nesta coleção agora. Volte mais tarde ou adicione mais cartões.",
+      "dailyCaughtUpDescription": "Nenhum cartão está pendente nas suas metas agora. Volte mais tarde.",
+      "customCaughtUpDescription": "Nenhum cartão está pendente nas coleções selecionadas agora.",
       "backToCollection": "Voltar para a coleção",
+      "backToDashboard": "Voltar ao painel",
+      "backToPicker": "Voltar à seleção de coleções",
+      "dailyStudyTitle": "Estudo diário",
+      "customStudyTitle": "Estudo personalizado",
       "progress": "Cartão {current} de {total}",
       "showAnswer": "Mostrar resposta",
       "ratingRecorded": "Entendido. Carregando o próximo cartão...",
@@ -456,6 +509,8 @@
       "importButton": "Importar",
       "exportButton": "Exportar",
       "hint": "Importe de CSV, TSV ou um arquivo .apkg do Anki. Exportar baixa esta coleção como CSV.",
+      "importPreparing": "Lendo arquivo...",
+      "importProgress": "{done} de {total} cartões importados...",
       "importSuccess": "{count} cartões importados.",
       "importPartial": "{created} cartões importados, {skipped} ignorados.",
       "importFailed": "Não foi possível importar nenhum cartão desse arquivo."
@@ -470,6 +525,17 @@
       "uploadSuccess": "Mídia adicionada.",
       "unsupportedType": "Esse tipo de arquivo não é suportado.",
       "fileTooLarge": "Esse arquivo é muito grande."
+    }
+  },
+  "study": {
+    "customPicker": {
+      "title": "Escolha as coleções para estudar",
+      "description": "Selecione qualquer combinação de coleções. Os cartões pendentes de todas elas serão misturados em uma única sessão.",
+      "noCollections": "Você ainda não tem nenhuma coleção.",
+      "cardCount": "{count} cartões",
+      "emptySelectionHint": "Selecione ao menos uma coleção para começar.",
+      "selectedCount": "{count} selecionadas",
+      "startButton": "Começar a estudar"
     }
   }
 }

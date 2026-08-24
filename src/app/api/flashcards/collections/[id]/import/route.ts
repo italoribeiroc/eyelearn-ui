@@ -9,6 +9,12 @@ export type ImportSummary = {
   errors: string[];
 };
 
+/** Newline-delimited JSON events streamed to the client as the import runs. */
+export type ImportStreamEvent =
+  | { type: "start"; total: number }
+  | { type: "progress"; done: number; total: number }
+  | { type: "done"; summary: ImportSummary };
+
 function isValidRow(row: ImportRow): string | null {
   if (!row.prompt.trim()) return "Empty prompt";
 
@@ -59,28 +65,49 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     return NextResponse.json({ detail: message }, { status: 400 });
   }
 
-  for (const row of rows) {
-    const invalidReason = isValidRow(row);
-    if (invalidReason) {
-      summary.skipped += 1;
-      if (summary.errors.length < 20) summary.errors.push(invalidReason);
-      continue;
-    }
+  // Streamed as newline-delimited JSON so the client can render real
+  // progress -- each row is its own sequential Django round-trip, which is
+  // exactly where big imports spend most of their time.
+  const encoder = new TextEncoder();
+  const total = rows.length;
+  const stream = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      controller.enqueue(encoder.encode(`${JSON.stringify({ type: "start", total })}\n`));
 
-    try {
-      await createFlashcard(collectionId, {
-        card_type: row.card_type,
-        prompt: row.prompt.trim(),
-        answer: row.answer?.trim(),
-        options: row.options,
-        accepted_answers: row.accepted_answers,
-      });
-      summary.created += 1;
-    } catch {
-      summary.skipped += 1;
-      if (summary.errors.length < 20) summary.errors.push(`"${row.prompt}": failed to save`);
-    }
-  }
+      for (const row of rows) {
+        const invalidReason = isValidRow(row);
+        if (invalidReason) {
+          summary.skipped += 1;
+          if (summary.errors.length < 20) summary.errors.push(invalidReason);
+        } else {
+          try {
+            await createFlashcard(collectionId, {
+              card_type: row.card_type,
+              prompt: row.prompt.trim(),
+              answer: row.answer?.trim(),
+              options: row.options,
+              accepted_answers: row.accepted_answers,
+            });
+            summary.created += 1;
+          } catch {
+            summary.skipped += 1;
+            if (summary.errors.length < 20) summary.errors.push(`"${row.prompt}": failed to save`);
+          }
+        }
 
-  return NextResponse.json(summary);
+        controller.enqueue(
+          encoder.encode(
+            `${JSON.stringify({ type: "progress", done: summary.created + summary.skipped, total })}\n`,
+          ),
+        );
+      }
+
+      controller.enqueue(encoder.encode(`${JSON.stringify({ type: "done", summary })}\n`));
+      controller.close();
+    },
+  });
+
+  return new Response(stream, {
+    headers: { "Content-Type": "application/x-ndjson; charset=utf-8" },
+  });
 }

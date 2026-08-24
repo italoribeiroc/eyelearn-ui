@@ -1,11 +1,13 @@
 "use client";
 
-import { FolderOpen, GraduationCap, Pencil, Trash2 } from "lucide-react";
+import { FolderOpen, GraduationCap, Pencil, Target, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import type { Collection } from "@/lib/api/types";
 import { CollectionFormDialog } from "./collection-form-dialog";
+import { CollectionGoalDialog } from "./collection-goal-dialog";
 import { DeleteConfirmDialog } from "./delete-confirm-dialog";
 
 export function CollectionCard({ collection }: { collection: Collection }) {
@@ -51,6 +53,12 @@ export function CollectionCard({ collection }: { collection: Collection }) {
         <p className="line-clamp-2 text-sm text-foreground-muted">{collection.description}</p>
       ) : null}
 
+      {collection.due_count > 0 ? (
+        <Badge variant="outline" className="w-fit border-brand-turquoise/40 text-brand-turquoise">
+          {t("view.dueBadge", { count: collection.due_count })}
+        </Badge>
+      ) : null}
+
       <div className="mt-1 flex flex-wrap gap-2">
         <Button asChild type="button" variant="outline" size="sm">
           <Link href={`/flashcards/${collection.id}`}>
@@ -64,6 +72,16 @@ export function CollectionCard({ collection }: { collection: Collection }) {
             {t("common.study")}
           </Link>
         </Button>
+        <CollectionGoalDialog
+          collectionId={collection.id}
+          collectionName={collection.name}
+          trigger={
+            <Button type="button" variant="outline" size="sm">
+              <Target className="size-3.5" aria-hidden="true" />
+              {t("goal.buttonLabel")}
+            </Button>
+          }
+        />
       </div>
     </div>
   );

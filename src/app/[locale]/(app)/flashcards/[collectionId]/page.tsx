@@ -1,10 +1,13 @@
-import { ArrowLeft, GraduationCap, Plus } from "lucide-react";
+import { ArrowLeft, GraduationCap, Plus, Target } from "lucide-react";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { PlanUpgradeDialog } from "@/components/billing/plan-upgrade-dialog";
+import { CollectionAccordionList } from "@/components/flashcards/collection-accordion-list";
 import { CollectionCard } from "@/components/flashcards/collection-card";
 import { CollectionFormDialog } from "@/components/flashcards/collection-form-dialog";
+import { CollectionGoalDialog } from "@/components/flashcards/collection-goal-dialog";
 import { CollectionLimitBanner } from "@/components/flashcards/collection-limit-banner";
+import { CollectionViewToggle, type CollectionViewMode } from "@/components/flashcards/collection-view-toggle";
 import { FlashcardFormDialog } from "@/components/flashcards/flashcard-form-dialog";
 import { FlashcardListItem } from "@/components/flashcards/flashcard-list-item";
 import { ImportExportMenu } from "@/components/flashcards/import-export-menu";
@@ -19,16 +22,20 @@ const FREE_COLLECTION_LIMIT = 3;
 
 export default async function CollectionDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ collectionId: string }>;
+  searchParams: Promise<{ view?: string }>;
 }) {
   const { collectionId } = await params;
   const id = Number(collectionId);
-  const [t, tBilling, tPlans] = await Promise.all([
+  const [t, tBilling, tPlans, { view }] = await Promise.all([
     getTranslations("flashcards"),
     getTranslations("billing.summary"),
     getTranslations("account.plans"),
+    searchParams,
   ]);
+  const viewMode: CollectionViewMode = view === "list" ? "list" : "grid";
 
   let collection;
   let subcollections;
@@ -78,6 +85,16 @@ export default async function CollectionDetailPage({
               collection={collection}
               trigger={<Button type="button" variant="outline" size="sm">{t("common.edit")}</Button>}
             />
+            <CollectionGoalDialog
+              collectionId={collection.id}
+              collectionName={collection.name}
+              trigger={
+                <Button type="button" variant="outline" size="sm">
+                  <Target className="size-4" aria-hidden="true" />
+                  {t("goal.buttonLabel")}
+                </Button>
+              }
+            />
             <Button asChild type="button" size="sm">
               <Link href={`/flashcards/${collection.id}/study`}>
                 <GraduationCap className="size-4" aria-hidden="true" />
@@ -89,28 +106,33 @@ export default async function CollectionDetailPage({
       </div>
 
       <section className="space-y-3">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-heading text-lg font-bold text-foreground">{t("subcollectionsTitle")}</h2>
-          {atLimit ? (
-            <PlanUpgradeDialog triggerLabel={tBilling("upsellCta")} title={tPlans("title")}>
-              <PricingSection variant="embedded" />
-            </PlanUpgradeDialog>
-          ) : (
-            <CollectionFormDialog
-              mode="create"
-              parentId={collection.id}
-              trigger={
-                <Button type="button" variant="outline" size="sm">
-                  <Plus className="size-3.5" aria-hidden="true" />
-                  {t("newSubcollection")}
-                </Button>
-              }
-            />
-          )}
+          <div className="flex flex-wrap items-center gap-2">
+            {subcollections.length > 0 ? <CollectionViewToggle view={viewMode} /> : null}
+            {atLimit ? (
+              <PlanUpgradeDialog triggerLabel={tBilling("upsellCta")} title={tPlans("title")}>
+                <PricingSection variant="embedded" />
+              </PlanUpgradeDialog>
+            ) : (
+              <CollectionFormDialog
+                mode="create"
+                parentId={collection.id}
+                trigger={
+                  <Button type="button" variant="outline" size="sm">
+                    <Plus className="size-3.5" aria-hidden="true" />
+                    {t("newSubcollection")}
+                  </Button>
+                }
+              />
+            )}
+          </div>
         </div>
         {atLimit ? <CollectionLimitBanner /> : null}
         {subcollections.length === 0 ? (
           <p className="text-sm text-foreground-muted">{t("noSubcollections")}</p>
+        ) : viewMode === "list" ? (
+          <CollectionAccordionList items={subcollections} allCollections={allCollections} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {subcollections.map((sub) => (
