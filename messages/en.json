@@ -194,6 +194,7 @@
   "pricing": {
     "title": "Simple pricing that grows with you",
     "subtitle": "Start for free. Upgrade when you want more AI-generated cards and deeper insights.",
+    "subtitleEmbedded": "Upgrade when you want more AI-generated cards and deeper insights.",
     "mostPopular": "Most popular",
     "free": "Free",
     "perMonth": "/ month",
@@ -209,9 +210,10 @@
         "cta": "Start for free",
         "features": {
           "0": "Up to 3 study sets",
-          "1": "Manual flashcard creation",
-          "2": "Daily streak tracking",
-          "3": "Core progress tracking"
+          "1": "Up to 300 flashcards",
+          "2": "Manual flashcard creation",
+          "3": "Daily streak tracking",
+          "4": "Core progress tracking"
         }
       },
       "monthly": {
@@ -249,6 +251,8 @@
     "register": {
       "title": "Create your account",
       "subtitle": "Start studying with Eye Learn in less than a minute.",
+      "nameLabel": "Name",
+      "namePlaceholder": "name",
       "usernameLabel": "Username",
       "usernamePlaceholder": "yourname",
       "emailLabel": "Email",
@@ -265,10 +269,31 @@
       "subtitle": "Log in to keep your study streak going.",
       "usernameLabel": "Username",
       "passwordLabel": "Password",
+      "forgotPasswordLink": "Forgot password?",
+      "resetSuccessMessage": "Your password has been reset. Log in with your new password.",
       "submit": "Log in",
       "submitting": "Logging in…",
       "noAccount": "Don't have an account?",
       "signUpLink": "Sign up"
+    },
+    "forgotPassword": {
+      "title": "Reset your password",
+      "subtitle": "Enter your email and we'll send you a link to reset your password.",
+      "emailLabel": "Email",
+      "submit": "Send reset link",
+      "submitting": "Sending…",
+      "successMessage": "If that email exists, a reset link has been sent. Check your inbox.",
+      "backToLoginLink": "Back to log in"
+    },
+    "resetPassword": {
+      "title": "Choose a new password",
+      "subtitle": "Enter a new password for your account.",
+      "newPasswordLabel": "New password",
+      "confirmPasswordLabel": "Confirm password",
+      "submit": "Reset password",
+      "submitting": "Resetting…",
+      "invalidTokenError": "This reset link is invalid or has expired.",
+      "requestNewLinkLink": "Request a new reset link"
     },
     "validation": {
       "required": "This field is required.",
@@ -283,7 +308,8 @@
       "generic": "Something went wrong. Please try again.",
       "network": "We couldn't reach Eye Learn. Check your connection and try again.",
       "invalidCredentials": "Invalid username or password.",
-      "googleAuthFailed": "We couldn't sign you in with Google. Please try again."
+      "googleAuthFailed": "We couldn't sign you in with Google. Please try again.",
+      "tooManyRequests": "Too many attempts. Please try again later."
     }
   },
   "finalCta": {
@@ -293,6 +319,21 @@
   },
   "footer": {
     "copyright": "© {year} Eye Learn. All rights reserved."
+  },
+  "notFound": {
+    "metaTitle": "Page not found | Eye Learn",
+    "metaDescription": "This page doesn't exist. Head back to Eye Learn and get back to studying.",
+    "eyebrow": "Error 404",
+    "title": "This page skipped class.",
+    "subtitle": "We checked the whole deck and this card just isn't in it. Let's get you back to studying.",
+    "card": {
+      "eyebrow": "Pop quiz",
+      "question": "Where did this page go?",
+      "answer": "Nowhere. It never existed in the first place."
+    },
+    "ctaHome": "Back to home",
+    "loginPrompt": "Looking to sign in instead?",
+    "loginLink": "Log in"
   },
   "billing": {
     "error": "Something went wrong. Please try again.",
@@ -316,6 +357,7 @@
       "title": "Profile",
       "edit": "Edit",
       "cancel": "Cancel",
+      "nameLabel": "Name",
       "usernameLabel": "Username",
       "emailLabel": "Email",
       "submit": "Save changes",
@@ -324,6 +366,18 @@
     },
     "plans": {
       "title": "Change your plan"
+    },
+    "deleteAccount": {
+      "sectionTitle": "Danger zone",
+      "sectionDescription": "Permanently delete your account and all of its data. This cannot be undone.",
+      "triggerButton": "Delete account",
+      "dialogTitle": "Delete your account?",
+      "warningText": "This will permanently delete your account, including all flashcards, collections, study history, and your subscription. This action cannot be undone.",
+      "confirmLabel": "Type your username to confirm:",
+      "cancelButton": "Cancel",
+      "submitButton": "Delete my account",
+      "submitting": "Deleting...",
+      "errorGeneric": "Something went wrong. Please try again."
     }
   },
   "dashboard": {
@@ -513,11 +567,17 @@
       "importProgress": "Imported {done} of {total} cards...",
       "importSuccess": "Imported {count} cards.",
       "importPartial": "Imported {created} cards, skipped {skipped}.",
-      "importFailed": "Couldn't import any cards from that file."
+      "importFailed": "Couldn't import any cards from that file.",
+      "importLimitReached": "Imported {created} cards, then hit the free plan's 300-flashcard limit.",
+      "upgradeCta": "Upgrade to Pro"
     },
     "limit": {
       "title": "You've reached the free plan limit",
       "description": "Free accounts can have up to 3 collections. Upgrade to Pro for unlimited collections and flashcards."
+    },
+    "flashcardLimit": {
+      "title": "You've reached the free plan limit",
+      "description": "Free accounts can have up to 300 flashcards. Upgrade to Pro for unlimited flashcards."
     },
     "media": {
       "addMedia": "Add image, audio, or video",

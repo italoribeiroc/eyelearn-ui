@@ -28,7 +28,7 @@ const PRICING_BY_LOCALE: Record<string, LocalePricing> = {
   en: {
     currency: "USD",
     tiers: [
-      { id: "free", price: 0, featureCount: 4 },
+      { id: "free", price: 0, featureCount: 5 },
       { id: "monthly", price: 5, featureCount: 5 },
       { id: "annual", price: 50, featureCount: 5, highlighted: true },
     ],
@@ -36,7 +36,7 @@ const PRICING_BY_LOCALE: Record<string, LocalePricing> = {
   "pt-BR": {
     currency: "BRL",
     tiers: [
-      { id: "free", price: 0, featureCount: 4 },
+      { id: "free", price: 0, featureCount: 5 },
       { id: "monthly", price: 15, featureCount: 5 },
       { id: "annual", price: 150, featureCount: 5, highlighted: true },
     ],

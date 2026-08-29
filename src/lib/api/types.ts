@@ -2,6 +2,7 @@ export type EyeLearnUser = {
   id: number;
   username: string;
   email: string;
+  first_name: string;
 };
 
 export type AuthTokens = {
@@ -13,6 +14,7 @@ export type RegisterPayload = {
   username: string;
   email: string;
   password: string;
+  first_name: string;
 };
 
 export type LoginPayload = {
@@ -22,6 +24,17 @@ export type LoginPayload = {
 
 export type GoogleAuthPayload = {
   id_token: string;
+};
+
+export type PasswordResetRequestPayload = {
+  email: string;
+  locale: string;
+};
+
+export type PasswordResetConfirmPayload = {
+  uid: string;
+  token: string;
+  new_password: string;
 };
 
 /** Django/DRF validation errors: field name -> array of messages, plus optional root-level "detail". */

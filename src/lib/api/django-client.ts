@@ -1,6 +1,7 @@
 import "server-only";
 
 const DJANGO_API_URL = process.env.EYELEARN_API_URL ?? "http://localhost:8000";
+const INTERNAL_API_KEY = process.env.EYELEARN_INTERNAL_API_KEY ?? "";
 
 export class DjangoApiError extends Error {
   status: number;
@@ -26,6 +27,7 @@ export async function djangoFetch(
     ...init,
     headers: {
       "Content-Type": "application/json",
+      "X-Internal-Api-Key": INTERNAL_API_KEY,
       ...init?.headers,
     },
     cache: "no-store",

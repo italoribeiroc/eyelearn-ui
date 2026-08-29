@@ -29,7 +29,7 @@ export function RegisterForm({ plan }: { plan?: string }) {
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { username: "", email: "", password: "", confirmPassword: "" },
+    defaultValues: { name: "", username: "", email: "", password: "", confirmPassword: "" },
   });
 
   /**
@@ -59,6 +59,7 @@ export function RegisterForm({ plan }: { plan?: string }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          first_name: values.name,
           username: values.username,
           email: values.email,
           password: values.password,
@@ -75,10 +76,19 @@ export function RegisterForm({ plan }: { plan?: string }) {
 
       if (body) {
         let mappedAnyField = false;
-        (["username", "email", "password"] as const).forEach((field) => {
-          const messages = body[field];
+        // Django's field errors are keyed by the serializer field name
+        // (first_name), which maps onto this form's "name" field.
+        (
+          [
+            ["first_name", "name"],
+            ["username", "username"],
+            ["email", "email"],
+            ["password", "password"],
+          ] as const
+        ).forEach(([serverField, formField]) => {
+          const messages = body[serverField];
           if (messages?.length) {
-            form.setError(field, { type: "server", message: messages[0] });
+            form.setError(formField, { type: "server", message: messages[0] });
             mappedAnyField = true;
           }
         });
@@ -102,6 +112,20 @@ export function RegisterForm({ plan }: { plan?: string }) {
             <AlertDescription>{rootError}</AlertDescription>
           </Alert>
         ) : null}
+
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel>{t("nameLabel")}</FormLabel>
+              <FormControl>
+                <Input autoComplete="given-name" placeholder={t("namePlaceholder")} autoFocus {...field} />
+              </FormControl>
+              <FormMessage>{translateFieldError(fieldState)}</FormMessage>
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}

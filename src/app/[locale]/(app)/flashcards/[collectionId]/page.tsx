@@ -9,6 +9,7 @@ import { CollectionGoalDialog } from "@/components/flashcards/collection-goal-di
 import { CollectionLimitBanner } from "@/components/flashcards/collection-limit-banner";
 import { CollectionViewToggle, type CollectionViewMode } from "@/components/flashcards/collection-view-toggle";
 import { FlashcardFormDialog } from "@/components/flashcards/flashcard-form-dialog";
+import { FlashcardLimitBanner } from "@/components/flashcards/flashcard-limit-banner";
 import { FlashcardListItem } from "@/components/flashcards/flashcard-list-item";
 import { ImportExportMenu } from "@/components/flashcards/import-export-menu";
 import { PricingSection } from "@/components/marketing/pricing-section";
@@ -19,6 +20,7 @@ import { getSubscriptionStatus } from "@/lib/billing/subscription";
 import { getCollection, listCollections, listFlashcards } from "@/lib/flashcards/api";
 
 const FREE_COLLECTION_LIMIT = 3;
+const FREE_FLASHCARD_LIMIT = 300; // matches FREE_FLASHCARD_LIMIT in flashcards/services.py
 
 export default async function CollectionDetailPage({
   params,
@@ -59,6 +61,8 @@ export default async function CollectionDetailPage({
 
   const isPro = subscription?.plan !== "free" && subscription?.plan != null;
   const atLimit = !isPro && allCollections.length >= FREE_COLLECTION_LIMIT;
+  const totalFlashcards = allCollections.reduce((sum, c) => sum + c.flashcard_count, 0);
+  const atFlashcardLimit = !isPro && totalFlashcards >= FREE_FLASHCARD_LIMIT;
 
   const backHref = collection.parent ? `/flashcards/${collection.parent}` : "/flashcards";
 
@@ -147,19 +151,26 @@ export default async function CollectionDetailPage({
           <h2 className="font-heading text-lg font-bold text-foreground">{t("flashcardsTitle")}</h2>
           <div className="flex flex-wrap gap-2">
             <ImportExportMenu collectionId={collection.id} />
-            <FlashcardFormDialog
-              mode="create"
-              collectionId={collection.id}
-              trigger={
-                <Button type="button" size="sm">
-                  <Plus className="size-3.5" aria-hidden="true" />
-                  {t("newFlashcard")}
-                </Button>
-              }
-            />
+            {atFlashcardLimit ? (
+              <PlanUpgradeDialog triggerLabel={tBilling("upsellCta")} title={tPlans("title")}>
+                <PricingSection variant="embedded" />
+              </PlanUpgradeDialog>
+            ) : (
+              <FlashcardFormDialog
+                mode="create"
+                collectionId={collection.id}
+                trigger={
+                  <Button type="button" size="sm">
+                    <Plus className="size-3.5" aria-hidden="true" />
+                    {t("newFlashcard")}
+                  </Button>
+                }
+              />
+            )}
           </div>
         </div>
         <p className="text-xs text-foreground-muted">{t("importExport.hint")}</p>
+        {atFlashcardLimit ? <FlashcardLimitBanner /> : null}
         {flashcards.length === 0 ? (
           <p className="text-sm text-foreground-muted">{t("noFlashcards")}</p>
         ) : (

@@ -17,25 +17,23 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { GoogleAuthButton } from "@/components/auth/google-auth-button";
-import { Link, useRouter } from "@/i18n/navigation";
-import { loginSchema, type LoginFormValues } from "@/lib/validation/login-schema";
+import { useRouter, Link } from "@/i18n/navigation";
+import { resetPasswordSchema, type ResetPasswordFormValues } from "@/lib/validation/reset-password-schema";
 
-export function LoginForm() {
-  const t = useTranslations("auth.login");
+export function ResetPasswordForm() {
+  const t = useTranslations("auth.resetPassword");
   const tValidation = useTranslations("auth.validation");
   const tErrors = useTranslations("auth.errors");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const plan = searchParams.get("plan") ?? undefined;
-  const [rootError, setRootError] = useState<string | null>(
-    searchParams.get("error") === "google_auth_failed" ? tErrors("googleAuthFailed") : null,
-  );
-  const resetSuccess = searchParams.get("reset") === "success";
+  const uid = searchParams.get("uid");
+  const token = searchParams.get("token");
+  const [rootError, setRootError] = useState<string | null>(null);
+  const [invalidToken, setInvalidToken] = useState(!uid || !token);
 
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { username: "", password: "" },
+  const form = useForm<ResetPasswordFormValues>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: { newPassword: "", confirmPassword: "" },
   });
 
   const translateMessage = (code?: string) => {
@@ -47,24 +45,25 @@ export function LoginForm() {
     }
   };
 
-  async function onSubmit(values: LoginFormValues) {
+  async function onSubmit(values: ResetPasswordFormValues) {
     setRootError(null);
 
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch("/api/auth/password-reset/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ uid, token, new_password: values.newPassword }),
       });
 
       if (res.ok) {
-        router.push(plan ? `/dashboard?startCheckout=${plan}` : "/dashboard");
-        router.refresh();
+        router.push("/login?reset=success");
         return;
       }
 
-      if (res.status === 401) {
-        setRootError(tErrors("invalidCredentials"));
+      if (res.status === 400) {
+        setInvalidToken(true);
+      } else if (res.status === 429) {
+        setRootError(tErrors("tooManyRequests"));
       } else {
         setRootError(tErrors("generic"));
       }
@@ -73,15 +72,25 @@ export function LoginForm() {
     }
   }
 
+  if (invalidToken) {
+    return (
+      <div className="space-y-4">
+        <Alert variant="destructive">
+          <AlertDescription>{t("invalidTokenError")}</AlertDescription>
+        </Alert>
+        <Link
+          href="/forgot-password"
+          className="text-sm font-medium text-brand-turquoise hover:underline"
+        >
+          {t("requestNewLinkLink")}
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" noValidate>
-        {resetSuccess ? (
-          <Alert>
-            <AlertDescription>{t("resetSuccessMessage")}</AlertDescription>
-          </Alert>
-        ) : null}
-
         {rootError ? (
           <Alert variant="destructive">
             <AlertDescription>{rootError}</AlertDescription>
@@ -90,12 +99,12 @@ export function LoginForm() {
 
         <FormField
           control={form.control}
-          name="username"
+          name="newPassword"
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel>{t("usernameLabel")}</FormLabel>
+              <FormLabel>{t("newPasswordLabel")}</FormLabel>
               <FormControl>
-                <Input autoComplete="username" autoFocus {...field} />
+                <Input type="password" autoComplete="new-password" autoFocus {...field} />
               </FormControl>
               <FormMessage>{translateMessage(fieldState.error?.message)}</FormMessage>
             </FormItem>
@@ -104,20 +113,14 @@ export function LoginForm() {
 
         <FormField
           control={form.control}
-          name="password"
+          name="confirmPassword"
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel>{t("passwordLabel")}</FormLabel>
+              <FormLabel>{t("confirmPasswordLabel")}</FormLabel>
               <FormControl>
-                <Input type="password" autoComplete="current-password" {...field} />
+                <Input type="password" autoComplete="new-password" {...field} />
               </FormControl>
               <FormMessage>{translateMessage(fieldState.error?.message)}</FormMessage>
-              <Link
-                href="/forgot-password"
-                className="inline-block text-sm font-medium text-brand-turquoise hover:underline"
-              >
-                {t("forgotPasswordLink")}
-              </Link>
             </FormItem>
           )}
         />
@@ -128,8 +131,6 @@ export function LoginForm() {
           ) : null}
           {form.formState.isSubmitting ? t("submitting") : t("submit")}
         </Button>
-
-        <GoogleAuthButton plan={plan} />
       </form>
     </Form>
   );

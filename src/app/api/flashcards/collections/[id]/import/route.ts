@@ -1,12 +1,18 @@
 import { NextResponse } from "next/server";
+import { DjangoApiError } from "@/lib/api/django-client";
+import { getValidAccessToken } from "@/lib/auth/session";
 import { createFlashcard } from "@/lib/flashcards/api";
 import { parseApkg } from "@/lib/flashcards/apkg";
 import { parseDelimitedImport, type ImportRow } from "@/lib/flashcards/import";
+
+const MAX_IMPORT_FILE_BYTES = 20 * 1024 * 1024; // 20MB
 
 export type ImportSummary = {
   created: number;
   skipped: number;
   errors: string[];
+  /** True once the account's free-plan flashcard cap stopped the import early. */
+  limitReached: boolean;
 };
 
 /** Newline-delimited JSON events streamed to the client as the import runs. */
@@ -34,6 +40,16 @@ function isValidRow(row: ImportRow): string | null {
 }
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const access = await getValidAccessToken();
+  if (!access) {
+    return NextResponse.json({ detail: "Not authenticated." }, { status: 401 });
+  }
+
+  const contentLength = Number(request.headers.get("content-length") ?? "0");
+  if (contentLength > MAX_IMPORT_FILE_BYTES) {
+    return NextResponse.json({ detail: "File is too large (max 20MB)." }, { status: 413 });
+  }
+
   const { id } = await params;
   const collectionId = Number(id);
 
@@ -42,10 +58,13 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!(file instanceof File)) {
     return NextResponse.json({ detail: "No file provided." }, { status: 400 });
   }
+  if (file.size > MAX_IMPORT_FILE_BYTES) {
+    return NextResponse.json({ detail: "File is too large (max 20MB)." }, { status: 413 });
+  }
 
   const filename = file.name.toLowerCase();
   let rows: ImportRow[];
-  const summary: ImportSummary = { created: 0, skipped: 0, errors: [] };
+  const summary: ImportSummary = { created: 0, skipped: 0, errors: [], limitReached: false };
 
   try {
     if (filename.endsWith(".apkg")) {
@@ -89,7 +108,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
               accepted_answers: row.accepted_answers,
             });
             summary.created += 1;
-          } catch {
+          } catch (error) {
+            if (error instanceof DjangoApiError && error.status === 402) {
+              // Free-plan cap hit -- every remaining row would 402 too, so
+              // stop attempting them and count them all as skipped.
+              summary.limitReached = true;
+              summary.skipped += rows.length - (summary.created + summary.skipped);
+              break;
+            }
             summary.skipped += 1;
             if (summary.errors.length < 20) summary.errors.push(`"${row.prompt}": failed to save`);
           }

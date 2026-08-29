@@ -54,7 +54,7 @@ export async function PricingSection({
               variant === "marketing" ? "mt-4 text-lg" : "mt-2 text-base",
             )}
           >
-            {t("subtitle")}
+            {variant === "marketing" ? t("subtitle") : t("subtitleEmbedded")}
           </p>
         </div>
 

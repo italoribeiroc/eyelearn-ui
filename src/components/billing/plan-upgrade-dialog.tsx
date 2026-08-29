@@ -29,7 +29,7 @@ export function PlanUpgradeDialog({
           {triggerLabel}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[85vh] overflow-y-auto lg:max-w-4xl">
+      <DialogContent className="max-h-[85vh] overflow-y-auto lg:max-w-4xl xl:max-w-6xl">
         <DialogTitle className="sr-only">{title}</DialogTitle>
         {children}
       </DialogContent>

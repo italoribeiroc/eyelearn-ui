@@ -194,6 +194,7 @@
   "pricing": {
     "title": "Planos simples que crescem com você",
     "subtitle": "Comece de graça. Faça upgrade quando quiser mais cartões gerados por IA e insights mais profundos.",
+    "subtitleEmbedded": "Faça upgrade quando quiser mais cartões gerados por IA e insights mais profundos.",
     "mostPopular": "Mais popular",
     "free": "Grátis",
     "perMonth": "/ mês",
@@ -209,9 +210,10 @@
         "cta": "Começar de graça",
         "features": {
           "0": "Até 3 conjuntos de estudo",
-          "1": "Criação manual de flashcards",
-          "2": "Acompanhamento diário de sequência",
-          "3": "Acompanhamento de progresso básico"
+          "1": "Até 300 flashcards",
+          "2": "Criação manual de flashcards",
+          "3": "Acompanhamento diário de sequência",
+          "4": "Acompanhamento de progresso básico"
         }
       },
       "monthly": {
@@ -249,6 +251,8 @@
     "register": {
       "title": "Crie sua conta",
       "subtitle": "Comece a estudar com o Eye Learn em menos de um minuto.",
+      "nameLabel": "Nome",
+      "namePlaceholder": "nome",
       "usernameLabel": "Nome de usuário",
       "usernamePlaceholder": "seunome",
       "emailLabel": "E-mail",
@@ -265,10 +269,31 @@
       "subtitle": "Entre para continuar sua sequência de estudos.",
       "usernameLabel": "Nome de usuário",
       "passwordLabel": "Senha",
+      "forgotPasswordLink": "Esqueceu a senha?",
+      "resetSuccessMessage": "Sua senha foi redefinida. Entre com sua nova senha.",
       "submit": "Entrar",
       "submitting": "Entrando…",
       "noAccount": "Ainda não tem uma conta?",
       "signUpLink": "Criar conta"
+    },
+    "forgotPassword": {
+      "title": "Redefinir sua senha",
+      "subtitle": "Digite seu e-mail e enviaremos um link para redefinir sua senha.",
+      "emailLabel": "E-mail",
+      "submit": "Enviar link de redefinição",
+      "submitting": "Enviando…",
+      "successMessage": "Se esse e-mail existir, enviamos um link de redefinição. Confira sua caixa de entrada.",
+      "backToLoginLink": "Voltar para o login"
+    },
+    "resetPassword": {
+      "title": "Escolha uma nova senha",
+      "subtitle": "Digite uma nova senha para sua conta.",
+      "newPasswordLabel": "Nova senha",
+      "confirmPasswordLabel": "Confirmar senha",
+      "submit": "Redefinir senha",
+      "submitting": "Redefinindo…",
+      "invalidTokenError": "Este link de redefinição é inválido ou expirou.",
+      "requestNewLinkLink": "Solicitar um novo link de redefinição"
     },
     "validation": {
       "required": "Este campo é obrigatório.",
@@ -283,7 +308,8 @@
       "generic": "Algo deu errado. Tente novamente.",
       "network": "Não foi possível conectar ao Eye Learn. Verifique sua conexão e tente novamente.",
       "invalidCredentials": "Usuário ou senha inválidos.",
-      "googleAuthFailed": "Não foi possível entrar com o Google. Tente novamente."
+      "googleAuthFailed": "Não foi possível entrar com o Google. Tente novamente.",
+      "tooManyRequests": "Muitas tentativas. Tente novamente mais tarde."
     }
   },
   "finalCta": {
@@ -293,6 +319,21 @@
   },
   "footer": {
     "copyright": "© {year} Eye Learn. Todos os direitos reservados."
+  },
+  "notFound": {
+    "metaTitle": "Página não encontrada | Eye Learn",
+    "metaDescription": "Essa página não existe. Volte para o Eye Learn e continue estudando.",
+    "eyebrow": "Erro 404",
+    "title": "Essa página matou aula.",
+    "subtitle": "Procuramos em todo o baralho e esse cartão não está nele. Vamos te levar de volta aos estudos.",
+    "card": {
+      "eyebrow": "Pergunta rápida",
+      "question": "Para onde essa página foi?",
+      "answer": "Para lugar nenhum. Ela nunca existiu."
+    },
+    "ctaHome": "Voltar ao início",
+    "loginPrompt": "Quer entrar na sua conta?",
+    "loginLink": "Entrar"
   },
   "billing": {
     "error": "Algo deu errado. Tente novamente.",
@@ -316,6 +357,7 @@
       "title": "Perfil",
       "edit": "Editar",
       "cancel": "Cancelar",
+      "nameLabel": "Nome",
       "usernameLabel": "Nome de usuário",
       "emailLabel": "E-mail",
       "submit": "Salvar alterações",
@@ -324,6 +366,18 @@
     },
     "plans": {
       "title": "Mude seu plano"
+    },
+    "deleteAccount": {
+      "sectionTitle": "Zona de perigo",
+      "sectionDescription": "Exclua permanentemente sua conta e todos os seus dados. Isso não pode ser desfeito.",
+      "triggerButton": "Excluir conta",
+      "dialogTitle": "Excluir sua conta?",
+      "warningText": "Isso excluirá permanentemente sua conta, incluindo todos os flashcards, coleções, histórico de estudos e sua assinatura. Esta ação não pode ser desfeita.",
+      "confirmLabel": "Digite seu nome de usuário para confirmar:",
+      "cancelButton": "Cancelar",
+      "submitButton": "Excluir minha conta",
+      "submitting": "Excluindo...",
+      "errorGeneric": "Algo deu errado. Tente novamente."
     }
   },
   "dashboard": {
@@ -513,11 +567,17 @@
       "importProgress": "{done} de {total} cartões importados...",
       "importSuccess": "{count} cartões importados.",
       "importPartial": "{created} cartões importados, {skipped} ignorados.",
-      "importFailed": "Não foi possível importar nenhum cartão desse arquivo."
+      "importFailed": "Não foi possível importar nenhum cartão desse arquivo.",
+      "importLimitReached": "{created} cartões importados, até atingir o limite de 300 flashcards do plano gratuito.",
+      "upgradeCta": "Fazer upgrade para o Pro"
     },
     "limit": {
       "title": "Você atingiu o limite do plano gratuito",
       "description": "Contas gratuitas podem ter até 3 coleções. Faça upgrade para o Pro e tenha coleções e flashcards ilimitados."
+    },
+    "flashcardLimit": {
+      "title": "Você atingiu o limite do plano gratuito",
+      "description": "Contas gratuitas podem ter até 300 flashcards. Faça upgrade para o Pro e tenha flashcards ilimitados."
     },
     "media": {
       "addMedia": "Adicionar imagem, áudio ou vídeo",

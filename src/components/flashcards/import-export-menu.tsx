@@ -78,7 +78,11 @@ export function ImportExportMenu({ collectionId }: { collectionId: number }) {
       const summary = await readImportStream(res, setProgress);
       router.refresh();
 
-      if (summary.created > 0 && summary.skipped === 0) {
+      if (summary.limitReached) {
+        toast.error(t("importLimitReached", { created: summary.created }), {
+          action: { label: t("upgradeCta"), onClick: () => router.push("/account") },
+        });
+      } else if (summary.created > 0 && summary.skipped === 0) {
         toast.success(t("importSuccess", { count: summary.created }));
       } else if (summary.created > 0) {
         toast.warning(t("importPartial", { created: summary.created, skipped: summary.skipped }), {

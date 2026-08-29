@@ -32,7 +32,11 @@ export function ProfileForm({ user }: { user: EyeLearnUser }) {
   // Local copy of what's displayed, separate from `user` (a server-rendered
   // prop that only updates after router.refresh() completes) so the
   // read-only view reflects a successful save immediately.
-  const [profile, setProfile] = useState({ username: user.username, email: user.email });
+  const [profile, setProfile] = useState({
+    name: user.first_name,
+    username: user.username,
+    email: user.email,
+  });
   const [rootError, setRootError] = useState<string | null>(null);
 
   const form = useForm<ProfileFormValues>({
@@ -78,7 +82,11 @@ export function ProfileForm({ user }: { user: EyeLearnUser }) {
       const res = await fetch("/api/auth/me", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          first_name: values.name,
+          username: values.username,
+          email: values.email,
+        }),
       });
 
       if (res.ok) {
@@ -94,10 +102,18 @@ export function ProfileForm({ user }: { user: EyeLearnUser }) {
 
       if (body) {
         let mappedAnyField = false;
-        (["username", "email"] as const).forEach((field) => {
-          const messages = body[field];
+        // Django's field errors are keyed by the serializer field name
+        // (first_name), which maps onto this form's "name" field.
+        (
+          [
+            ["first_name", "name"],
+            ["username", "username"],
+            ["email", "email"],
+          ] as const
+        ).forEach(([serverField, formField]) => {
+          const messages = body[serverField];
           if (messages?.length) {
-            form.setError(field, { type: "server", message: messages[0] });
+            form.setError(formField, { type: "server", message: messages[0] });
             mappedAnyField = true;
           }
         });
@@ -126,6 +142,10 @@ export function ProfileForm({ user }: { user: EyeLearnUser }) {
 
         <dl className="mt-4 space-y-3 text-sm">
           <div>
+            <dt className="text-foreground-muted">{t("nameLabel")}</dt>
+            <dd className="mt-0.5 font-medium text-foreground">{profile.name}</dd>
+          </div>
+          <div>
             <dt className="text-foreground-muted">{t("usernameLabel")}</dt>
             <dd className="mt-0.5 font-medium text-foreground">{profile.username}</dd>
           </div>
@@ -152,6 +172,20 @@ export function ProfileForm({ user }: { user: EyeLearnUser }) {
             <AlertDescription>{rootError}</AlertDescription>
           </Alert>
         ) : null}
+
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel>{t("nameLabel")}</FormLabel>
+              <FormControl>
+                <Input autoComplete="given-name" {...field} />
+              </FormControl>
+              <FormMessage>{translateFieldError(fieldState)}</FormMessage>
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}

@@ -44,7 +44,7 @@ export default async function DashboardPage({
 
   return (
     <div className="space-y-8">
-      <WelcomeHeader username={user.username} />
+      <WelcomeHeader username={user.first_name || user.username} />
 
       {checkout === "success" ? (
         <Alert>
