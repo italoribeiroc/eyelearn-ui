@@ -35,7 +35,7 @@ export function CollectionPicker({ collections }: { collections: Collection[] })
 
   return (
     <div className="space-y-6">
-      <div className="divide-y divide-border rounded-lg border border-border bg-surface">
+      <div className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-surface">
         {rows.map(({ collection, depth }) => (
           <label
             key={collection.id}

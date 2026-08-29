@@ -398,7 +398,9 @@
       "streakLabel": "sequência atual",
       "weekTab": "Semana",
       "monthTab": "Mês",
-      "loadingMonth": "Carregando..."
+      "loadingMonth": "Carregando...",
+      "previousMonth": "Mês anterior",
+      "nextMonth": "Próximo mês"
     },
     "goalIntro": {
       "title": "Metas de estudo, coleção por coleção",

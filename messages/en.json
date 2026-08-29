@@ -398,7 +398,9 @@
       "streakLabel": "current streak",
       "weekTab": "Week",
       "monthTab": "Month",
-      "loadingMonth": "Loading..."
+      "loadingMonth": "Loading...",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month"
     },
     "goalIntro": {
       "title": "Study goals, one collection at a time",

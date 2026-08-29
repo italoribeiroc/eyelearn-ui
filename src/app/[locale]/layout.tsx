@@ -35,6 +35,11 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
+    // Keeps the iOS "Add to Home Screen" suggested name short ("Eye Learn")
+    // instead of the full <title> tag, which iOS otherwise truncates awkwardly.
+    appleWebApp: {
+      title: "Eye Learn",
+    },
   };
 }
 

@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Flame } from "lucide-react";
+import { ChevronLeft, ChevronRight, Flame } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { isoDate, monthRangeUTC } from "@/lib/flashcards/date-utils";
@@ -68,22 +69,24 @@ export function StreakWidget({
   const t = useTranslations("dashboard.streakWidget");
   const tDays = useTranslations("common.days");
   const locale = useLocale();
+  const currentMonthStart = monthRangeUTC().start;
+  const [viewedMonth, setViewedMonth] = useState<Date>(currentMonthStart);
   const [month, setMonth] = useState<StreakCalendarDay[] | null>(null);
   const [loadingMonth, setLoadingMonth] = useState(false);
   const todayIso = isoDate(new Date());
   const monthCells = withLeadingBlanks(month ?? []);
+  const isCurrentMonth = viewedMonth.getTime() === currentMonthStart.getTime();
   const rawMonthLabel = new Intl.DateTimeFormat(locale, {
     month: "long",
     year: "numeric",
     timeZone: "UTC",
-  }).format(monthRangeUTC().start);
+  }).format(viewedMonth);
   const monthLabel = rawMonthLabel.charAt(0).toUpperCase() + rawMonthLabel.slice(1);
 
-  async function loadMonth() {
-    if (month || loadingMonth) return;
+  async function loadMonth(target: Date) {
     setLoadingMonth(true);
     try {
-      const { start, end } = monthRangeUTC();
+      const { start, end } = monthRangeUTC(target);
       const res = await fetch(`/api/flashcards/streak?start=${isoDate(start)}&end=${isoDate(end)}`);
       if (res.ok) {
         const data = (await res.json()) as { days: StreakCalendarDay[] };
@@ -94,9 +97,23 @@ export function StreakWidget({
     }
   }
 
+  function openMonthTab() {
+    if (month || loadingMonth) return;
+    loadMonth(viewedMonth);
+  }
+
+  function changeMonth(deltaMonths: number) {
+    if (loadingMonth) return;
+    const next = new Date(Date.UTC(viewedMonth.getUTCFullYear(), viewedMonth.getUTCMonth() + deltaMonths, 1));
+    if (next.getTime() > currentMonthStart.getTime()) return;
+    setViewedMonth(next);
+    setMonth(null);
+    loadMonth(next);
+  }
+
   return (
     <div className="rounded-lg border border-border bg-surface p-5 shadow-[var(--shadow-soft)]">
-      <Tabs defaultValue="week" onValueChange={(value) => value === "month" && loadMonth()}>
+      <Tabs defaultValue="week" onValueChange={(value) => value === "month" && openMonthTab()}>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="flex size-9 items-center justify-center rounded-full bg-brand-accent/15">
@@ -129,11 +146,36 @@ export function StreakWidget({
         </TabsContent>
 
         <TabsContent value="month">
+          <div className="mt-6 flex items-center justify-center gap-2">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-xs"
+              onClick={() => changeMonth(-1)}
+              disabled={loadingMonth}
+              aria-label={t("previousMonth")}
+            >
+              <ChevronLeft className="size-4" aria-hidden="true" />
+            </Button>
+            <p className="min-w-32 text-center font-heading text-sm font-bold text-foreground">
+              {monthLabel}
+            </p>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-xs"
+              onClick={() => changeMonth(1)}
+              disabled={loadingMonth || isCurrentMonth}
+              aria-label={t("nextMonth")}
+            >
+              <ChevronRight className="size-4" aria-hidden="true" />
+            </Button>
+          </div>
+
           {loadingMonth && !month ? (
-            <p className="mt-6 text-sm text-foreground-muted">{t("loadingMonth")}</p>
+            <p className="mt-4 text-center text-sm text-foreground-muted">{t("loadingMonth")}</p>
           ) : (
-            <div className="mt-6 space-y-2">
-              <p className="text-center font-heading text-sm font-bold text-foreground">{monthLabel}</p>
+            <div className="mt-2 space-y-2">
               <div className="grid grid-cols-7 gap-2">
                 {WEEKDAY_KEYS.map((key) => (
                   <span
