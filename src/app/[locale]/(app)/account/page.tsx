@@ -33,9 +33,9 @@ export default async function AccountPage() {
         <p className="mt-1.5 text-sm text-foreground-muted">{t("subtitle")}</p>
       </div>
 
-      <ProfileForm user={user} />
-
       {subscription ? <SubscriptionSummaryCard subscription={subscription} /> : null}
+
+      <ProfileForm user={user} />
 
       <Separator />
 

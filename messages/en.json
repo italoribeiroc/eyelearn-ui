@@ -262,7 +262,11 @@
       "submit": "Create account",
       "submitting": "Creating account…",
       "haveAccount": "Already have an account?",
-      "logInLink": "Log in"
+      "logInLink": "Log in",
+      "checkEmailMessage": "We sent a verification link to {email}. Click it to activate your account.",
+      "resendButton": "Resend email",
+      "resendSubmitting": "Resending…",
+      "resendSuccess": "Verification email sent."
     },
     "login": {
       "title": "Welcome back",
@@ -271,6 +275,7 @@
       "passwordLabel": "Password",
       "forgotPasswordLink": "Forgot password?",
       "resetSuccessMessage": "Your password has been reset. Log in with your new password.",
+      "verifiedSuccessMessage": "Your email has been verified. You can now log in.",
       "submit": "Log in",
       "submitting": "Logging in…",
       "noAccount": "Don't have an account?",
@@ -294,6 +299,15 @@
       "submitting": "Resetting…",
       "invalidTokenError": "This reset link is invalid or has expired.",
       "requestNewLinkLink": "Request a new reset link"
+    },
+    "verifyEmail": {
+      "title": "Verify your email",
+      "verifying": "Verifying your email…",
+      "invalidTokenError": "This verification link is invalid or has expired.",
+      "resendEmailLabel": "Email",
+      "resendButton": "Send new link",
+      "resendSubmitting": "Sending…",
+      "resendSuccess": "If that email exists and needs verification, a new link has been sent."
     },
     "validation": {
       "required": "This field is required.",
@@ -386,6 +400,7 @@
     "subtitle": "Ready to learn something today?",
     "logOut": "Log out",
     "account": "Account",
+    "help": "Help",
     "comingSoon": "Coming soon",
     "checkoutSuccess": "You're subscribed. Welcome to Eye Learn Pro.",
     "stats": {
@@ -598,6 +613,102 @@
       "emptySelectionHint": "Select at least one collection to start.",
       "selectedCount": "{count} selected",
       "startButton": "Start studying"
+    }
+  },
+  "onboarding": {
+    "skipButton": "Skip",
+    "backButton": "Back",
+    "nextButton": "Next",
+    "getStartedButton": "Get started",
+    "stepIndicator": "Step {current} of {total}",
+    "steps": {
+      "welcome": {
+        "title": "Welcome to Eye Learn 👋",
+        "body": "Eye Learn helps you actually remember what you study, not just re-read it. You'll organize what you're learning into flashcards, then review them on a smart schedule that focuses your time on what you're about to forget."
+      },
+      "flashcards": {
+        "title": "What's a flashcard?",
+        "body": "Each flashcard has a question on the front and the answer on the back. Try it below, tap the card to reveal the answer, just like you will during a real study session.",
+        "demoFront": "What is the capital of France?",
+        "demoBack": "Paris",
+        "tapHint": "Tap to reveal"
+      },
+      "ratings": {
+        "title": "After you see the answer, rate yourself",
+        "body": "Four buttons appear once you reveal a card's answer. Pick the one that matches how well you actually knew it, being honest is what makes this work:",
+        "again": "You didn't remember it at all. Eye Learn will show it again soon.",
+        "hard": "You got it, but it took real effort. It'll come back sooner than usual.",
+        "good": "You remembered it with a normal amount of effort. Right on schedule.",
+        "easy": "It was effortless. Eye Learn will wait much longer before showing it again."
+      },
+      "mastery": {
+        "title": "How this builds real mastery",
+        "body": "Every rating adjusts that card's personal schedule. Cards you find hard come back often, cards you know well fade into longer and longer gaps. Rate yourself honestly, even when \"Again\" is the honest answer, and over time your review pile naturally shrinks down to just what you still need to practice."
+      }
+    }
+  },
+  "help": {
+    "backToDashboard": "Back to dashboard",
+    "title": "Help & support",
+    "subtitle": "Everything you need to get the most out of Eye Learn.",
+    "howItWorksTitle": "How Eye Learn works",
+    "replayGuideButton": "Replay the guide",
+    "faq": {
+      "title": "Frequently asked questions",
+      "items": {
+        "whatIsEyeLearn": {
+          "question": "What is Eye Learn?",
+          "answer": "A flashcard study app built around spaced repetition. Instead of cramming, you review each card right before you're likely to forget it, so what you study actually sticks."
+        },
+        "creatingCards": {
+          "question": "How do I create flashcards?",
+          "answer": "Add them one by one inside a collection, or import a whole deck at once from a CSV, TSV, or Anki .apkg file. You can export any collection back to CSV, too."
+        },
+        "cardTypes": {
+          "question": "What kinds of flashcards can I make?",
+          "answer": "Basic flip cards (question on the front, answer on the back), multiple choice, and typed-answer cards. Multiple choice and typed answers are graded automatically."
+        },
+        "ratingButtons": {
+          "question": "What do Again, Hard, Good, and Easy mean?",
+          "answer": "They tell Eye Learn how well you knew a card so it can schedule your next review. Again means you forgot it, Easy means it was effortless, Hard and Good are in between. Answer honestly and the schedule takes care of the rest. You can replay the full guide any time from this page."
+        },
+        "studyGoals": {
+          "question": "What are study goals?",
+          "answer": "Pick a target date for any collection, and Eye Learn works out how many cards you need to review each day to have it mastered by then, adjusting automatically as the date gets closer."
+        },
+        "streaks": {
+          "question": "What is the study streak?",
+          "answer": "A count of your consecutive days studying. It resets if a full day passes without a review, so it's a simple way to keep yourself consistent."
+        },
+        "freeLimit": {
+          "question": "Is there a limit on the free plan?",
+          "answer": "Free accounts can have up to 300 flashcards in total. Upgrading to Pro removes that limit."
+        },
+        "deletingAccount": {
+          "question": "Can I delete my account?",
+          "answer": "Yes, from the Account page's danger zone. It's permanent: all of your collections, flashcards, and study history are deleted immediately and can't be recovered."
+        }
+      }
+    },
+    "contact": {
+      "title": "Contact us",
+      "description": "Can't find what you're looking for? Send us a message and we'll get back to you by email.",
+      "nameLabel": "Name",
+      "emailLabel": "Email",
+      "messageLabel": "Message",
+      "messagePlaceholder": "What's on your mind?",
+      "submitButton": "Send message",
+      "submitting": "Sending...",
+      "successTitle": "Message sent",
+      "successDescription": "Thanks for reaching out. We've sent a copy to your email and will get back to you soon.",
+      "errorGeneric": "Something went wrong sending your message. Please try again.",
+      "errorNetwork": "We couldn't reach Eye Learn. Check your connection and try again.",
+      "errorTooManyRequests": "Too many messages sent. Please try again later.",
+      "validation": {
+        "required": "This field is required.",
+        "emailInvalid": "Enter a valid email address.",
+        "messageMin": "Say a bit more so we know how to help (at least 10 characters)."
+      }
     }
   }
 }

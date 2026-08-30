@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { CheckCircle2, PartyPopper, XCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -16,12 +16,29 @@ import type {
   StudyQueueItem,
 } from "@/lib/api/types";
 
-const RATINGS: { value: ReviewRating; labelKey: string }[] = [
+export const RATINGS: { value: ReviewRating; labelKey: string }[] = [
   { value: 1, labelKey: "again" },
   { value: 2, labelKey: "hard" },
   { value: 3, labelKey: "good" },
   { value: 4, labelKey: "easy" },
 ];
+
+// Again -> Hard -> Good -> Easy on a red-to-green gradient, so the meaning
+// of each button is visible at a glance (not just from its label). "Good"
+// sits between the warning and success tokens with no named token of its
+// own, so it's built with color-mix() instead of a new hardcoded hex value.
+export const RATING_STYLES: Record<ReviewRating, { className?: string; style?: CSSProperties }> = {
+  1: { className: "border-error bg-error/10 text-error hover:bg-error/15" },
+  2: { className: "border-warning bg-warning/10 text-warning hover:bg-warning/15" },
+  3: {
+    style: {
+      borderColor: "color-mix(in oklch, var(--color-warning), var(--color-success) 55%)",
+      backgroundColor: "color-mix(in oklch, var(--color-warning), var(--color-success) 55%, transparent 90%)",
+      color: "color-mix(in oklch, var(--color-warning), var(--color-success) 55%)",
+    },
+  },
+  4: { className: "border-success bg-success/10 text-success hover:bg-success/15" },
+};
 
 async function postReview(flashcardId: number, submission: ReviewSubmission): Promise<ReviewResult> {
   const res = await fetch(`/api/flashcards/cards/${flashcardId}/review`, {
@@ -231,6 +248,8 @@ function BasicCard({
               size="sm"
               disabled={submitting}
               onClick={() => onRate(rating.value)}
+              className={RATING_STYLES[rating.value].className}
+              style={RATING_STYLES[rating.value].style}
             >
               {t(`ratings.${rating.labelKey}`)}
             </Button>

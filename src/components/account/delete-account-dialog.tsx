@@ -16,12 +16,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useAuthContext } from "@/context/auth-context";
 import { useRouter } from "@/i18n/navigation";
 
 export function DeleteAccountDialog({ username }: { username: string }) {
   const t = useTranslations("account.deleteAccount");
   const tErrors = useTranslations("auth.errors");
   const router = useRouter();
+  const { refetch } = useAuthContext();
   const [open, setOpen] = useState(false);
   const [confirmValue, setConfirmValue] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -50,6 +52,11 @@ export function DeleteAccountDialog({ username }: { username: string }) {
       });
 
       if (res.ok) {
+        // The account is gone and the BFF route already cleared the auth
+        // cookies, but useAuthContext()'s client-side state is otherwise
+        // unaware of that -- without this, the marketing nav keeps
+        // showing "Dashboard" instead of "Log in" after the redirect.
+        await refetch();
         router.push("/");
         router.refresh();
         return;

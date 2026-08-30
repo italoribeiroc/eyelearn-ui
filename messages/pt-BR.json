@@ -262,7 +262,11 @@
       "submit": "Criar conta",
       "submitting": "Criando conta…",
       "haveAccount": "Já tem uma conta?",
-      "logInLink": "Entrar"
+      "logInLink": "Entrar",
+      "checkEmailMessage": "Enviamos um link de verificação para {email}. Clique nele para ativar sua conta.",
+      "resendButton": "Reenviar e-mail",
+      "resendSubmitting": "Reenviando…",
+      "resendSuccess": "E-mail de verificação enviado."
     },
     "login": {
       "title": "Bem-vindo de volta",
@@ -271,6 +275,7 @@
       "passwordLabel": "Senha",
       "forgotPasswordLink": "Esqueceu a senha?",
       "resetSuccessMessage": "Sua senha foi redefinida. Entre com sua nova senha.",
+      "verifiedSuccessMessage": "Seu e-mail foi verificado. Você já pode entrar.",
       "submit": "Entrar",
       "submitting": "Entrando…",
       "noAccount": "Ainda não tem uma conta?",
@@ -294,6 +299,15 @@
       "submitting": "Redefinindo…",
       "invalidTokenError": "Este link de redefinição é inválido ou expirou.",
       "requestNewLinkLink": "Solicitar um novo link de redefinição"
+    },
+    "verifyEmail": {
+      "title": "Verifique seu e-mail",
+      "verifying": "Verificando seu e-mail…",
+      "invalidTokenError": "Este link de verificação é inválido ou expirou.",
+      "resendEmailLabel": "E-mail",
+      "resendButton": "Enviar novo link",
+      "resendSubmitting": "Enviando…",
+      "resendSuccess": "Se esse e-mail existir e precisar de verificação, um novo link foi enviado."
     },
     "validation": {
       "required": "Este campo é obrigatório.",
@@ -386,6 +400,7 @@
     "subtitle": "Pronto para aprender algo hoje?",
     "logOut": "Sair",
     "account": "Conta",
+    "help": "Ajuda",
     "comingSoon": "Em breve",
     "checkoutSuccess": "Você está inscrito. Bem-vindo ao Eye Learn Pro.",
     "stats": {
@@ -598,6 +613,102 @@
       "emptySelectionHint": "Selecione ao menos uma coleção para começar.",
       "selectedCount": "{count} selecionadas",
       "startButton": "Começar a estudar"
+    }
+  },
+  "onboarding": {
+    "skipButton": "Pular",
+    "backButton": "Voltar",
+    "nextButton": "Próximo",
+    "getStartedButton": "Começar",
+    "stepIndicator": "Passo {current} de {total}",
+    "steps": {
+      "welcome": {
+        "title": "Bem-vindo ao Eye Learn 👋",
+        "body": "O Eye Learn ajuda você a realmente lembrar do que estuda, não apenas reler. Você vai organizar o que está aprendendo em flashcards e revisá-los seguindo um cronograma inteligente, focado no que você está prestes a esquecer."
+      },
+      "flashcards": {
+        "title": "O que é um flashcard?",
+        "body": "Cada flashcard tem uma pergunta na frente e a resposta atrás. Experimente abaixo: toque no cartão para revelar a resposta, assim como você fará em uma sessão de estudo de verdade.",
+        "demoFront": "Qual é a capital da França?",
+        "demoBack": "Paris",
+        "tapHint": "Toque para revelar"
+      },
+      "ratings": {
+        "title": "Depois de ver a resposta, avalie-se",
+        "body": "Quatro botões aparecem assim que você revela a resposta de um cartão. Escolha o que combina com o quanto você realmente sabia, ser honesto é o que faz isso funcionar:",
+        "again": "Você não lembrou nada. O Eye Learn vai mostrar esse cartão de novo em breve.",
+        "hard": "Você acertou, mas com bastante esforço. Ele volta antes do normal.",
+        "good": "Você lembrou com um esforço normal. Dentro do cronograma esperado.",
+        "easy": "Foi sem esforço nenhum. O Eye Learn vai esperar bem mais tempo antes de mostrá-lo de novo."
+      },
+      "mastery": {
+        "title": "Como isso constrói o domínio de verdade",
+        "body": "Cada avaliação ajusta o cronograma pessoal daquele cartão. Cartões difíceis voltam com frequência, cartões que você já domina passam a aparecer em intervalos cada vez maiores. Avalie-se com honestidade, mesmo quando \"De novo\" é a resposta honesta, e com o tempo sua pilha de revisões naturalmente diminui até restar só o que você ainda precisa praticar."
+      }
+    }
+  },
+  "help": {
+    "backToDashboard": "Voltar ao painel",
+    "title": "Ajuda e suporte",
+    "subtitle": "Tudo que você precisa para aproveitar o Eye Learn ao máximo.",
+    "howItWorksTitle": "Como o Eye Learn funciona",
+    "replayGuideButton": "Rever o guia",
+    "faq": {
+      "title": "Perguntas frequentes",
+      "items": {
+        "whatIsEyeLearn": {
+          "question": "O que é o Eye Learn?",
+          "answer": "Um app de flashcards baseado em repetição espaçada. Em vez de decorar tudo de uma vez, você revisa cada cartão pouco antes de estar prestes a esquecê-lo, então o que você estuda realmente fica na memória."
+        },
+        "creatingCards": {
+          "question": "Como eu crio flashcards?",
+          "answer": "Adicione um por um dentro de uma coleção, ou importe um baralho inteiro de uma vez a partir de um arquivo CSV, TSV ou .apkg do Anki. Você também pode exportar qualquer coleção de volta para CSV."
+        },
+        "cardTypes": {
+          "question": "Que tipos de flashcards eu posso criar?",
+          "answer": "Cartões básicos de virar (pergunta na frente, resposta atrás), múltipla escolha e resposta digitada. Múltipla escolha e resposta digitada são corrigidos automaticamente."
+        },
+        "ratingButtons": {
+          "question": "O que significam De novo, Difícil, Bom e Fácil?",
+          "answer": "Eles dizem ao Eye Learn o quanto você sabia um cartão, para que ele possa agendar sua próxima revisão. De novo significa que você esqueceu, Fácil que foi sem esforço, Difícil e Bom ficam no meio. Responda com honestidade e o cronograma cuida do resto. Você pode rever o guia completo a qualquer momento nesta página."
+        },
+        "studyGoals": {
+          "question": "O que são metas de estudo?",
+          "answer": "Escolha uma data alvo para qualquer coleção e o Eye Learn calcula quantos cartões você precisa revisar por dia para dominá-la até lá, ajustando automaticamente conforme a data se aproxima."
+        },
+        "streaks": {
+          "question": "O que é a sequência de estudos (streak)?",
+          "answer": "Uma contagem de dias consecutivos que você estudou. Ela zera se um dia inteiro passar sem nenhuma revisão, então é uma forma simples de manter a consistência."
+        },
+        "freeLimit": {
+          "question": "Existe um limite no plano gratuito?",
+          "answer": "Contas gratuitas podem ter até 300 flashcards no total. Fazer upgrade para o Pro remove esse limite."
+        },
+        "deletingAccount": {
+          "question": "Posso excluir minha conta?",
+          "answer": "Sim, pela zona de perigo na página de Conta. É permanente: todas as suas coleções, flashcards e histórico de estudos são excluídos imediatamente e não podem ser recuperados."
+        }
+      }
+    },
+    "contact": {
+      "title": "Fale conosco",
+      "description": "Não encontrou o que procurava? Envie uma mensagem e responderemos por e-mail.",
+      "nameLabel": "Nome",
+      "emailLabel": "E-mail",
+      "messageLabel": "Mensagem",
+      "messagePlaceholder": "O que você gostaria de nos dizer?",
+      "submitButton": "Enviar mensagem",
+      "submitting": "Enviando...",
+      "successTitle": "Mensagem enviada",
+      "successDescription": "Obrigado por entrar em contato. Enviamos uma cópia para o seu e-mail e responderemos em breve.",
+      "errorGeneric": "Algo deu errado ao enviar sua mensagem. Tente novamente.",
+      "errorNetwork": "Não conseguimos acessar o Eye Learn. Verifique sua conexão e tente novamente.",
+      "errorTooManyRequests": "Muitas mensagens enviadas. Tente novamente mais tarde.",
+      "validation": {
+        "required": "Este campo é obrigatório.",
+        "emailInvalid": "Digite um endereço de e-mail válido.",
+        "messageMin": "Conte um pouco mais para sabermos como ajudar (pelo menos 10 caracteres)."
+      }
     }
   }
 }

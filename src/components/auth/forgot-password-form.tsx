@@ -4,7 +4,7 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useLocale, useTranslations } from "next-intl";
-import { Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -67,7 +67,8 @@ export function ForgotPasswordForm() {
 
   if (submitted) {
     return (
-      <Alert>
+      <Alert variant="success">
+        <CheckCircle2 aria-hidden="true" />
         <AlertDescription>{t("successMessage")}</AlertDescription>
       </Alert>
     );

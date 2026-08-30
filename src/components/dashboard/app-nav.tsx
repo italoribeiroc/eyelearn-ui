@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Check, Languages, LayoutDashboard, Layers, LogOut, Menu, Moon, Sun, User } from "lucide-react";
+import { Check, HelpCircle, Languages, LayoutDashboard, Layers, LogOut, Menu, Moon, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
@@ -100,6 +100,12 @@ export function AppNav({ isPro = false }: { isPro?: boolean }) {
               {t("account")}
             </Link>
           </Button>
+          <Button asChild type="button" variant="ghost" size="sm">
+            <Link href="/help">
+              <HelpCircle className="size-4" aria-hidden="true" />
+              {t("help")}
+            </Link>
+          </Button>
           <Button type="button" variant="ghost" size="sm" onClick={handleLogout}>
             <LogOut className="size-4" aria-hidden="true" />
             {t("logOut")}
@@ -141,6 +147,12 @@ export function AppNav({ isPro = false }: { isPro?: boolean }) {
                   <Link href="/account" className={menuItemClass}>
                     <User className="size-4" aria-hidden="true" />
                     {t("account")}
+                  </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link href="/help" className={menuItemClass}>
+                    <HelpCircle className="size-4" aria-hidden="true" />
+                    {t("help")}
                   </Link>
                 </SheetClose>
 
