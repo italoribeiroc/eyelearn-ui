@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
-import { Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -32,6 +32,7 @@ export function LoginForm() {
     searchParams.get("error") === "google_auth_failed" ? tErrors("googleAuthFailed") : null,
   );
   const resetSuccess = searchParams.get("reset") === "success";
+  const verifiedSuccess = searchParams.get("verified") === "success";
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -77,8 +78,16 @@ export function LoginForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" noValidate>
         {resetSuccess ? (
-          <Alert>
+          <Alert variant="success">
+            <CheckCircle2 aria-hidden="true" />
             <AlertDescription>{t("resetSuccessMessage")}</AlertDescription>
+          </Alert>
+        ) : null}
+
+        {verifiedSuccess ? (
+          <Alert variant="success">
+            <CheckCircle2 aria-hidden="true" />
+            <AlertDescription>{t("verifiedSuccessMessage")}</AlertDescription>
           </Alert>
         ) : null}
 

@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useTranslations } from "next-intl";
-import { Loader2 } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { Loader2, MailCheck } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -16,7 +17,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useRouter } from "@/i18n/navigation";
 import { registerSchema, type RegisterFormValues } from "@/lib/validation/register-schema";
 import type { ApiFieldErrors } from "@/lib/api/types";
 
@@ -24,8 +24,10 @@ export function RegisterForm({ plan }: { plan?: string }) {
   const t = useTranslations("auth.register");
   const tValidation = useTranslations("auth.validation");
   const tErrors = useTranslations("auth.errors");
-  const router = useRouter();
+  const locale = useLocale();
   const [rootError, setRootError] = useState<string | null>(null);
+  const [registeredEmail, setRegisteredEmail] = useState<string | null>(null);
+  const [resending, setResending] = useState(false);
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -63,12 +65,17 @@ export function RegisterForm({ plan }: { plan?: string }) {
           username: values.username,
           email: values.email,
           password: values.password,
+          locale,
+          ...(plan ? { plan } : {}),
         }),
       });
 
       if (res.ok) {
-        router.push(plan ? `/dashboard?startCheckout=${plan}` : "/dashboard");
-        router.refresh();
+        // Registration no longer logs in -- the account is created
+        // inactive and a verification email is sent (see accounts.services
+        // .EmailVerificationService on the backend). Login is blocked
+        // until that link is clicked.
+        setRegisteredEmail(values.email);
         return;
       }
 
@@ -102,6 +109,52 @@ export function RegisterForm({ plan }: { plan?: string }) {
     } catch {
       setRootError(tErrors("network"));
     }
+  }
+
+  async function onResend() {
+    if (!registeredEmail || resending) return;
+    setResending(true);
+
+    try {
+      const res = await fetch("/api/auth/verify-email/resend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: registeredEmail, locale }),
+      });
+
+      if (res.ok) {
+        toast.success(t("resendSuccess"));
+      } else if (res.status === 429) {
+        toast.error(tErrors("tooManyRequests"));
+      } else {
+        toast.error(tErrors("generic"));
+      }
+    } catch {
+      toast.error(tErrors("network"));
+    } finally {
+      setResending(false);
+    }
+  }
+
+  if (registeredEmail) {
+    return (
+      <div className="space-y-4">
+        <Alert variant="success">
+          <MailCheck aria-hidden="true" />
+          <AlertDescription>{t("checkEmailMessage", { email: registeredEmail })}</AlertDescription>
+        </Alert>
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          disabled={resending}
+          onClick={onResend}
+        >
+          {resending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
+          {resending ? t("resendSubmitting") : t("resendButton")}
+        </Button>
+      </div>
+    );
   }
 
   return (

@@ -3,6 +3,7 @@ import { ArrowRight, LayoutGrid, Target } from "lucide-react";
 import { CheckoutRedirect } from "@/components/billing/checkout-redirect";
 import { WelcomeHeader } from "@/components/dashboard/welcome-header";
 import { GoalIntroDialog } from "@/components/dashboard/goal-intro-dialog";
+import { OnboardingGuideDialog } from "@/components/onboarding/onboarding-guide-dialog";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { StreakWidget } from "@/components/dashboard/streak-widget";
 import { StartStudyingCta } from "@/components/dashboard/start-studying-cta";
@@ -44,6 +45,7 @@ export default async function DashboardPage({
 
   return (
     <div className="space-y-8">
+      <OnboardingGuideDialog defaultOpen={!user.has_seen_onboarding} />
       <WelcomeHeader username={user.first_name || user.username} />
 
       {checkout === "success" ? (

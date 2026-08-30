@@ -1,22 +1,16 @@
 import { NextResponse } from "next/server";
 import { DjangoApiError, djangoFetchJson } from "@/lib/api/django-client";
-import type { RegisterPayload } from "@/lib/api/types";
 
-/**
- * Registration no longer logs the visitor in -- the account is created
- * inactive and Django sends a verification email; login is blocked until
- * that link is clicked (see /verify-email). No cookies are set here.
- */
 export async function POST(request: Request) {
-  const payload = (await request.json()) as RegisterPayload;
+  const payload = (await request.json()) as { uid: string; token: string };
 
   try {
-    const data = await djangoFetchJson<{ detail: string }>("/api/auth/register/", {
+    const data = await djangoFetchJson<{ detail: string }>("/api/auth/verify-email/", {
       method: "POST",
       body: JSON.stringify(payload),
     });
 
-    return NextResponse.json(data, { status: 201 });
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     if (error instanceof DjangoApiError) {
       return NextResponse.json(error.body, { status: error.status });

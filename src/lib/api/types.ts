@@ -3,6 +3,7 @@ export type EyeLearnUser = {
   username: string;
   email: string;
   first_name: string;
+  has_seen_onboarding: boolean;
 };
 
 export type AuthTokens = {
@@ -15,6 +16,7 @@ export type RegisterPayload = {
   email: string;
   password: string;
   first_name: string;
+  locale: string;
 };
 
 export type LoginPayload = {
@@ -160,4 +162,11 @@ export type StreakCalendarDay = {
 export type StreakCalendar = {
   current_streak: number;
   days: StreakCalendarDay[];
+};
+
+export type ContactPayload = {
+  name: string;
+  email: string;
+  message: string;
+  locale: string;
 };

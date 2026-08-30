@@ -11,6 +11,11 @@ const alertVariants = cva(
         default: "bg-card text-card-foreground",
         destructive:
           "bg-card text-destructive *:data-[slot=alert-description]:text-destructive/90 *:[svg]:text-current",
+        // Filled surface, no border -- Material's pattern for a positive
+        // confirmation banner, so it reads as a distinct message instead of
+        // another bordered box nested inside a bordered card.
+        success:
+          "border-transparent bg-success/12 text-success dark:bg-success/20 *:data-[slot=alert-description]:text-success/90 *:[svg]:text-current",
       },
     },
     defaultVariants: {
