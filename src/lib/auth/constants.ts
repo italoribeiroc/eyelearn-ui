@@ -20,3 +20,13 @@ export const GOOGLE_OAUTH_STATE_MAX_AGE_SECONDS = 5 * 60; // 5 minutes
  * round trip.
  */
 export const GOOGLE_OAUTH_PLAN_COOKIE = "eyelearn_google_oauth_plan";
+
+/**
+ * Carries the originating page's locale across the redirect to Google and
+ * back -- the callback route lives outside [locale] routing and otherwise
+ * always lands on the unprefixed (English) dashboard, which silently
+ * broke checkout currency for pt-BR visitors (locale drives both the
+ * dashboard URL prefix and the Stripe currency). Same short lifetime as
+ * the state cookie.
+ */
+export const GOOGLE_OAUTH_LOCALE_COOKIE = "eyelearn_google_oauth_locale";

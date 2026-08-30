@@ -1,7 +1,9 @@
 import { randomBytes } from "crypto";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { routing } from "@/i18n/routing";
 import {
+  GOOGLE_OAUTH_LOCALE_COOKIE,
   GOOGLE_OAUTH_PLAN_COOKIE,
   GOOGLE_OAUTH_STATE_COOKIE,
   GOOGLE_OAUTH_STATE_MAX_AGE_SECONDS,
@@ -29,8 +31,11 @@ export async function GET(request: Request) {
   }
 
   const state = randomBytes(16).toString("hex");
-  const plan = new URL(request.url).searchParams.get("plan");
+  const params = new URL(request.url).searchParams;
+  const plan = params.get("plan");
   const validPlan = plan && ALLOWED_PLANS.includes(plan) ? plan : null;
+  const locale = params.get("locale");
+  const validLocale = locale && (routing.locales as readonly string[]).includes(locale) ? locale : null;
 
   const authUrl = new URL(GOOGLE_AUTH_URL);
   authUrl.searchParams.set("client_id", clientId);
@@ -52,6 +57,9 @@ export async function GET(request: Request) {
   cookieStore.set(GOOGLE_OAUTH_STATE_COOKIE, state, cookieOptions);
   if (validPlan) {
     cookieStore.set(GOOGLE_OAUTH_PLAN_COOKIE, validPlan, cookieOptions);
+  }
+  if (validLocale) {
+    cookieStore.set(GOOGLE_OAUTH_LOCALE_COOKIE, validLocale, cookieOptions);
   }
 
   return response;

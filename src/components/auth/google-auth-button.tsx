@@ -1,4 +1,4 @@
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -33,7 +33,10 @@ export function GoogleAuthButton({
   plan?: string;
 }) {
   const t = useTranslations("auth.common");
-  const href = plan ? `/api/auth/google?plan=${plan}` : "/api/auth/google";
+  const locale = useLocale();
+  const params = new URLSearchParams({ locale });
+  if (plan) params.set("plan", plan);
+  const href = `/api/auth/google?${params.toString()}`;
 
   return (
     <div className="space-y-5">
