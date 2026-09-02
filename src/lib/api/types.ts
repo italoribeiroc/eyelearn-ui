@@ -106,6 +106,33 @@ export type Flashcard = {
   updated_at: string;
 };
 
+export type AiGenerationDraftCard = {
+  id: number;
+  prompt: string;
+  answer: string;
+  options: FlashcardOption[];
+  accepted_answers: string[];
+};
+
+export type AiGenerationDraftStatus = "pending" | "confirmed" | "discarded";
+
+export type AiGenerationDraft = {
+  id: number;
+  collection: number;
+  card_type: CardType;
+  learning_request: string;
+  status: AiGenerationDraftStatus;
+  // Total cards this generation is working toward. `cards.length < target_count`
+  // means it's not finished yet -- see generateNextAiBatch().
+  target_count: number;
+  cards: AiGenerationDraftCard[];
+};
+
+export type AiGenerationConfirmResult = {
+  created: Flashcard[];
+  errors: { id: number; errors: unknown }[];
+};
+
 export type ReviewSchedulingState = "new" | "learning" | "review" | "relearning";
 
 export type StudyQueueItem = {

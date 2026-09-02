@@ -1,6 +1,8 @@
 import "server-only";
-import { DjangoApiError, djangoFetchJson } from "@/lib/api/django-client";
+import { DjangoApiError, djangoFetchJson, djangoFetchJsonLoggingHeader } from "@/lib/api/django-client";
 import type {
+  AiGenerationConfirmResult,
+  AiGenerationDraft,
   Collection,
   Flashcard,
   FlashcardMediaItem,
@@ -182,6 +184,78 @@ export async function deleteMedia(mediaId: number): Promise<void> {
   const headers = await authHeaders();
   await djangoFetchJson<void>(`/api/flashcards/media/${mediaId}/`, {
     method: "DELETE",
+    headers,
+  });
+}
+
+export async function generateAiFlashcards(
+  collectionId: number,
+  data: { card_type: Flashcard["card_type"]; learning_request: string } & (
+    | { auto: true; count?: never }
+    | { auto?: false; count: number }
+  ),
+): Promise<AiGenerationDraft> {
+  const headers = await authHeaders();
+  return djangoFetchJsonLoggingHeader<AiGenerationDraft>(
+    `/api/flashcards/collections/${collectionId}/ai-generate/`,
+    "X-AI-Provider",
+    "ai-generate",
+    { method: "POST", headers, body: JSON.stringify(data) },
+  );
+}
+
+export async function getAiGenerationDraft(draftId: number): Promise<AiGenerationDraft> {
+  const headers = await authHeaders();
+  return djangoFetchJson<AiGenerationDraft>(`/api/flashcards/ai-generate/${draftId}/`, { headers });
+}
+
+export async function generateNextAiBatch(draftId: number): Promise<AiGenerationDraft> {
+  const headers = await authHeaders();
+  return djangoFetchJsonLoggingHeader<AiGenerationDraft>(
+    `/api/flashcards/ai-generate/${draftId}/generate-next-batch/`,
+    "X-AI-Provider",
+    "ai-generate-next-batch",
+    { method: "POST", headers },
+  );
+}
+
+export async function regenerateAiDraftCards(
+  draftId: number,
+  data: { selected_ids: number[]; instruction: string },
+): Promise<AiGenerationDraft> {
+  const headers = await authHeaders();
+  return djangoFetchJsonLoggingHeader<AiGenerationDraft>(
+    `/api/flashcards/ai-generate/${draftId}/regenerate/`,
+    "X-AI-Provider",
+    "ai-regenerate",
+    { method: "POST", headers, body: JSON.stringify(data) },
+  );
+}
+
+export async function removeAiDraftCards(
+  draftId: number,
+  data: { card_ids: number[] },
+): Promise<AiGenerationDraft> {
+  const headers = await authHeaders();
+  return djangoFetchJson<AiGenerationDraft>(`/api/flashcards/ai-generate/${draftId}/remove-cards/`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(data),
+  });
+}
+
+export async function confirmAiGenerationDraft(draftId: number): Promise<AiGenerationConfirmResult> {
+  const headers = await authHeaders();
+  return djangoFetchJson<AiGenerationConfirmResult>(`/api/flashcards/ai-generate/${draftId}/confirm/`, {
+    method: "POST",
+    headers,
+  });
+}
+
+export async function discardAiGenerationDraft(draftId: number): Promise<{ status: string }> {
+  const headers = await authHeaders();
+  return djangoFetchJson<{ status: string }>(`/api/flashcards/ai-generate/${draftId}/discard/`, {
+    method: "POST",
     headers,
   });
 }

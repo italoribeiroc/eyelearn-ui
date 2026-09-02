@@ -1,7 +1,8 @@
-import { ArrowLeft, GraduationCap, Plus, Target } from "lucide-react";
+import { ArrowLeft, GraduationCap, Plus, Sparkles, Target } from "lucide-react";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { PlanUpgradeDialog } from "@/components/billing/plan-upgrade-dialog";
+import { AiGenerateDialog } from "@/components/flashcards/ai-generate-dialog";
 import { CollectionAccordionList } from "@/components/flashcards/collection-accordion-list";
 import { CollectionCard } from "@/components/flashcards/collection-card";
 import { CollectionFormDialog } from "@/components/flashcards/collection-form-dialog";
@@ -151,6 +152,21 @@ export default async function CollectionDetailPage({
           <h2 className="font-heading text-lg font-bold text-foreground">{t("flashcardsTitle")}</h2>
           <div className="flex flex-wrap gap-2">
             <ImportExportMenu collectionId={collection.id} />
+            {isPro ? (
+              <AiGenerateDialog
+                collectionId={collection.id}
+                trigger={
+                  <Button
+                    type="button"
+                    size="sm"
+                    className="border-transparent bg-gradient-to-r from-brand-turquoise to-brand-accent text-brand-turquoise-foreground shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-soft-lg)]"
+                  >
+                    <Sparkles className="size-3.5" aria-hidden="true" />
+                    {t("aiGenerate.buttonLabel")}
+                  </Button>
+                }
+              />
+            ) : null}
             {atFlashcardLimit ? (
               <PlanUpgradeDialog triggerLabel={tBilling("upsellCta")} title={tPlans("title")}>
                 <PricingSection variant="embedded" />

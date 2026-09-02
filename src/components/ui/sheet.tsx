@@ -53,6 +53,8 @@ const sheetVariants = cva(
         right:
           "inset-y-0 right-0 h-full w-72 max-w-[85vw] border-l border-border data-closed:slide-out-to-right data-open:slide-in-from-right",
         left: "inset-y-0 left-0 h-full w-72 max-w-[85vw] border-r border-border data-closed:slide-out-to-left data-open:slide-in-from-left",
+        bottom:
+          "inset-x-0 bottom-0 w-full max-h-[85vh] rounded-t-lg border-t border-border data-closed:slide-out-to-bottom data-open:slide-in-from-bottom",
       },
     },
     defaultVariants: {
