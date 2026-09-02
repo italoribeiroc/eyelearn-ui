@@ -46,12 +46,8 @@ export async function generateMetadata({
     appleWebApp: {
       title: "Eye Learn",
     },
-    // Placeholder: replace with the real content value Google Search
-    // Console shows after adding https://eyelearn.app as a property there
-    // (HTML tag verification method) -- see the SEO plan for the full
-    // manual verification flow. Harmless no-op meta tag until then.
     verification: {
-      google: "GOOGLE_SITE_VERIFICATION_PLACEHOLDER",
+      google: "dfLfDF1-TexEly_lZn2U6A1ziHJsUy9o5rfhHlyy4w4",
     },
   };
 }
