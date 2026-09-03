@@ -16,6 +16,7 @@ export type RegisterPayload = {
   email: string;
   password: string;
   first_name: string;
+  terms_accepted: boolean;
   locale: string;
 };
 
@@ -60,6 +61,7 @@ export type SubscriptionStatus = {
     | null;
   current_period_end: string | null;
   cancel_at_period_end: boolean;
+  refund_eligible_until: string | null;
 };
 
 export type Collection = {

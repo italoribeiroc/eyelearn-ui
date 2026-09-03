@@ -7,6 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Loader2, MailCheck } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
@@ -17,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Link } from "@/i18n/navigation";
 import { registerSchema, type RegisterFormValues } from "@/lib/validation/register-schema";
 import type { ApiFieldErrors } from "@/lib/api/types";
 
@@ -31,7 +33,14 @@ export function RegisterForm({ plan }: { plan?: string }) {
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { name: "", username: "", email: "", password: "", confirmPassword: "" },
+    defaultValues: {
+      name: "",
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      acceptTerms: false,
+    },
   });
 
   /**
@@ -65,6 +74,7 @@ export function RegisterForm({ plan }: { plan?: string }) {
           username: values.username,
           email: values.email,
           password: values.password,
+          terms_accepted: values.acceptTerms,
           locale,
           ...(plan ? { plan } : {}),
         }),
@@ -91,6 +101,7 @@ export function RegisterForm({ plan }: { plan?: string }) {
             ["username", "username"],
             ["email", "email"],
             ["password", "password"],
+            ["terms_accepted", "acceptTerms"],
           ] as const
         ).forEach(([serverField, formField]) => {
           const messages = body[serverField];
@@ -241,6 +252,42 @@ export function RegisterForm({ plan }: { plan?: string }) {
                 <Input type="password" autoComplete="new-password" {...field} />
               </FormControl>
               <FormMessage>{translateFieldError(fieldState)}</FormMessage>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="acceptTerms"
+          render={({ field, fieldState }) => (
+            <FormItem className="flex flex-row items-start gap-2.5 space-y-0">
+              <FormControl>
+                <Checkbox
+                  id="accept-terms"
+                  checked={field.value}
+                  onCheckedChange={(checked) => field.onChange(checked === true)}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-snug">
+                <FormLabel
+                  htmlFor="accept-terms"
+                  className="block font-normal text-foreground-muted"
+                >
+                  {t("acceptTermsPrefix")}{" "}
+                  <Link href="/terms" target="_blank" className="text-brand-turquoise underline underline-offset-2">
+                    {t("termsLinkLabel")}
+                  </Link>{" "}
+                  {t("acceptTermsMiddle")}{" "}
+                  <Link
+                    href="/privacy"
+                    target="_blank"
+                    className="text-brand-turquoise underline underline-offset-2"
+                  >
+                    {t("privacyLinkLabel")}
+                  </Link>
+                </FormLabel>
+                <FormMessage>{translateFieldError(fieldState)}</FormMessage>
+              </div>
             </FormItem>
           )}
         />

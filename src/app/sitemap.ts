@@ -10,6 +10,7 @@ import { absoluteUrl } from "@/lib/seo/constants";
 // reasoning behind the dashboard's "Coming soon" stat cards). Bump this by
 // hand whenever the landing page's real content meaningfully changes.
 const LANDING_PAGE_LAST_MODIFIED = new Date("2026-09-02");
+const LEGAL_PAGES_LAST_MODIFIED = new Date("2026-09-03");
 
 // A small route table, not a flat hardcoded list of URLs, so a future
 // indexable page (out of scope for now -- see the SEO plan) is a one-line
@@ -22,6 +23,8 @@ const routes: {
   priority: number;
 }[] = [
   { path: "/", lastModified: LANDING_PAGE_LAST_MODIFIED, changeFrequency: "monthly", priority: 1 },
+  { path: "/terms", lastModified: LEGAL_PAGES_LAST_MODIFIED, changeFrequency: "yearly", priority: 0.3 },
+  { path: "/privacy", lastModified: LEGAL_PAGES_LAST_MODIFIED, changeFrequency: "yearly", priority: 0.3 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

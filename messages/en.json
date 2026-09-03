@@ -3,6 +3,129 @@
     "title": "Eye Learn: See it. Learn it. Remember it.",
     "description": "Eye Learn helps you build a consistent study habit with visual flashcards, AI-generated cards, and progress tracking."
   },
+  "legal": {
+    "terms": {
+      "metaTitle": "Terms of Service",
+      "metaDescription": "The terms that govern your use of Eye Learn, including subscriptions, billing, and your 7 day refund guarantee.",
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated: September 3, 2026",
+      "sections": {
+        "about": {
+          "heading": "1. About These Terms",
+          "body": "These Terms of Service (\"Terms\") govern your access to and use of Eye Learn (the \"Service\", \"we\", \"us\"), an independently operated service, not a registered company. By creating an account, you agree to these Terms and to our Privacy Policy. If you do not agree, do not use the Service."
+        },
+        "service": {
+          "heading": "2. The Service",
+          "body": "Eye Learn is a flashcard based study application that uses spaced repetition and artificial intelligence to help you create and review study material. Some features, including AI generated flashcards, require a paid subscription."
+        },
+        "eligibility": {
+          "heading": "3. Eligibility and Account Registration",
+          "body": "You must be at least 13 years old to create an account. If you are under the age of majority in your country, you may only use the Service with the involvement of a parent or legal guardian. You agree to provide accurate information when registering and to keep your login credentials confidential. You are responsible for all activity that happens under your account."
+        },
+        "billing": {
+          "heading": "4. Subscriptions and Billing",
+          "body": "Eye Learn offers a free plan and paid subscription plans, billed monthly or annually. Paid subscriptions automatically renew at the end of each billing period unless canceled before the renewal date. You can cancel automatic renewal at any time from your account's billing settings, which stops future charges while letting you keep access through the end of the period you already paid for. Prices are shown in your local currency where available and may change with notice; changes will not affect a billing period you have already paid for."
+        },
+        "refund": {
+          "heading": "5. Your Right to Cancel and Get a Refund (7 Day Guarantee)",
+          "body": "If you are not satisfied with your paid subscription for any reason, you may cancel it and receive a full refund within 7 calendar days of your purchase, no justification required. This applies to every customer of Eye Learn, regardless of where you live. To exercise this right, cancel from your account's billing settings within the 7 day window, or contact us at eyelearns@gmail.com; a full refund of the amount charged will be issued to your original payment method and your subscription will be canceled immediately. After the 7 day window has passed, cancellations stop automatic renewal but do not carry an automatic refund for the current billing period, and you keep access through the end of that period."
+        },
+        "ai": {
+          "heading": "6. AI Generated Content",
+          "body": "Eye Learn uses third party artificial intelligence services to help generate flashcard content from text you provide. AI generated content may contain mistakes, be incomplete, or occasionally be inaccurate. It is provided to support your studying, not as a substitute for verified educational material, and you should review AI generated flashcards before relying on them."
+        },
+        "acceptableUse": {
+          "heading": "7. Acceptable Use",
+          "body": "You agree not to use the Service to upload unlawful, infringing, or harmful content, to attempt to gain unauthorized access to the Service or other users' accounts, to interfere with the Service's normal operation, or to use the Service in a way that violates any applicable law."
+        },
+        "termination": {
+          "heading": "8. Account Termination",
+          "body": "You may delete your account at any time from your account settings; this permanently removes your data as described in our Privacy Policy and cancels any active subscription. We may suspend or terminate an account that violates these Terms or that we reasonably believe poses a risk to the Service or other users, with notice where practical."
+        },
+        "ip": {
+          "heading": "9. Intellectual Property",
+          "body": "Eye Learn and its original content, features, and branding are owned by its creator. You retain ownership of the study content you create or upload. By using the Service, you grant us a limited license to store, process, and display that content solely to provide the Service to you."
+        },
+        "liability": {
+          "heading": "10. Disclaimers and Limitation of Liability",
+          "body": "The Service is provided \"as is\" without warranties of any kind, express or implied. To the maximum extent permitted by law, Eye Learn will not be liable for any indirect, incidental, or consequential damages arising from your use of the Service. Nothing in these Terms limits any right that cannot be limited under applicable consumer protection law."
+        },
+        "changes": {
+          "heading": "11. Changes to These Terms",
+          "body": "We may update these Terms from time to time. If we make material changes, we will notify you, for example by email or an in app notice, before the changes take effect. Continuing to use the Service after changes take effect means you accept the updated Terms."
+        },
+        "governingLaw": {
+          "heading": "12. Governing Law",
+          "body": "These Terms are governed by the laws of Brazil. Any dispute arising from these Terms or your use of the Service will be subject to the jurisdiction of the Brazilian courts, without prejudice to any mandatory consumer protection rights you may have under the law of your own country of residence."
+        },
+        "contact": {
+          "heading": "13. Contact",
+          "body": "Questions about these Terms can be sent to eyelearns@gmail.com."
+        }
+      }
+    },
+    "privacy": {
+      "metaTitle": "Privacy Policy",
+      "metaDescription": "How Eye Learn collects, uses, and protects your information, including what's shared with Stripe, Resend, Google, and our AI providers.",
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: September 3, 2026",
+      "sections": {
+        "intro": {
+          "heading": "1. Introduction",
+          "body": "This Privacy Policy explains how Eye Learn (\"we\", \"us\"), an independently operated service, collects, uses, and protects your information when you use the Service. It should be read together with our Terms of Service."
+        },
+        "collect": {
+          "heading": "2. Information We Collect",
+          "body": "We collect the information you give us directly: your name, username, email address, and password when you register; the flashcards, collections, and study content you create; and the text you type when requesting AI generated flashcards, along with any collection context used to generate them. We also collect information generated by your use of the Service, such as study activity and review history, used to power spaced repetition scheduling and progress tracking."
+        },
+        "use": {
+          "heading": "3. How We Use Your Information",
+          "body": "We use your information to provide and improve the Service: creating and securing your account, storing and syncing your study content, scheduling reviews, generating AI flashcards on your request, processing payments, sending account related emails such as verification and password reset messages, and responding to support requests."
+        },
+        "share": {
+          "heading": "4. Who We Share Your Information With",
+          "intro": "We do not sell your personal information. We share information with the following third parties, only as needed to provide the Service:",
+          "stripe": "Stripe, to process subscription payments. Stripe receives payment details directly; we never see or store your full card number.",
+          "resend": "Resend, to deliver transactional emails such as account verification, password reset, and billing notices.",
+          "google": "Google, if you choose to sign in with Google, to verify your identity.",
+          "ai": "Anthropic (Claude), Google (Gemini), and Groq, to generate AI flashcards. When you request AI generated flashcards, the learning request text you type and any collection context you provide are sent to one of these providers to produce the flashcards. Please avoid entering sensitive personal information into an AI generation request.",
+          "outro": "Each of these providers processes your information under its own privacy policy and only for the purpose described above."
+        },
+        "cookies": {
+          "heading": "5. Cookies and Analytics",
+          "body": "Eye Learn uses only strictly necessary, httpOnly cookies to keep you signed in; we do not use tracking or advertising cookies. We use Vercel Web Analytics, which is cookieless and does not collect personal identifiers, to understand overall site usage in aggregate. Because we do not use tracking cookies or collect personal data for analytics, no cookie consent banner is shown."
+        },
+        "retention": {
+          "heading": "6. Data Retention",
+          "body": "We keep your account information and study content for as long as your account is active. If you delete your account, your data, including flashcards, collections, and study history, is permanently deleted, and associated media files are removed from storage."
+        },
+        "rights": {
+          "heading": "7. Your Rights",
+          "body": "You can access and correct your account information at any time from your account settings. You can permanently delete your account and all associated data using the account deletion feature in your account settings. Depending on where you live, you may have additional rights under applicable law, such as the right to request a copy of your data; contact us at eyelearns@gmail.com to exercise these rights."
+        },
+        "security": {
+          "heading": "8. Data Security",
+          "body": "We take reasonable technical and organizational measures to protect your information, including encrypted connections and access controls. No method of transmission or storage is completely secure, and we cannot guarantee absolute security."
+        },
+        "children": {
+          "heading": "9. Children's Privacy",
+          "body": "Eye Learn is not directed at children under 13, consistent with the minimum age described in our Terms of Service. We do not knowingly collect personal information from children under 13. If you believe a child has provided us with personal information, contact us at eyelearns@gmail.com so we can delete it."
+        },
+        "transfers": {
+          "heading": "10. International Data Transfers",
+          "body": "Some of the third parties described above, including our AI, payment, and email providers, are based in the United States. If you are located in Brazil or elsewhere outside the United States, your information may be transferred to and processed in the United States or other countries with different data protection laws than your own. We take steps to ensure these providers offer an appropriate level of protection for your data."
+        },
+        "changes": {
+          "heading": "11. Changes to This Policy",
+          "body": "We may update this Privacy Policy from time to time. If we make material changes, we will notify you before they take effect, the same way we would for changes to our Terms of Service."
+        },
+        "contact": {
+          "heading": "12. Contact",
+          "body": "Questions about this Privacy Policy, or requests relating to your personal data under LGPD or other applicable law, can be sent to eyelearns@gmail.com."
+        }
+      }
+    }
+  },
   "common": {
     "switchToLight": "Switch to light theme",
     "switchToDark": "Switch to dark theme",
@@ -195,6 +318,7 @@
     "title": "Simple pricing that grows with you",
     "subtitle": "Start for free. Upgrade when you want more AI-generated cards and deeper insights.",
     "subtitleEmbedded": "Upgrade when you want more AI-generated cards and deeper insights.",
+    "refundGuarantee": "Protected by a 7 day money back guarantee. No questions asked.",
     "mostPopular": "Most popular",
     "free": "Free",
     "perMonth": "/ month",
@@ -259,6 +383,10 @@
       "emailPlaceholder": "you@example.com",
       "passwordLabel": "Password",
       "confirmPasswordLabel": "Confirm password",
+      "acceptTermsPrefix": "I agree to the",
+      "termsLinkLabel": "Terms of Service",
+      "acceptTermsMiddle": "and",
+      "privacyLinkLabel": "Privacy Policy",
       "submit": "Create account",
       "submitting": "Creating account…",
       "haveAccount": "Already have an account?",
@@ -316,7 +444,8 @@
       "usernameInvalid": "Only letters, numbers, and @/./+/-/_ are allowed.",
       "emailInvalid": "Enter a valid email address.",
       "passwordMin": "Password must be at least 8 characters.",
-      "passwordMismatch": "Passwords don't match."
+      "passwordMismatch": "Passwords don't match.",
+      "termsRequired": "You must accept the Terms of Service and Privacy Policy."
     },
     "errors": {
       "generic": "Something went wrong. Please try again.",
@@ -332,6 +461,8 @@
     "cta": "Create your account"
   },
   "footer": {
+    "termsLink": "Terms of Service",
+    "privacyLink": "Privacy Policy",
     "copyright": "© {year} Eye Learn. All rights reserved."
   },
   "notFound": {
@@ -360,6 +491,17 @@
       "switchToMonthly": "Switch to monthly",
       "upsell": "Upgrade to unlock unlimited study sets and AI-generated cards.",
       "upsellCta": "View plans"
+    },
+    "cancelRefund": {
+      "triggerButton": "Cancel and get a full refund (eligible until {date})",
+      "dialogTitle": "Cancel your subscription and get a full refund?",
+      "warningText": "You're within your 7 day refund window, so you'll receive a full refund and your subscription will be canceled immediately. This action cannot be undone.",
+      "confirmButton": "Cancel and refund me",
+      "cancelButton": "Keep my subscription",
+      "submitting": "Processing...",
+      "successToast": "Your subscription was canceled and refunded.",
+      "errorGeneric": "Something went wrong. Please try again or contact support.",
+      "errorWindowExpired": "Your 7 day refund window has passed."
     },
     "redirecting": "Redirecting to secure checkout..."
   },

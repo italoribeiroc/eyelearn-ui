@@ -1,4 +1,5 @@
 import { getLocale, getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth/session";
 import { getSubscriptionStatus } from "@/lib/billing/subscription";
 import { cn } from "@/lib/utils";
@@ -56,6 +57,13 @@ export async function PricingSection({
           >
             {variant === "marketing" ? t("subtitle") : t("subtitleEmbedded")}
           </p>
+          {variant === "marketing" ? (
+            <p className="mt-2 text-sm text-foreground-muted">
+              <Link href="/terms#refund-policy" className="underline underline-offset-2 hover:text-foreground">
+                {t("refundGuarantee")}
+              </Link>
+            </p>
+          ) : null}
         </div>
 
         <div

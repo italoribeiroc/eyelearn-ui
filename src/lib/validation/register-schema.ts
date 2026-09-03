@@ -19,10 +19,15 @@ export const registerSchema = z
     email: z.string().trim().min(1, "required").email("emailInvalid"),
     password: z.string().min(8, "passwordMin"),
     confirmPassword: z.string().min(1, "required"),
+    acceptTerms: z.boolean(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
     message: "passwordMismatch",
+  })
+  .refine((data) => data.acceptTerms === true, {
+    path: ["acceptTerms"],
+    message: "termsRequired",
   });
 
 export type RegisterFormValues = z.infer<typeof registerSchema>;

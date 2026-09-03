@@ -3,6 +3,129 @@
     "title": "Eye Learn: Veja. Aprenda. Lembre-se.",
     "description": "O Eye Learn ajuda você a criar um hábito de estudo consistente com flashcards visuais, cartões gerados por IA e acompanhamento de progresso."
   },
+  "legal": {
+    "terms": {
+      "metaTitle": "Termos de Uso",
+      "metaDescription": "Os termos que regem o uso do Eye Learn, incluindo assinaturas, cobranças e sua garantia de reembolso de 7 dias.",
+      "title": "Termos de Uso",
+      "lastUpdated": "Última atualização: 3 de setembro de 2026",
+      "sections": {
+        "about": {
+          "heading": "1. Sobre Estes Termos",
+          "body": "Estes Termos de Uso (\"Termos\") regem seu acesso e uso do Eye Learn (o \"Serviço\", \"nós\"), um serviço operado de forma independente, não por uma empresa registrada. Ao criar uma conta, você concorda com estes Termos e com nossa Política de Privacidade. Se você não concorda, não use o Serviço."
+        },
+        "service": {
+          "heading": "2. O Serviço",
+          "body": "O Eye Learn é um aplicativo de estudo baseado em flashcards que usa repetição espaçada e inteligência artificial para ajudar você a criar e revisar material de estudo. Alguns recursos, incluindo flashcards gerados por IA, exigem uma assinatura paga."
+        },
+        "eligibility": {
+          "heading": "3. Elegibilidade e Cadastro de Conta",
+          "body": "Você deve ter pelo menos 13 anos para criar uma conta. Se você é menor de idade em seu país, só pode usar o Serviço com o envolvimento de um responsável legal. Você concorda em fornecer informações precisas ao se cadastrar e em manter suas credenciais de login confidenciais. Você é responsável por toda atividade realizada em sua conta."
+        },
+        "billing": {
+          "heading": "4. Assinaturas e Cobrança",
+          "body": "O Eye Learn oferece um plano gratuito e planos de assinatura pagos, cobrados mensal ou anualmente. As assinaturas pagas renovam automaticamente ao final de cada período de cobrança, a menos que sejam canceladas antes da data de renovação. Você pode cancelar a renovação automática a qualquer momento nas configurações de cobrança da sua conta, o que interrompe cobranças futuras enquanto mantém seu acesso até o fim do período já pago. Os preços são exibidos na sua moeda local quando disponível e podem mudar mediante aviso; mudanças não afetarão um período de cobrança que você já tenha pago."
+        },
+        "refund": {
+          "heading": "5. Seu Direito de Cancelar e Ser Reembolsado (Garantia de 7 Dias)",
+          "body": "Se você não estiver satisfeito com sua assinatura paga por qualquer motivo, pode cancelá-la e receber reembolso integral dentro de 7 dias corridos da sua compra, sem necessidade de justificativa. Isso vale para todos os clientes do Eye Learn, independentemente de onde você mora. Para exercer esse direito, cancele nas configurações de cobrança da sua conta dentro do prazo de 7 dias, ou entre em contato conosco em eyelearns@gmail.com; o valor cobrado será reembolsado integralmente ao seu método de pagamento original e sua assinatura será cancelada imediatamente. Após o prazo de 7 dias, os cancelamentos interrompem a renovação automática, mas não geram reembolso automático do período de cobrança vigente, e você mantém acesso até o fim desse período."
+        },
+        "ai": {
+          "heading": "6. Conteúdo Gerado por IA",
+          "body": "O Eye Learn usa serviços de inteligência artificial de terceiros para ajudar a gerar conteúdo de flashcards a partir do texto que você fornece. O conteúdo gerado por IA pode conter erros, estar incompleto ou, ocasionalmente, ser impreciso. Ele é fornecido para apoiar seus estudos, não como substituto de material educacional verificado, e você deve revisar os flashcards gerados por IA antes de confiar neles."
+        },
+        "acceptableUse": {
+          "heading": "7. Uso Aceitável",
+          "body": "Você concorda em não usar o Serviço para enviar conteúdo ilegal, que infrinja direitos de terceiros ou prejudicial, tentar obter acesso não autorizado ao Serviço ou às contas de outros usuários, interferir no funcionamento normal do Serviço, ou usar o Serviço de forma que viole qualquer lei aplicável."
+        },
+        "termination": {
+          "heading": "8. Encerramento de Conta",
+          "body": "Você pode excluir sua conta a qualquer momento nas configurações da sua conta; isso remove permanentemente seus dados conforme descrito em nossa Política de Privacidade e cancela qualquer assinatura ativa. Podemos suspender ou encerrar uma conta que viole estes Termos ou que consideremos razoavelmente representar um risco ao Serviço ou a outros usuários, com aviso prévio quando possível."
+        },
+        "ip": {
+          "heading": "9. Propriedade Intelectual",
+          "body": "O Eye Learn e seu conteúdo original, recursos e identidade visual pertencem ao seu criador. Você mantém a propriedade do conteúdo de estudo que criar ou enviar. Ao usar o Serviço, você nos concede uma licença limitada para armazenar, processar e exibir esse conteúdo unicamente para fornecer o Serviço a você."
+        },
+        "liability": {
+          "heading": "10. Isenções de Responsabilidade e Limitação de Responsabilidade",
+          "body": "O Serviço é fornecido \"como está\", sem garantias de qualquer tipo, expressas ou implícitas. Na máxima extensão permitida por lei, o Eye Learn não será responsável por quaisquer danos indiretos, incidentais ou consequenciais decorrentes do uso do Serviço. Nada nestes Termos limita qualquer direito que não possa ser limitado pela legislação de proteção ao consumidor aplicável."
+        },
+        "changes": {
+          "heading": "11. Alterações Destes Termos",
+          "body": "Podemos atualizar estes Termos periodicamente. Se fizermos alterações relevantes, avisaremos você, por exemplo por e-mail ou aviso no aplicativo, antes que as alterações entrem em vigor. Continuar usando o Serviço após as alterações entrarem em vigor significa que você aceita os Termos atualizados."
+        },
+        "governingLaw": {
+          "heading": "12. Legislação Aplicável",
+          "body": "Estes Termos são regidos pelas leis do Brasil. Qualquer disputa decorrente destes Termos ou do seu uso do Serviço estará sujeita à jurisdição dos tribunais brasileiros, sem prejuízo de quaisquer direitos de proteção ao consumidor de caráter obrigatório que você possa ter conforme a lei do seu país de residência."
+        },
+        "contact": {
+          "heading": "13. Contato",
+          "body": "Dúvidas sobre estes Termos podem ser enviadas para eyelearns@gmail.com."
+        }
+      }
+    },
+    "privacy": {
+      "metaTitle": "Política de Privacidade",
+      "metaDescription": "Como o Eye Learn coleta, usa e protege suas informações, incluindo o que é compartilhado com Stripe, Resend, Google e nossos provedores de IA.",
+      "title": "Política de Privacidade",
+      "lastUpdated": "Última atualização: 3 de setembro de 2026",
+      "sections": {
+        "intro": {
+          "heading": "1. Introdução",
+          "body": "Esta Política de Privacidade explica como o Eye Learn (\"nós\"), um serviço operado de forma independente, coleta, usa e protege suas informações quando você usa o Serviço. Ela deve ser lida em conjunto com nossos Termos de Uso."
+        },
+        "collect": {
+          "heading": "2. Informações Que Coletamos",
+          "body": "Coletamos as informações que você nos fornece diretamente: seu nome, nome de usuário, endereço de e-mail e senha ao se cadastrar; os flashcards, coleções e conteúdo de estudo que você cria; e o texto que você digita ao solicitar flashcards gerados por IA, junto com qualquer contexto de coleção usado para gerá-los. Também coletamos informações geradas pelo seu uso do Serviço, como atividade de estudo e histórico de revisões, usadas para viabilizar o agendamento por repetição espaçada e o acompanhamento de progresso."
+        },
+        "use": {
+          "heading": "3. Como Usamos Suas Informações",
+          "body": "Usamos suas informações para fornecer e melhorar o Serviço: criar e proteger sua conta, armazenar e sincronizar seu conteúdo de estudo, agendar revisões, gerar flashcards por IA a seu pedido, processar pagamentos, enviar e-mails relacionados à conta, como mensagens de verificação e redefinição de senha, e responder a solicitações de suporte."
+        },
+        "share": {
+          "heading": "4. Com Quem Compartilhamos Suas Informações",
+          "intro": "Não vendemos suas informações pessoais. Compartilhamos informações com os seguintes terceiros, apenas conforme necessário para fornecer o Serviço:",
+          "stripe": "Stripe, para processar pagamentos de assinatura. A Stripe recebe os dados de pagamento diretamente; nunca vemos ou armazenamos o número completo do seu cartão.",
+          "resend": "Resend, para enviar e-mails transacionais como verificação de conta, redefinição de senha e avisos de cobrança.",
+          "google": "Google, caso você escolha entrar com sua conta Google, para verificar sua identidade.",
+          "ai": "Anthropic (Claude), Google (Gemini) e Groq, para gerar flashcards por IA. Quando você solicita flashcards gerados por IA, o texto da solicitação de aprendizado que você digita e qualquer contexto de coleção fornecido são enviados a um desses provedores para gerar os flashcards. Evite inserir informações pessoais sensíveis em uma solicitação de geração por IA.",
+          "outro": "Cada um desses provedores processa suas informações de acordo com sua própria política de privacidade e apenas para a finalidade descrita acima."
+        },
+        "cookies": {
+          "heading": "5. Cookies e Análise de Dados",
+          "body": "O Eye Learn usa apenas cookies httpOnly estritamente necessários para manter você conectado; não usamos cookies de rastreamento ou publicidade. Usamos o Vercel Web Analytics, que não usa cookies e não coleta identificadores pessoais, para entender o uso geral do site de forma agregada. Como não usamos cookies de rastreamento nem coletamos dados pessoais para análise, nenhum aviso de consentimento de cookies é exibido."
+        },
+        "retention": {
+          "heading": "6. Retenção de Dados",
+          "body": "Mantemos as informações da sua conta e conteúdo de estudo enquanto sua conta estiver ativa. Se você excluir sua conta, seus dados, incluindo flashcards, coleções e histórico de estudo, são excluídos permanentemente, e os arquivos de mídia associados são removidos do armazenamento."
+        },
+        "rights": {
+          "heading": "7. Seus Direitos",
+          "body": "Você pode acessar e corrigir as informações da sua conta a qualquer momento nas configurações da conta. Você pode excluir permanentemente sua conta e todos os dados associados usando o recurso de exclusão de conta nas configurações. Dependendo de onde você mora, você pode ter direitos adicionais previstos em lei, como o direito de solicitar uma cópia dos seus dados; entre em contato conosco em eyelearns@gmail.com para exercer esses direitos."
+        },
+        "security": {
+          "heading": "8. Segurança dos Dados",
+          "body": "Adotamos medidas técnicas e organizacionais razoáveis para proteger suas informações, incluindo conexões criptografadas e controles de acesso. Nenhum método de transmissão ou armazenamento é completamente seguro, e não podemos garantir segurança absoluta."
+        },
+        "children": {
+          "heading": "9. Privacidade de Crianças",
+          "body": "O Eye Learn não é direcionado a crianças menores de 13 anos, de acordo com a idade mínima descrita em nossos Termos de Uso. Não coletamos intencionalmente informações pessoais de crianças menores de 13 anos. Se você acredita que uma criança nos forneceu informações pessoais, entre em contato em eyelearns@gmail.com para que possamos excluí-las."
+        },
+        "transfers": {
+          "heading": "10. Transferências Internacionais de Dados",
+          "body": "Alguns dos terceiros descritos acima, incluindo nossos provedores de IA, pagamento e e-mail, estão sediados nos Estados Unidos. Se você está localizado no Brasil ou fora dos Estados Unidos, suas informações podem ser transferidas e processadas nos Estados Unidos ou em outros países com leis de proteção de dados diferentes das do seu país. Tomamos medidas para garantir que esses provedores ofereçam um nível adequado de proteção aos seus dados."
+        },
+        "changes": {
+          "heading": "11. Alterações Desta Política",
+          "body": "Podemos atualizar esta Política de Privacidade periodicamente. Se fizermos alterações relevantes, avisaremos você antes que entrem em vigor, da mesma forma que faríamos para alterações em nossos Termos de Uso."
+        },
+        "contact": {
+          "heading": "12. Contato",
+          "body": "Dúvidas sobre esta Política de Privacidade, ou solicitações relacionadas aos seus dados pessoais nos termos da LGPD ou de outra lei aplicável, podem ser enviadas para eyelearns@gmail.com."
+        }
+      }
+    }
+  },
   "common": {
     "switchToLight": "Mudar para tema claro",
     "switchToDark": "Mudar para tema escuro",
@@ -195,6 +318,7 @@
     "title": "Planos simples que crescem com você",
     "subtitle": "Comece de graça. Faça upgrade quando quiser mais cartões gerados por IA e insights mais profundos.",
     "subtitleEmbedded": "Faça upgrade quando quiser mais cartões gerados por IA e insights mais profundos.",
+    "refundGuarantee": "Protegido por uma garantia de reembolso de 7 dias. Sem perguntas.",
     "mostPopular": "Mais popular",
     "free": "Grátis",
     "perMonth": "/ mês",
@@ -259,6 +383,10 @@
       "emailPlaceholder": "voce@exemplo.com",
       "passwordLabel": "Senha",
       "confirmPasswordLabel": "Confirmar senha",
+      "acceptTermsPrefix": "Eu concordo com os",
+      "termsLinkLabel": "Termos de Uso",
+      "acceptTermsMiddle": "e a",
+      "privacyLinkLabel": "Política de Privacidade",
       "submit": "Criar conta",
       "submitting": "Criando conta…",
       "haveAccount": "Já tem uma conta?",
@@ -316,7 +444,8 @@
       "usernameInvalid": "Use apenas letras, números e @/./+/-/_.",
       "emailInvalid": "Digite um e-mail válido.",
       "passwordMin": "A senha deve ter pelo menos 8 caracteres.",
-      "passwordMismatch": "As senhas não coincidem."
+      "passwordMismatch": "As senhas não coincidem.",
+      "termsRequired": "Você deve aceitar os Termos de Uso e a Política de Privacidade."
     },
     "errors": {
       "generic": "Algo deu errado. Tente novamente.",
@@ -332,6 +461,8 @@
     "cta": "Criar minha conta"
   },
   "footer": {
+    "termsLink": "Termos de Uso",
+    "privacyLink": "Política de Privacidade",
     "copyright": "© {year} Eye Learn. Todos os direitos reservados."
   },
   "notFound": {
@@ -360,6 +491,17 @@
       "switchToMonthly": "Mudar para mensal",
       "upsell": "Faça upgrade para desbloquear conjuntos de estudo ilimitados e cartões gerados por IA.",
       "upsellCta": "Ver planos"
+    },
+    "cancelRefund": {
+      "triggerButton": "Cancelar e receber reembolso integral (válido até {date})",
+      "dialogTitle": "Cancelar sua assinatura e receber reembolso integral?",
+      "warningText": "Você está dentro do prazo de 7 dias de reembolso, então receberá o valor integral de volta e sua assinatura será cancelada imediatamente. Esta ação não pode ser desfeita.",
+      "confirmButton": "Cancelar e me reembolsar",
+      "cancelButton": "Manter minha assinatura",
+      "submitting": "Processando...",
+      "successToast": "Sua assinatura foi cancelada e reembolsada.",
+      "errorGeneric": "Algo deu errado. Tente novamente ou entre em contato com o suporte.",
+      "errorWindowExpired": "Seu prazo de 7 dias para reembolso já passou."
     },
     "redirecting": "Redirecionando para o checkout seguro..."
   },

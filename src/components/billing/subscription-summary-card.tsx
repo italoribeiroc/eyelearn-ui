@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { PricingSection } from "@/components/marketing/pricing-section";
 import type { SubscriptionStatus } from "@/lib/api/types";
 import { BillingActionButton } from "./billing-action-button";
+import { CancelRefundDialog } from "./cancel-refund-dialog";
 import { PlanUpgradeDialog } from "./plan-upgrade-dialog";
 
 export async function SubscriptionSummaryCard({
@@ -24,6 +25,9 @@ export async function SubscriptionSummaryCard({
         new Date(subscription.current_period_end),
       )
     : null;
+  const refundEligible =
+    subscription.refund_eligible_until !== null &&
+    new Date(subscription.refund_eligible_until) > new Date();
 
   return (
     <div className="rounded-lg border border-border bg-surface p-5 shadow-[var(--shadow-soft)]">
@@ -60,6 +64,9 @@ export async function SubscriptionSummaryCard({
             <BillingActionButton mode="portal" changePlan variant="outline" size="sm">
               {subscription.plan === "monthly" ? t("switchToAnnual") : t("switchToMonthly")}
             </BillingActionButton>
+            {refundEligible ? (
+              <CancelRefundDialog eligibleUntil={subscription.refund_eligible_until!} />
+            ) : null}
           </>
         )}
       </div>
