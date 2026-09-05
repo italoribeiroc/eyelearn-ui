@@ -1,9 +1,30 @@
+"use client";
+
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { CheckCircle2, Flame, Target } from "lucide-react";
 import { MockFlashcard } from "@/components/shared/mock-flashcard";
 
+// Illustrative baseline: this mock set pretends the visitor has already
+// studied 13 of today's 20-card goal before touching anything. Flipping a
+// demo card to its answer counts as "studying" it, nudging both numbers up;
+// flipping back undoes it. Capped at the goal so a visitor can't overflow
+// past 20/20 with only 3 cards.
+const BASE_STUDIED = 13;
+const DAILY_GOAL = 20;
+const DEMO_CARDS = ["card1", "card2", "card3"] as const;
+
 export function ProductPreview() {
   const t = useTranslations("productPreview");
+  const [flipped, setFlipped] = useState<Record<string, boolean>>({});
+
+  function toggleCard(id: string) {
+    setFlipped((prev) => ({ ...prev, [id]: !prev[id] }));
+  }
+
+  const flippedCount = Object.values(flipped).filter(Boolean).length;
+  const studied = Math.min(BASE_STUDIED + flippedCount, DAILY_GOAL);
+  const progressPercent = (studied / DAILY_GOAL) * 100;
 
   return (
     <section className="py-16 sm:py-24">
@@ -38,13 +59,17 @@ export function ProductPreview() {
           </div>
 
           <div className="grid gap-4 p-6 sm:grid-cols-3">
-            <MockFlashcard eyebrow={t("card1.eyebrow")} question={t("card1.question")} />
-            <MockFlashcard
-              eyebrow={t("card2.eyebrow")}
-              question={t("card2.question")}
-              answer={t("card2.answer")}
-            />
-            <MockFlashcard eyebrow={t("card3.eyebrow")} question={t("card3.question")} />
+            {DEMO_CARDS.map((id) => (
+              <MockFlashcard
+                key={id}
+                eyebrow={t(`${id}.eyebrow`)}
+                question={t(`${id}.question`)}
+                answer={t(`${id}.answer`)}
+                flipped={!!flipped[id]}
+                onFlip={() => toggleCard(id)}
+                flipHint={t("tapToFlip")}
+              />
+            ))}
           </div>
 
           <div className="border-t border-border px-6 py-5">
@@ -53,10 +78,15 @@ export function ProductPreview() {
                 <CheckCircle2 className="size-4 text-success" aria-hidden="true" />
                 {t("progressLabel")}
               </span>
-              <span className="text-foreground-muted">{t("progressValue")}</span>
+              <span className="text-foreground-muted">
+                {t("progressValue", { studied, total: DAILY_GOAL })}
+              </span>
             </div>
             <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-surface-muted">
-              <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-brand-turquoise to-brand-mint" />
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-brand-turquoise to-brand-mint transition-all duration-300"
+                style={{ width: `${progressPercent}%` }}
+              />
             </div>
           </div>
         </div>

@@ -182,6 +182,25 @@
   }
 }
 
+/* Confetti burst (HeroPreviewCard). Each piece sets --confetti-drift
+   itself for a bit of random horizontal scatter; prefers-reduced-motion
+   is already handled globally below (near-zero animation-duration), no
+   separate override needed here. */
+@keyframes confetti-fall {
+  0% {
+    transform: translate(0, -6px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--confetti-drift, 0px), 160px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.animate-confetti-fall {
+  animation: confetti-fall 1s ease-in forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

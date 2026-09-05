@@ -177,7 +177,10 @@
       "streak": "6-day streak",
       "progress": "12 / 20 cards",
       "floatingLabel": "Today's goal",
-      "floatingValue": "80% done"
+      "floatingValue": "80% done",
+      "answer": "The mitochondria.",
+      "progressDone": "20 / 20 cards",
+      "floatingValueDone": "100% done"
     }
   },
   "valueProp": {
@@ -230,7 +233,8 @@
     "card1": {
       "eyebrow": "Tap to reveal",
       "question": "What year did the Berlin Wall fall?",
-      "hint": "Tap to reveal the answer"
+      "hint": "Tap to reveal the answer",
+      "answer": "1989"
     },
     "card2": {
       "eyebrow": "Multiple choice",
@@ -243,8 +247,12 @@
     "card3": {
       "eyebrow": "Type the answer",
       "question": "Which chamber pumps blood to the lungs?",
-      "placeholder": "Type your answer…"
-    }
+      "placeholder": "Type your answer…",
+      "answer": "Right ventricle"
+    },
+    "correctFeedback": "Correct!",
+    "incorrectFeedbackWithAnswer": "Not quite. The correct answer is \"{answer}\".",
+    "submitButton": "Check"
   },
   "streakShowcase": {
     "title": "Small daily sessions build a habit that sticks",
@@ -261,7 +269,8 @@
     "dailyGoal": "Daily goal: 20 cards",
     "card1": {
       "eyebrow": "New",
-      "question": "What is the function of the mitochondria?"
+      "question": "What is the function of the mitochondria?",
+      "answer": "It produces ATP, the cell's main energy currency, through cellular respiration."
     },
     "card2": {
       "eyebrow": "Reviewing",
@@ -270,11 +279,13 @@
     },
     "card3": {
       "eyebrow": "Mastered",
-      "question": "What does DNA stand for?"
+      "question": "What does DNA stand for?",
+      "answer": "Deoxyribonucleic acid."
     },
     "progressLabel": "Today's progress",
-    "progressValue": "13 of 20 cards",
-    "disclaimer": "Illustrative preview of the Eye Learn study experience."
+    "progressValue": "{studied} of {total} cards",
+    "disclaimer": "Illustrative preview of the Eye Learn study experience.",
+    "tapToFlip": "Tap to flip"
   },
   "benefits": {
     "title": "Why people choose Eye Learn",
@@ -699,7 +710,8 @@
       "backToPicker": "Back to collection picker",
       "dailyStudyTitle": "Daily study",
       "customStudyTitle": "Custom study",
-      "progress": "Card {current} of {total}",
+      "progressLabel": "Progress",
+      "progressCount": "{current} of {total} cards",
       "showAnswer": "Show answer",
       "ratingRecorded": "Got it. Loading the next card...",
       "ratings": {
@@ -716,7 +728,13 @@
       "nextCard": "Next card",
       "finish": "Finish session",
       "sessionCompleteTitle": "Session complete",
-      "sessionCompleteDescription": "You reviewed {count} cards. Nice work."
+      "sessionCompleteDescription": "You reviewed {count} cards. Nice work.",
+      "states": {
+        "new": "New",
+        "learning": "Learning",
+        "review": "Review",
+        "relearning": "Relearning"
+      }
     },
     "importExport": {
       "importButton": "Import",

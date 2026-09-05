@@ -12,9 +12,21 @@ import type {
   FlashcardMediaItem,
   ReviewRating,
   ReviewResult,
+  ReviewSchedulingState,
   ReviewSubmission,
   StudyQueueItem,
 } from "@/lib/api/types";
+
+// Same idea as RATING_STYLES below: color signals meaning at a glance.
+// "new"/"learning" cards haven't stuck yet (mint/warning), "review" is a
+// card that has graduated to the long-term schedule (success), and
+// "relearning" flags one that was forgotten and needs attention (error).
+const STATE_BADGE_STYLES: Record<ReviewSchedulingState, string> = {
+  new: "bg-brand-mint/15 text-brand-turquoise",
+  learning: "bg-warning/10 text-warning",
+  review: "bg-success/10 text-success",
+  relearning: "bg-error/10 text-error",
+};
 
 export const RATINGS: { value: ReviewRating; labelKey: string }[] = [
   { value: 1, labelKey: "again" },
@@ -72,6 +84,7 @@ export function StudySession({
 
   const item = initialQueue[index];
   const isDone = index >= initialQueue.length;
+  const completed = index + (result ? 1 : 0);
 
   function resetCardState() {
     setRevealed(false);
@@ -117,19 +130,33 @@ export function StudySession({
     <div className="mx-auto max-w-xl space-y-6">
       <div>
         <p className="text-sm text-foreground-muted">{title}</p>
-        <p className="mt-1 text-xs font-medium text-foreground-muted">
-          {t("progress", { current: index + 1, total: initialQueue.length })}
-        </p>
-        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-surface-muted">
+        <div className="mt-2 flex items-center justify-between text-sm">
+          <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
+            <CheckCircle2 className="size-4 text-success" aria-hidden="true" />
+            {t("progressLabel")}
+          </span>
+          <span className="text-foreground-muted">
+            {t("progressCount", { current: completed, total: initialQueue.length })}
+          </span>
+        </div>
+        <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-surface-muted">
           <div
-            className="h-full rounded-full bg-brand-turquoise transition-all"
-            style={{ width: `${((index + (result ? 1 : 0)) / initialQueue.length) * 100}%` }}
+            className="h-full rounded-full bg-gradient-to-r from-brand-turquoise to-brand-mint transition-all"
+            style={{ width: `${(completed / initialQueue.length) * 100}%` }}
           />
         </div>
       </div>
 
       <div className="rounded-lg border border-border bg-surface p-6 shadow-[var(--shadow-soft)]">
-        <p className="font-heading text-xl font-semibold text-foreground">{item.flashcard.prompt}</p>
+        <span
+          className={cn(
+            "rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide",
+            STATE_BADGE_STYLES[item.state],
+          )}
+        >
+          {t(`states.${item.state}`)}
+        </span>
+        <p className="mt-4 font-heading text-xl font-semibold text-foreground">{item.flashcard.prompt}</p>
         <MediaDisplay items={item.flashcard.media.filter((media) => media.side === "prompt")} />
 
         {item.flashcard.card_type === "basic" ? (

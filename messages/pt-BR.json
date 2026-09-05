@@ -177,7 +177,10 @@
       "streak": "Sequência de 6 dias",
       "progress": "12 / 20 cartões",
       "floatingLabel": "Meta de hoje",
-      "floatingValue": "80% concluído"
+      "floatingValue": "80% concluído",
+      "answer": "A mitocôndria.",
+      "progressDone": "20 / 20 cartões",
+      "floatingValueDone": "100% concluído"
     }
   },
   "valueProp": {
@@ -230,7 +233,8 @@
     "card1": {
       "eyebrow": "Toque para revelar",
       "question": "Em que ano o Muro de Berlim caiu?",
-      "hint": "Toque para revelar a resposta"
+      "hint": "Toque para revelar a resposta",
+      "answer": "1989"
     },
     "card2": {
       "eyebrow": "Múltipla escolha",
@@ -243,8 +247,12 @@
     "card3": {
       "eyebrow": "Digite a resposta",
       "question": "Qual câmara bombeia sangue para os pulmões?",
-      "placeholder": "Digite sua resposta…"
-    }
+      "placeholder": "Digite sua resposta…",
+      "answer": "Ventrículo direito"
+    },
+    "correctFeedback": "Correto!",
+    "incorrectFeedbackWithAnswer": "Quase. A resposta certa é \"{answer}\".",
+    "submitButton": "Verificar"
   },
   "streakShowcase": {
     "title": "Pequenas sessões diárias criam um hábito duradouro",
@@ -261,7 +269,8 @@
     "dailyGoal": "Meta diária: 20 cartões",
     "card1": {
       "eyebrow": "Novo",
-      "question": "Qual é a função da mitocôndria?"
+      "question": "Qual é a função da mitocôndria?",
+      "answer": "Ela produz ATP, a principal fonte de energia da célula, através da respiração celular."
     },
     "card2": {
       "eyebrow": "Revisando",
@@ -270,11 +279,13 @@
     },
     "card3": {
       "eyebrow": "Dominado",
-      "question": "O que significa DNA?"
+      "question": "O que significa DNA?",
+      "answer": "Ácido desoxirribonucleico."
     },
     "progressLabel": "Progresso de hoje",
-    "progressValue": "13 de 20 cartões",
-    "disclaimer": "Prévia ilustrativa da experiência de estudo do Eye Learn."
+    "progressValue": "{studied} de {total} cartões",
+    "disclaimer": "Prévia ilustrativa da experiência de estudo do Eye Learn.",
+    "tapToFlip": "Toque para virar"
   },
   "benefits": {
     "title": "Por que escolher o Eye Learn",
@@ -699,7 +710,8 @@
       "backToPicker": "Voltar à seleção de coleções",
       "dailyStudyTitle": "Estudo diário",
       "customStudyTitle": "Estudo personalizado",
-      "progress": "Cartão {current} de {total}",
+      "progressLabel": "Progresso",
+      "progressCount": "{current} de {total} cartões",
       "showAnswer": "Mostrar resposta",
       "ratingRecorded": "Entendido. Carregando o próximo cartão...",
       "ratings": {
@@ -716,7 +728,13 @@
       "nextCard": "Próximo cartão",
       "finish": "Finalizar sessão",
       "sessionCompleteTitle": "Sessão concluída",
-      "sessionCompleteDescription": "Você revisou {count} cartões. Bom trabalho."
+      "sessionCompleteDescription": "Você revisou {count} cartões. Bom trabalho.",
+      "states": {
+        "new": "Novo",
+        "learning": "Aprendendo",
+        "review": "Revisão",
+        "relearning": "Reaprendendo"
+      }
     },
     "importExport": {
       "importButton": "Importar",

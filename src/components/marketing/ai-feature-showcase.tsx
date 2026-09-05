@@ -1,9 +1,26 @@
+"use client";
+
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Sparkles, Wand2 } from "lucide-react";
 import { MockFlashcard } from "@/components/shared/mock-flashcard";
 
+// "7" is the pH of a neutral solution -- the second of the four options
+// (card2.option1..4) below.
+const CARD2_CORRECT_OPTION = 1;
+
 export function AiFeatureShowcase() {
   const t = useTranslations("aiFeature");
+  const [card1Flipped, setCard1Flipped] = useState(false);
+  const [card2Selected, setCard2Selected] = useState<number | null>(null);
+  const [card3Value, setCard3Value] = useState("");
+  const [card3Submitted, setCard3Submitted] = useState(false);
+
+  const card3Answer = t("card3.answer");
+  const card3Correct = card3Value.trim().toLowerCase() === card3Answer.trim().toLowerCase();
+  const card3Feedback = card3Correct
+    ? t("correctFeedback")
+    : t("incorrectFeedbackWithAnswer", { answer: card3Answer });
 
   return (
     <section className="border-t border-border py-16 sm:py-24">
@@ -34,18 +51,31 @@ export function AiFeatureShowcase() {
             question={t("card1.question")}
             variant="reveal"
             revealHint={t("card1.hint")}
+            answer={t("card1.answer")}
+            flipped={card1Flipped}
+            onFlip={() => setCard1Flipped((f) => !f)}
           />
           <MockFlashcard
             eyebrow={t("card2.eyebrow")}
             question={t("card2.question")}
             variant="choice"
             options={[t("card2.option1"), t("card2.option2"), t("card2.option3"), t("card2.option4")]}
+            selectedOption={card2Selected}
+            onSelect={setCard2Selected}
+            correctOption={CARD2_CORRECT_OPTION}
           />
           <MockFlashcard
             eyebrow={t("card3.eyebrow")}
             question={t("card3.question")}
             variant="type"
             typePlaceholder={t("card3.placeholder")}
+            value={card3Value}
+            onChange={setCard3Value}
+            onSubmit={() => setCard3Submitted(true)}
+            submitted={card3Submitted}
+            correct={card3Correct}
+            feedback={card3Feedback}
+            submitLabel={t("submitButton")}
           />
         </div>
       </div>

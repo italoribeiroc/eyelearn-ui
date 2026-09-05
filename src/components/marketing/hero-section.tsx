@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
-import { Flame, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
+import { HeroPreviewCard } from "./hero-preview-card";
 import { HeroWordMorph } from "./hero-word-morph";
 
 export function HeroSection() {
@@ -53,43 +53,7 @@ export function HeroSection() {
           <p className="mt-4 text-sm text-foreground-muted">{t("ctaHint")}</p>
         </div>
 
-        <div className="relative mx-auto w-full max-w-sm">
-          <div className="rounded-lg border border-border bg-surface p-6 shadow-[var(--shadow-soft-lg)]">
-            <div className="flex items-center justify-between">
-              <span className="rounded-full bg-brand-mint/15 px-3 py-1 text-xs font-semibold text-brand-turquoise">
-                {t("previewCard.tag")}
-              </span>
-              <Sparkles className="size-4 text-brand-accent" aria-hidden="true" />
-            </div>
-            <p className="mt-5 font-heading text-xl font-semibold text-foreground">
-              {t("previewCard.question")}
-            </p>
-            <p className="mt-3 text-sm text-foreground-muted">
-              {t("previewCard.hint")}
-            </p>
-            <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
-              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-accent">
-                <Flame className="size-4" aria-hidden="true" />
-                {t("previewCard.streak")}
-              </span>
-              <span className="text-xs text-foreground-muted">
-                {t("previewCard.progress")}
-              </span>
-            </div>
-          </div>
-
-          <div
-            aria-hidden="true"
-            className="absolute -bottom-6 -left-6 hidden rotate-[-6deg] rounded-lg border border-border bg-surface px-4 py-3 shadow-[var(--shadow-soft)] sm:block"
-          >
-            <p className="text-xs font-medium text-foreground-muted">
-              {t("previewCard.floatingLabel")}
-            </p>
-            <p className="font-heading text-lg font-bold text-brand-turquoise">
-              {t("previewCard.floatingValue")}
-            </p>
-          </div>
-        </div>
+        <HeroPreviewCard />
       </div>
     </section>
   );
