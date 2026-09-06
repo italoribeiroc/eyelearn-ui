@@ -150,7 +150,7 @@ export function HeroPreviewCard() {
 
       <div
         aria-hidden="true"
-        className="absolute -bottom-6 -left-6 hidden rotate-[-6deg] rounded-lg border border-border bg-surface px-4 py-3 shadow-[var(--shadow-soft)] sm:block"
+        className="absolute -bottom-6 left-2 rotate-[-6deg] rounded-lg border border-border bg-surface px-4 py-3 shadow-[var(--shadow-soft)] sm:-left-6"
       >
         <p className="text-xs font-medium text-foreground-muted">{t("floatingLabel")}</p>
         <p className="font-heading text-lg font-bold text-brand-turquoise">
