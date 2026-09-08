@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
-import { DjangoApiError } from "@/lib/api/django-client";
 import { getValidAccessToken } from "@/lib/auth/session";
-import { createFlashcard } from "@/lib/flashcards/api";
-import { parseApkg } from "@/lib/flashcards/apkg";
-import { parseDelimitedImport, type ImportRow } from "@/lib/flashcards/import";
+import { createFlashcardsBulk } from "@/lib/flashcards/api";
+import { MAX_IMPORT_BATCH_SIZE, type ImportRow } from "@/lib/flashcards/import";
 
-const MAX_IMPORT_FILE_BYTES = 20 * 1024 * 1024; // 20MB
+// A bulk-create request for a full batch normally finishes in well under a
+// second (it's one Django request doing DB writes, not one request per
+// card), but this still gives it room on a slow connection. 60s is the max
+// maxDuration can reach on Vercel's Hobby tier.
+export const maxDuration = 60;
 
 export type ImportSummary = {
   created: number;
@@ -14,12 +16,6 @@ export type ImportSummary = {
   /** True once the account's free-plan flashcard cap stopped the import early. */
   limitReached: boolean;
 };
-
-/** Newline-delimited JSON events streamed to the client as the import runs. */
-export type ImportStreamEvent =
-  | { type: "start"; total: number }
-  | { type: "progress"; done: number; total: number }
-  | { type: "done"; summary: ImportSummary };
 
 function isValidRow(row: ImportRow): string | null {
   if (!row.prompt.trim()) return "Empty prompt";
@@ -39,101 +35,81 @@ function isValidRow(row: ImportRow): string | null {
   return null;
 }
 
+/**
+ * Takes a batch of already-parsed rows -- never a raw file. The file itself
+ * (.apkg or .csv/.tsv/.txt) is parsed entirely in the browser (see
+ * import-export-menu.tsx) and split into batches of at most
+ * MAX_IMPORT_BATCH_SIZE rows before ever reaching this route, specifically
+ * so a large deck's actual file bytes (which can be tens of MB once a deck
+ * has embedded audio/images, even though that media itself is never
+ * uploaded here) never have to cross a serverless function's request-body
+ * size limit -- only the much smaller extracted text does, in small
+ * batches. Each batch's valid rows are then created via ONE Django request
+ * (flashcard_bulk_create) rather than one request per card -- looping the
+ * single-create endpoint here used to mean hundreds or thousands of Django
+ * requests for one big import, which blew through the per-user rate limit
+ * (120/min) long before a real deck finished. The client calls this once
+ * per batch and aggregates the results itself; this route knows nothing
+ * about the import as a whole, only the batch it was given.
+ */
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const access = await getValidAccessToken();
   if (!access) {
     return NextResponse.json({ detail: "Not authenticated." }, { status: 401 });
   }
 
-  const contentLength = Number(request.headers.get("content-length") ?? "0");
-  if (contentLength > MAX_IMPORT_FILE_BYTES) {
-    return NextResponse.json({ detail: "File is too large (max 20MB)." }, { status: 413 });
-  }
-
   const { id } = await params;
   const collectionId = Number(id);
 
-  const formData = await request.formData();
-  const file = formData.get("file");
-  if (!(file instanceof File)) {
-    return NextResponse.json({ detail: "No file provided." }, { status: 400 });
+  const body = (await request.json().catch(() => null)) as { rows?: unknown } | null;
+  if (!body || !Array.isArray(body.rows)) {
+    return NextResponse.json({ detail: "No rows provided." }, { status: 400 });
   }
-  if (file.size > MAX_IMPORT_FILE_BYTES) {
-    return NextResponse.json({ detail: "File is too large (max 20MB)." }, { status: 413 });
+  if (body.rows.length > MAX_IMPORT_BATCH_SIZE) {
+    return NextResponse.json({ detail: `A batch can contain at most ${MAX_IMPORT_BATCH_SIZE} rows.` }, { status: 400 });
   }
-
-  const filename = file.name.toLowerCase();
-  let rows: ImportRow[];
+  const rows = body.rows as ImportRow[];
   const summary: ImportSummary = { created: 0, skipped: 0, errors: [], limitReached: false };
 
-  try {
-    if (filename.endsWith(".apkg")) {
-      const result = await parseApkg(Buffer.from(await file.arrayBuffer()));
-      rows = result.rows;
-      summary.skipped += result.skippedNotes;
-      if (result.skippedNotes > 0) {
-        summary.errors.push(
-          `${result.skippedNotes} note(s) skipped (cloze deletions or note types with more than 2 fields aren't supported)`,
-        );
-      }
+  const validRows: ImportRow[] = [];
+  for (const row of rows) {
+    const invalidReason = isValidRow(row);
+    if (invalidReason) {
+      summary.skipped += 1;
+      if (summary.errors.length < 20) summary.errors.push(invalidReason);
     } else {
-      rows = parseDelimitedImport(await file.text());
+      validRows.push(row);
     }
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Could not read that file.";
-    return NextResponse.json({ detail: message }, { status: 400 });
   }
 
-  // Streamed as newline-delimited JSON so the client can render real
-  // progress -- each row is its own sequential Django round-trip, which is
-  // exactly where big imports spend most of their time.
-  const encoder = new TextEncoder();
-  const total = rows.length;
-  const stream = new ReadableStream<Uint8Array>({
-    async start(controller) {
-      controller.enqueue(encoder.encode(`${JSON.stringify({ type: "start", total })}\n`));
-
-      for (const row of rows) {
-        const invalidReason = isValidRow(row);
-        if (invalidReason) {
-          summary.skipped += 1;
-          if (summary.errors.length < 20) summary.errors.push(invalidReason);
-        } else {
-          try {
-            await createFlashcard(collectionId, {
-              card_type: row.card_type,
-              prompt: row.prompt.trim(),
-              answer: row.answer?.trim(),
-              options: row.options,
-              accepted_answers: row.accepted_answers,
-            });
-            summary.created += 1;
-          } catch (error) {
-            if (error instanceof DjangoApiError && error.status === 402) {
-              // Free-plan cap hit -- every remaining row would 402 too, so
-              // stop attempting them and count them all as skipped.
-              summary.limitReached = true;
-              summary.skipped += rows.length - (summary.created + summary.skipped);
-              break;
-            }
-            summary.skipped += 1;
-            if (summary.errors.length < 20) summary.errors.push(`"${row.prompt}": failed to save`);
-          }
-        }
-
-        controller.enqueue(
-          encoder.encode(
-            `${JSON.stringify({ type: "progress", done: summary.created + summary.skipped, total })}\n`,
-          ),
-        );
+  if (validRows.length > 0) {
+    try {
+      const result = await createFlashcardsBulk(
+        collectionId,
+        validRows.map((row) => ({
+          card_type: row.card_type,
+          prompt: row.prompt.trim(),
+          answer: row.answer?.trim(),
+          options: row.options,
+          accepted_answers: row.accepted_answers,
+        })),
+      );
+      summary.created += result.created.length;
+      summary.skipped += result.errors.length;
+      summary.limitReached = result.limit_reached;
+      for (const cardError of result.errors) {
+        if (summary.errors.length >= 20) break;
+        const prompt = validRows[cardError.index]?.prompt ?? "?";
+        summary.errors.push(`"${prompt}": failed to save`);
       }
+    } catch {
+      // The whole batch request itself failed (network blip, unexpected
+      // 5xx) -- rather than lose track of these rows, count them all as
+      // skipped so the running total the client shows stays accurate.
+      summary.skipped += validRows.length;
+      summary.errors.push("This batch failed to save.");
+    }
+  }
 
-      controller.enqueue(encoder.encode(`${JSON.stringify({ type: "done", summary })}\n`));
-      controller.close();
-    },
-  });
-
-  return new Response(stream, {
-    headers: { "Content-Type": "application/x-ndjson; charset=utf-8" },
-  });
+  return NextResponse.json(summary);
 }

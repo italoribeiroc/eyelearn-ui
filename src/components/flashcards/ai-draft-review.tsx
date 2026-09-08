@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Loader2, Sparkles, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, FileText, Loader2, Sparkles, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -15,7 +15,12 @@ import { cn } from "@/lib/utils";
 import type { AiGenerationConfirmResult, AiGenerationDraft, AiGenerationDraftCard } from "@/lib/api/types";
 
 const MAX_REGENERATE_INSTRUCTION_LENGTH = 1000; // matches MAX_REGENERATE_INSTRUCTION_LENGTH in flashcards/services.py
-const MAX_REGENERATE_SELECTION = 10; // matches MAX_AI_REGENERATE_COUNT in flashcards/services.py
+// Matches MAX_AI_REGENERATE_COUNT in flashcards/services.py -- the backend
+// only accepts this many card ids per regenerate call, not a limit on how
+// many cards the user can select. A selection larger than this is split
+// into sequential batches of this size (see handleRegenerate), so "select
+// all" always regenerates every selected card, however many there are.
+const MAX_REGENERATE_BATCH_SIZE = 10;
 const PAGE_SIZE = 10;
 
 function CardBody({ cardType, card }: { cardType: AiGenerationDraft["card_type"]; card: AiGenerationDraftCard }) {
@@ -87,6 +92,9 @@ export function AiDraftReview({
   const [instruction, setInstruction] = useState("");
   const [regenerateSheetOpen, setRegenerateSheetOpen] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
+  const [regenerateBatchProgress, setRegenerateBatchProgress] = useState<{ current: number; total: number } | null>(
+    null,
+  );
   const [regeneratingIds, setRegeneratingIds] = useState<Set<number>>(new Set());
   const [removingIds, setRemovingIds] = useState<Set<number>>(new Set());
   const [saving, setSaving] = useState(false);
@@ -101,8 +109,7 @@ export function AiDraftReview({
   const currentPage = Math.min(page, totalPages - 1);
   const visibleCards = cards.slice(currentPage * PAGE_SIZE, currentPage * PAGE_SIZE + PAGE_SIZE);
   const allSelected = cards.length > 0 && selectedIds.size === cards.length;
-  // Disabled once nothing would change: at the cap with the draft not fully selected yet.
-  const selectAllDisabled = busy || (!allSelected && selectedIds.size >= MAX_REGENERATE_SELECTION);
+  const selectAllDisabled = busy;
 
   // Generation continues in the background regardless of whether this page
   // stays mounted -- the actual polling loop lives in AiGenerationProvider
@@ -147,21 +154,7 @@ export function AiDraftReview({
   }
 
   function toggleSelectAll() {
-    if (allSelected) {
-      setSelectedIds(new Set());
-      return;
-    }
-    setSelectedIds((prev) => {
-      const next = new Set(prev);
-      for (const card of cards) {
-        if (next.size >= MAX_REGENERATE_SELECTION) break;
-        next.add(card.id);
-      }
-      return next;
-    });
-    if (cards.length > MAX_REGENERATE_SELECTION) {
-      toast.info(t("regenerateSelectionCapped", { max: MAX_REGENERATE_SELECTION }));
-    }
+    setSelectedIds(allSelected ? new Set() : new Set(cards.map((card) => card.id)));
   }
 
   async function handleRemove(id: number) {
@@ -199,34 +192,68 @@ export function AiDraftReview({
   async function handleRegenerate() {
     if (selectedIds.size === 0 || !instruction.trim() || regenerating) return;
 
+    // The backend only accepts MAX_REGENERATE_BATCH_SIZE card ids per call,
+    // so a bigger selection (including "select all" on a large draft) is
+    // split into sequential batches here, all sharing the same instruction.
+    // Each batch's result is applied to `cards` as soon as it lands, so a
+    // failure partway through still keeps everything regenerated so far.
+    const allIds = Array.from(selectedIds);
+    const batches: number[][] = [];
+    for (let i = 0; i < allIds.length; i += MAX_REGENERATE_BATCH_SIZE) {
+      batches.push(allIds.slice(i, i + MAX_REGENERATE_BATCH_SIZE));
+    }
+
     setRegenerating(true);
-    setRegeneratingIds(new Set(selectedIds));
+    setRegeneratingIds(new Set(allIds));
     setError(null);
+    if (batches.length > 1) setRegenerateBatchProgress({ current: 0, total: batches.length });
 
-    try {
-      const res = await fetch(`/api/flashcards/ai-generate/${initialDraft.id}/regenerate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ selected_ids: Array.from(selectedIds), instruction: instruction.trim() }),
-      });
+    let failed = false;
+    for (const [index, batch] of batches.entries()) {
+      try {
+        const res = await fetch(`/api/flashcards/ai-generate/${initialDraft.id}/regenerate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ selected_ids: batch, instruction: instruction.trim() }),
+        });
 
-      if (res.ok) {
-        const updated = (await res.json()) as AiGenerationDraft;
-        const byId = new Map(updated.cards.map((card) => [card.id, card]));
-        setCards((prev) => prev.map((card) => byId.get(card.id) ?? card));
-        setSelectedIds(new Set());
-        setInstruction("");
-        setRegenerateSheetOpen(false);
-      } else if (res.status === 502) {
-        setError(t("errorGenerationFailed"));
-      } else {
-        setError(tErrors("generic"));
+        if (res.ok) {
+          const updated = (await res.json()) as AiGenerationDraft;
+          const byId = new Map(updated.cards.map((card) => [card.id, card]));
+          setCards((prev) => prev.map((card) => byId.get(card.id) ?? card));
+          setRegeneratingIds((prev) => {
+            const next = new Set(prev);
+            for (const id of batch) next.delete(id);
+            return next;
+          });
+          if (batches.length > 1) setRegenerateBatchProgress({ current: index + 1, total: batches.length });
+        } else if (res.status === 502) {
+          setError(t("errorGenerationFailed"));
+          failed = true;
+          break;
+        } else if (res.status === 429) {
+          setError(tErrors("tooManyRequests"));
+          failed = true;
+          break;
+        } else {
+          setError(tErrors("generic"));
+          failed = true;
+          break;
+        }
+      } catch {
+        setError(tErrors("network"));
+        failed = true;
+        break;
       }
-    } catch {
-      setError(tErrors("network"));
-    } finally {
-      setRegenerating(false);
-      setRegeneratingIds(new Set());
+    }
+
+    setRegenerating(false);
+    setRegeneratingIds(new Set());
+    setRegenerateBatchProgress(null);
+    if (!failed) {
+      setSelectedIds(new Set());
+      setInstruction("");
+      setRegenerateSheetOpen(false);
     }
   }
 
@@ -287,6 +314,21 @@ export function AiDraftReview({
         </Alert>
       ) : null}
 
+      {initialDraft.source_documents.length > 0 ? (
+        <div className="flex flex-wrap items-center gap-2 text-xs text-foreground-muted">
+          <span>{t("generatedFromLabel")}</span>
+          {initialDraft.source_documents.map((document) => (
+            <span
+              key={document.id}
+              className="inline-flex items-center gap-1 rounded-full border border-border bg-surface-muted px-2.5 py-1"
+            >
+              <FileText className="size-3" aria-hidden="true" />
+              {document.filename}
+            </span>
+          ))}
+        </div>
+      ) : null}
+
       {isIncomplete ? (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-brand-accent/30 bg-brand-accent/10 p-4">
           <p className="flex items-center gap-2 text-sm text-foreground">
@@ -315,9 +357,7 @@ export function AiDraftReview({
       ) : (
         <>
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-xs text-foreground-muted">
-              {t("regenerateSelectionLimitHint", { max: MAX_REGENERATE_SELECTION })}
-            </p>
+            <p className="text-xs text-foreground-muted">{t("regenerateSelectionHint")}</p>
             <Button
               type="button"
               variant="ghost"
@@ -334,7 +374,6 @@ export function AiDraftReview({
               const isRegeneratingCard = regeneratingIds.has(card.id);
               const isRemoving = removingIds.has(card.id);
               const isSelected = selectedIds.has(card.id);
-              const selectionCapped = !isSelected && selectedIds.size >= MAX_REGENERATE_SELECTION;
               return (
                 <div
                   key={card.id}
@@ -347,7 +386,7 @@ export function AiDraftReview({
                     <Checkbox
                       checked={isSelected}
                       onCheckedChange={(checked) => toggleSelected(card.id, checked === true)}
-                      disabled={busy || selectionCapped}
+                      disabled={busy}
                       aria-label={t("selectForRegenerate")}
                       className="mt-1"
                     />
@@ -534,7 +573,11 @@ export function AiDraftReview({
                 className="w-full sm:w-auto"
               >
                 {regenerating ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
-                {regenerating ? t("regenerating") : t("regenerateButton")}
+                {regenerating
+                  ? regenerateBatchProgress
+                    ? t("regenerateBatchProgress", regenerateBatchProgress)
+                    : t("regenerating")
+                  : t("regenerateButton")}
               </Button>
             </div>
           </div>

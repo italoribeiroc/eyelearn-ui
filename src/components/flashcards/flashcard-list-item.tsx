@@ -4,6 +4,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { stripRichTextToPlainText } from "@/components/flashcards/rich-text-content";
 import type { Flashcard } from "@/lib/api/types";
 import { DeleteConfirmDialog } from "./delete-confirm-dialog";
 import { FlashcardFormDialog } from "./flashcard-form-dialog";
@@ -29,7 +30,9 @@ export function FlashcardListItem({
         <Badge variant="outline" className="mb-1.5 text-xs text-foreground-muted">
           {tTypes(flashcard.card_type)}
         </Badge>
-        <p className="line-clamp-2 text-sm font-medium text-foreground">{flashcard.prompt}</p>
+        <p className="line-clamp-2 text-sm font-medium text-foreground">
+          {stripRichTextToPlainText(flashcard.prompt)}
+        </p>
       </div>
       <div className="flex shrink-0 items-center gap-1">
         <FlashcardFormDialog

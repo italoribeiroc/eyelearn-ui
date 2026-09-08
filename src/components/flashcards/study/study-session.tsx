@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MediaDisplay } from "@/components/flashcards/media-display";
+import { RichTextContent } from "@/components/flashcards/rich-text-content";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import type {
@@ -156,7 +157,10 @@ export function StudySession({
         >
           {t(`states.${item.state}`)}
         </span>
-        <p className="mt-4 font-heading text-xl font-semibold text-foreground">{item.flashcard.prompt}</p>
+        <RichTextContent
+          html={item.flashcard.prompt}
+          className="mt-4 font-heading text-xl font-semibold text-foreground"
+        />
         <MediaDisplay items={item.flashcard.media.filter((media) => media.side === "prompt")} />
 
         {item.flashcard.card_type === "basic" ? (
@@ -262,7 +266,7 @@ function BasicCard({
   return (
     <div className="mt-6 space-y-4">
       <div className="rounded-lg bg-surface-muted p-3">
-        <p className="text-sm text-foreground">{answer}</p>
+        <RichTextContent html={answer} className="text-sm text-foreground" />
         <MediaDisplay items={answerMedia} />
       </div>
       {!result ? (

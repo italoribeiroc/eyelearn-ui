@@ -16,8 +16,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { MediaAttachmentField } from "@/components/flashcards/media-attachment-field";
+import { RichTextEditor, type RichTextEditorHandle } from "@/components/flashcards/rich-text-editor";
+import { stripRichTextToPlainText } from "@/components/flashcards/rich-text-content";
 import { StagedMediaField, type StagedMedia } from "@/components/flashcards/staged-media-field";
 import { useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -36,6 +37,18 @@ function emptyOptions(): FlashcardOption[] {
     { text: "", is_correct: true },
     { text: "", is_correct: false },
   ];
+}
+
+// RichTextEditor emits HTML, so an "empty" field is still a non-empty
+// string like "<p></p>" -- checks against the field being blank (required
+// validation, or normalizing a never-touched field before saving) need to
+// look at the stripped plain text, not the raw HTML.
+function isRichTextEmpty(html: string): boolean {
+  return stripRichTextToPlainText(html).length === 0;
+}
+
+function cleanRichHtml(html: string): string {
+  return isRichTextEmpty(html) ? "" : html;
 }
 
 /** Create a new flashcard in `collectionId`, or edit an existing `flashcard`. */
@@ -72,7 +85,7 @@ export function FlashcardFormDialog({
   const [createdCount, setCreatedCount] = useState(0);
   const [stagedPromptFiles, setStagedPromptFiles] = useState<StagedMedia[]>([]);
   const [stagedAnswerFiles, setStagedAnswerFiles] = useState<StagedMedia[]>([]);
-  const promptRef = useRef<HTMLTextAreaElement>(null);
+  const promptRef = useRef<RichTextEditorHandle>(null);
 
   function clearStagedFiles() {
     for (const staged of [...stagedPromptFiles, ...stagedAnswerFiles]) {
@@ -175,14 +188,14 @@ export function FlashcardFormDialog({
   }
 
   async function saveCard(keepOpen: boolean) {
-    if (!prompt.trim()) return;
+    if (isRichTextEmpty(prompt)) return;
 
     setSubmitting(true);
     setError(null);
 
-    const payload: Record<string, unknown> = { card_type: cardType, prompt: prompt.trim() };
+    const payload: Record<string, unknown> = { card_type: cardType, prompt: cleanRichHtml(prompt) };
     if (cardType === "basic") {
-      payload.answer = answer.trim();
+      payload.answer = cleanRichHtml(answer);
     } else if (cardType === "multiple_choice") {
       payload.options = options
         .filter((option) => option.text.trim())
@@ -287,13 +300,12 @@ export function FlashcardFormDialog({
 
           <div className="grid gap-2">
             <Label htmlFor="card-prompt">{t("promptLabel")}</Label>
-            <Textarea
-              id="card-prompt"
+            <RichTextEditor
               ref={promptRef}
+              id="card-prompt"
               value={prompt}
-              onChange={(event) => setPrompt(event.target.value)}
-              rows={3}
-              required
+              onChange={setPrompt}
+              minHeightClassName="min-h-16"
               autoFocus
             />
           </div>
@@ -314,12 +326,7 @@ export function FlashcardFormDialog({
           {cardType === "basic" ? (
             <div className="grid gap-2">
               <Label htmlFor="card-answer">{t("answerLabel")}</Label>
-              <Textarea
-                id="card-answer"
-                value={answer}
-                onChange={(event) => setAnswer(event.target.value)}
-                rows={2}
-              />
+              <RichTextEditor id="card-answer" value={answer} onChange={setAnswer} minHeightClassName="min-h-14" />
             </div>
           ) : null}
 
@@ -411,13 +418,13 @@ export function FlashcardFormDialog({
               <Button
                 type="button"
                 variant="outline"
-                disabled={submitting || !prompt.trim()}
+                disabled={submitting || isRichTextEmpty(prompt)}
                 onClick={() => saveCard(true)}
               >
                 {t("saveAndAddAnother")}
               </Button>
             ) : null}
-            <Button type="submit" disabled={submitting || !prompt.trim()}>
+            <Button type="submit" disabled={submitting || isRichTextEmpty(prompt)}>
               {submitting ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
               {mode === "create" && createdCount > 0 ? t("done") : t("save")}
             </Button>

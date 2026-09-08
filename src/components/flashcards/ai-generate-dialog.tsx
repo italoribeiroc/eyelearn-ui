@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { SourceDocumentAttachmentField } from "@/components/flashcards/source-document-attachment-field";
 import { useAiGenerationActions } from "@/context/ai-generation-context";
 import { useRouter } from "@/i18n/navigation";
 import type { AiGenerationDraft, ApiFieldErrors, CardType } from "@/lib/api/types";
@@ -65,6 +66,12 @@ export function AiGenerateDialog({
   const [countMode, setCountMode] = useState<"auto" | "custom">("auto");
   const [customCount, setCustomCount] = useState(10);
   const [learningRequest, setLearningRequest] = useState("");
+  const [documentIds, setDocumentIds] = useState<number[]>([]);
+  // True while at least one attached file is still uploading or being read
+  // on the server -- blocks submit even if learningRequest alone would
+  // otherwise be enough, so a document can't be silently left out of a
+  // generation just because it hadn't finished processing yet.
+  const [documentsPending, setDocumentsPending] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -94,9 +101,11 @@ export function AiGenerateDialog({
     return body?.detail ?? tErrors("generic");
   }
 
+  const hasContent = learningRequest.trim().length > 0 || documentIds.length > 0;
+
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
-    if (!learningRequest.trim() || submitting) return;
+    if (!hasContent || submitting || documentsPending) return;
 
     setSubmitting(true);
     setPhraseIndex(0);
@@ -108,8 +117,14 @@ export function AiGenerateDialog({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(
           countMode === "auto"
-            ? { card_type: cardType, auto: true, learning_request: learningRequest.trim() }
-            : { card_type: cardType, count: customCount, learning_request: learningRequest.trim() },
+            ? {
+                card_type: cardType, auto: true, learning_request: learningRequest.trim(),
+                source_document_ids: documentIds,
+              }
+            : {
+                card_type: cardType, count: customCount, learning_request: learningRequest.trim(),
+                source_document_ids: documentIds,
+              },
         ),
       });
 
@@ -143,7 +158,11 @@ export function AiGenerateDialog({
           <DialogDescription>{t("dialogDescription")}</DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={onSubmit} className="max-h-[70vh] space-y-4 overflow-y-auto px-1" noValidate>
+        <form
+          onSubmit={onSubmit}
+          className="max-h-[70vh] min-w-0 space-y-4 overflow-x-hidden overflow-y-auto px-1"
+          noValidate
+        >
           {error ? (
             <Alert variant="destructive">
               <AlertDescription>{error}</AlertDescription>
@@ -213,19 +232,31 @@ export function AiGenerateDialog({
                 placeholder={t("learningRequestPlaceholder")}
                 rows={4}
                 maxLength={MAX_LEARNING_REQUEST_LENGTH}
-                required
                 autoFocus
               />
               <p className="text-right text-xs text-foreground-muted">
                 {learningRequest.length}/{MAX_LEARNING_REQUEST_LENGTH}
               </p>
+              <p className="text-xs text-foreground-muted">{t("learningRequestOrDocumentsHint")}</p>
+            </div>
+
+            <div className="grid min-w-0 gap-2">
+              <Label>{t("attachDocumentsLabel")}</Label>
+              <SourceDocumentAttachmentField
+                collectionId={collectionId}
+                onChange={setDocumentIds}
+                onPendingChange={setDocumentsPending}
+              />
+              {documentsPending ? (
+                <p className="text-xs text-foreground-muted">{t("documentsPendingHint")}</p>
+              ) : null}
             </div>
           </fieldset>
 
           <DialogFooter>
             <Button
               type="submit"
-              disabled={submitting || !learningRequest.trim()}
+              disabled={submitting || !hasContent || documentsPending}
               className="bg-gradient-to-r from-brand-turquoise to-brand-accent text-brand-turquoise-foreground border-transparent"
             >
               {submitting ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Sparkles className="size-4" aria-hidden="true" />}

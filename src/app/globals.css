@@ -211,3 +211,15 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* RichTextEditor's @tiptap/extension-placeholder: renders its placeholder
+   text via this pseudo-element (a `data-placeholder` attribute + an
+   `is-editor-empty` class on the empty paragraph), not a real DOM node --
+   Tailwind utility classes can't target this pattern, so it's a plain rule. */
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: var(--color-muted-foreground);
+  pointer-events: none;
+}

@@ -6,6 +6,7 @@ import type {
   Collection,
   Flashcard,
   FlashcardMediaItem,
+  GenerationSourceDocumentDetail,
   MediaSide,
   MediaType,
   ReviewResult,
@@ -92,6 +93,37 @@ export async function createFlashcard(
     method: "POST",
     headers,
     body: JSON.stringify(data),
+  });
+}
+
+export type BulkCreateCard = {
+  card_type: Flashcard["card_type"];
+  prompt: string;
+  answer?: string;
+  options?: Flashcard["options"];
+  accepted_answers?: string[];
+};
+
+export type BulkCreateResult = {
+  created: Flashcard[];
+  errors: { index: number; errors: unknown }[];
+  limit_reached: boolean;
+};
+
+/** Creates up to 100 cards in one Django request -- see flashcard_bulk_create's
+ * own docstring for why this exists instead of looping createFlashcard: a
+ * large import (see the import route) would otherwise cost one request per
+ * card, blowing through the per-user rate limit long before a real deck
+ * (hundreds or thousands of notes) finishes importing. */
+export async function createFlashcardsBulk(
+  collectionId: number,
+  cards: BulkCreateCard[],
+): Promise<BulkCreateResult> {
+  const headers = await authHeaders();
+  return djangoFetchJson<BulkCreateResult>(`/api/flashcards/collections/${collectionId}/flashcards/bulk/`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ cards }),
   });
 }
 
@@ -190,7 +222,7 @@ export async function deleteMedia(mediaId: number): Promise<void> {
 
 export async function generateAiFlashcards(
   collectionId: number,
-  data: { card_type: Flashcard["card_type"]; learning_request: string } & (
+  data: { card_type: Flashcard["card_type"]; learning_request: string; source_document_ids?: number[] } & (
     | { auto: true; count?: never }
     | { auto?: false; count: number }
   ),
@@ -256,6 +288,49 @@ export async function discardAiGenerationDraft(draftId: number): Promise<{ statu
   const headers = await authHeaders();
   return djangoFetchJson<{ status: string }>(`/api/flashcards/ai-generate/${draftId}/discard/`, {
     method: "POST",
+    headers,
+  });
+}
+
+export async function createSourceDocumentUploadUrl(
+  collectionId: number,
+  data: { content_type: string; filename: string; size_bytes: number },
+): Promise<{ storage_key: string; upload_url: string }> {
+  const headers = await authHeaders();
+  return djangoFetchJson(`/api/flashcards/collections/${collectionId}/source-documents/upload-url/`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(data),
+  });
+}
+
+export async function confirmSourceDocumentUpload(
+  collectionId: number,
+  data: { storage_key: string; content_type: string; filename: string; size_bytes: number },
+): Promise<GenerationSourceDocumentDetail> {
+  const headers = await authHeaders();
+  return djangoFetchJson<GenerationSourceDocumentDetail>(
+    `/api/flashcards/collections/${collectionId}/source-documents/confirm/`,
+    { method: "POST", headers, body: JSON.stringify(data) },
+  );
+}
+
+export async function updateSourceDocumentText(
+  documentId: number,
+  data: { extracted_text: string },
+): Promise<GenerationSourceDocumentDetail> {
+  const headers = await authHeaders();
+  return djangoFetchJson<GenerationSourceDocumentDetail>(`/api/flashcards/source-documents/${documentId}/`, {
+    method: "PATCH",
+    headers,
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteSourceDocument(documentId: number): Promise<void> {
+  const headers = await authHeaders();
+  await djangoFetchJson<void>(`/api/flashcards/source-documents/${documentId}/`, {
+    method: "DELETE",
     headers,
   });
 }

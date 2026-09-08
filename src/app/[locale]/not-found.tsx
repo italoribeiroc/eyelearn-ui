@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/shared/logo";
-import { MockFlashcard } from "@/components/shared/mock-flashcard";
+import { NotFoundCard } from "@/components/shared/not-found-card";
 import { Link } from "@/i18n/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -44,11 +44,12 @@ export default async function NotFound() {
         </h1>
         <p className="mt-3 text-base text-foreground-muted">{t("subtitle")}</p>
 
-        <MockFlashcard
+        <NotFoundCard
           className="mx-auto mt-8 max-w-xs"
           eyebrow={t("card.eyebrow")}
           question={t("card.question")}
           answer={t("card.answer")}
+          flipHint={t("card.flipHint")}
         />
 
         <div className="mt-8 flex flex-col items-center gap-4">

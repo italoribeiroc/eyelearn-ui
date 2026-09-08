@@ -485,7 +485,8 @@
     "card": {
       "eyebrow": "Pergunta rápida",
       "question": "Para onde essa página foi?",
-      "answer": "Para lugar nenhum. Ela nunca existiu."
+      "answer": "Para lugar nenhum. Ela nunca existiu.",
+      "flipHint": "Toque para virar"
     },
     "ctaHome": "Voltar ao início",
     "loginPrompt": "Quer entrar na sua conta?",
@@ -766,7 +767,11 @@
       "countCustomLabel": "Escolher um número",
       "countAutoHint": "A IA decide quantos cartões são necessários para cobrir o que você quer aprender.",
       "learningRequestLabel": "O que você quer aprender?",
-      "learningRequestPlaceholder": "ex: Quero aprender os fundamentos de rede no Kubernetes, com foco em Services, Ingress, DNS e NetworkPolicies.",
+      "learningRequestPlaceholder": "ex: Quero aprender os planetas do sistema solar e um fato interessante sobre cada um.",
+      "learningRequestOrDocumentsHint": "Opcional se você anexar pelo menos um documento abaixo.",
+      "attachDocumentsLabel": "Anexar material de origem (opcional)",
+      "documentsPendingHint": "Aguardando os arquivos anexados terminarem de ser processados antes de gerar.",
+      "generatedFromLabel": "Gerado a partir de:",
       "generateButton": "Gerar",
       "generating": "Gerando...",
       "generatingPhaseThinking": "Analisando o seu tema...",
@@ -791,9 +796,9 @@
       "removeCard": "Remover cartão",
       "selectAll": "Selecionar todos",
       "deselectAll": "Desmarcar todos",
-      "regenerateSelectionLimitHint": "Selecione até {max} cartões para gerar novamente juntos.",
-      "regenerateSelectionCapped": "Apenas os primeiros {max} cartões foram selecionados. É possível gerar novamente até {max} cartões por vez.",
+      "regenerateSelectionHint": "Selecione qualquer quantidade de cartões, inclusive todos, para gerar novamente com novas instruções.",
       "regenerateSelectedLabel": "{count} selecionados",
+      "regenerateBatchProgress": "Gerando novamente {current} de {total}...",
       "clearSelection": "Limpar",
       "regenerateSheetDescription": "Descreva como você gostaria que esses cartões fossem alterados. A IA substituirá apenas os selecionados.",
       "regenerateInstructionPlaceholder": "ex: Esses estão muito básicos. Torne-os mais práticos e inclua um exemplo concreto.",
@@ -814,6 +819,38 @@
       "uploadSuccess": "Mídia adicionada.",
       "unsupportedType": "Esse tipo de arquivo não é suportado.",
       "fileTooLarge": "Esse arquivo é muito grande."
+    },
+    "sourceDocuments": {
+      "addDocument": "Adicionar PDF, TXT, Markdown ou foto de uma página",
+      "remove": "Remover",
+      "uploading": "Enviando... {percent}%",
+      "processing": "Lendo documento...",
+      "uploadSuccess": "Documento adicionado.",
+      "unsupportedType": "Esse tipo de arquivo não é suportado.",
+      "fileTooLarge": "Esse arquivo é muito grande.",
+      "extractionFailed": "Não foi possível ler esse arquivo.",
+      "tooManyDocuments": "Você pode anexar até {max} documentos.",
+      "charCountLabel": "{count} caracteres",
+      "viewTextHint": "Toque para conferir e editar o texto lido deste arquivo",
+      "extractedTextTitle": "Texto lido deste arquivo",
+      "extractedTextDescription": "Fotos e páginas escaneadas passam por reconhecimento automático de texto e escrita à mão, que às vezes pode errar. Confira abaixo e corrija o que estiver errado antes de gerar os flashcards a partir dele.",
+      "editTextSuccess": "Texto atualizado."
+    },
+    "richText": {
+      "bold": "Negrito",
+      "italic": "Itálico",
+      "underline": "Sublinhado",
+      "strikethrough": "Tachado",
+      "code": "Código",
+      "superscript": "Sobrescrito",
+      "subscript": "Subscrito",
+      "bulletList": "Lista com marcadores",
+      "orderedList": "Lista numerada",
+      "textColor": "Cor do texto",
+      "highlight": "Destaque",
+      "clearColor": "Remover cor",
+      "clearHighlight": "Remover destaque",
+      "clearFormatting": "Limpar formatação"
     }
   },
   "study": {

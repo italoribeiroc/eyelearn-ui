@@ -12,6 +12,24 @@ export type ImportRow = {
 const RICH_HEADER = ["card_type", "prompt", "answer", "options", "accepted_answers"];
 const CARD_TYPES: CardType[] = ["basic", "multiple_choice", "typed_answer"];
 
+// Rows per request sent to the import route (see its own docstring for why
+// batching exists at all: it keeps each request's JSON body and total
+// Django-round-trip time small regardless of how large the source file is).
+// 100 rows at a worst-case ~300ms/row Django round-trip is ~30s, comfortably
+// under that route's 60s maxDuration; a deck of thousands of notes just
+// means more batches; sequential, not parallel, so a free-plan flashcard
+// cap hit during one batch can still stop the whole import cleanly.
+export const MAX_IMPORT_BATCH_SIZE = 100;
+
+/** Splits `rows` into batches of at most MAX_IMPORT_BATCH_SIZE for the import route. */
+export function batchImportRows(rows: ImportRow[]): ImportRow[][] {
+  const batches: ImportRow[][] = [];
+  for (let i = 0; i < rows.length; i += MAX_IMPORT_BATCH_SIZE) {
+    batches.push(rows.slice(i, i + MAX_IMPORT_BATCH_SIZE));
+  }
+  return batches;
+}
+
 /**
  * Parses a CSV/TSV file into import rows. Recognizes this app's own export
  * header (card_type,prompt,answer,options,accepted_answers) for a full

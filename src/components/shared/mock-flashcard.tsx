@@ -10,6 +10,9 @@ type MockFlashcardProps = {
   eyebrow: string;
   question: string;
   className?: string;
+  /** Extra classes for the question/answer text (e.g. `text-center`).
+   * Only applied on the "answer"/"reveal" flip faces. */
+  contentClassName?: string;
   variant?: "answer" | "reveal" | "choice" | "type";
 
   // "answer" / "reveal" -- click/Enter/Space to flip. Controlled: only
@@ -71,6 +74,7 @@ export function MockFlashcard({
   eyebrow,
   question,
   className,
+  contentClassName,
   variant = "answer",
   answer,
   flipped = false,
@@ -116,7 +120,7 @@ export function MockFlashcard({
             className="absolute inset-0 flex flex-col rounded-lg border border-border bg-surface p-5 shadow-[var(--shadow-soft)] [backface-visibility:hidden]"
           >
             <CardEyebrow eyebrow={eyebrow} />
-            <p className="mt-4 font-heading text-base font-semibold text-foreground">{question}</p>
+            <p className={cn("mt-4 font-heading text-base font-semibold text-foreground", contentClassName)}>{question}</p>
             {variant === "reveal" && revealHint ? (
               <span className="mt-auto flex w-fit items-center gap-1.5 pt-3 text-xs font-medium text-foreground-muted/70">
                 <Eye className="size-3.5 shrink-0" aria-hidden="true" />
@@ -132,7 +136,7 @@ export function MockFlashcard({
             className="absolute inset-0 flex flex-col rounded-lg border border-border bg-surface p-5 shadow-[var(--shadow-soft)] [backface-visibility:hidden] [transform:rotateY(180deg)]"
           >
             <CardEyebrow eyebrow={eyebrow} sparkle={false} className="self-start" />
-            <p className="mt-4 text-sm text-foreground-muted">{answer}</p>
+            <p className={cn("mt-4 text-sm text-foreground-muted", contentClassName)}>{answer}</p>
           </div>
         </div>
       </div>

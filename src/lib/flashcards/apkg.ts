@@ -1,8 +1,14 @@
 import JSZip from "jszip";
 // The asm.js build (pure JavaScript, no .wasm asset) is used deliberately --
-// it avoids having to get a WebAssembly binary bundled/located correctly
-// inside a Vercel serverless function, at the cost of being a bit slower.
-// Fine for parsing a single collection.anki2 file per import request.
+// it avoids having to get a WebAssembly binary bundled/located correctly,
+// at the cost of being a bit slower. This module runs entirely in the
+// browser (see import-export-menu.tsx, which dynamic-imports it only when
+// a .apkg is actually picked, keeping this out of the main client bundle)
+// -- parsing client-side, rather than uploading the raw .apkg to a
+// serverless function, is what avoids Vercel's request-body-size limit on
+// large decks (previously a hard "FUNCTION_PAYLOAD_TOO_LARGE" 413 on any
+// deck whose .apkg exceeded that limit, common once a deck has embedded
+// audio/images).
 import initSqlJs from "sql.js/dist/sql-asm.js";
 import type { ImportRow } from "./import";
 
@@ -38,20 +44,28 @@ function stripAnkiField(raw: string): string {
 
 export type ApkgParseResult = {
   rows: ImportRow[];
-  /** Notes dropped because they're cloze deletions or don't have exactly 2 fields (Front/Back-shaped). */
+  /** Notes dropped because they're cloze deletions or have fewer than 2 fields (can't form a Front/Back pair). */
   skippedNotes: number;
 };
 
 /**
- * Best-effort .apkg reader: extracts simple two-field (Front/Back-shaped)
- * standard note types as BASIC flashcards. Cloze deletions, note types with
- * more or fewer than 2 fields, and media (images/audio) are not imported --
- * media references are stripped from the text rather than uploaded, since
- * that would need the presigned-upload flow run per file. This covers the
- * common case (plain Q/A decks) without attempting full Anki fidelity.
+ * Best-effort .apkg reader: extracts standard (non-cloze) note types as
+ * BASIC flashcards, using the note's first field as the prompt and its
+ * second as the answer. Most real-world Anki note types have more than 2
+ * fields -- e.g. a vocabulary deck shaped Front/Back/Image/Audio -- so any
+ * fields beyond the first two are simply ignored rather than treated as a
+ * reason to skip the whole note; the common convention across Anki note
+ * types (Basic, Basic-and-reversed, most community templates) is that field
+ * 0 is the question side and field 1 is the answer side regardless of how
+ * many more fields follow. Media (images/audio) is never imported -- media
+ * references are stripped from the text rather than uploaded, since that
+ * would need the presigned-upload flow run per file. This covers the common
+ * case (plain Q/A decks, however many extra fields they carry) without
+ * attempting full Anki fidelity (cloze deletions, card templates beyond the
+ * first, or note types with only a single field are still skipped).
  */
-export async function parseApkg(buffer: Buffer): Promise<ApkgParseResult> {
-  const zip = await JSZip.loadAsync(buffer);
+export async function parseApkg(data: ArrayBuffer | Uint8Array): Promise<ApkgParseResult> {
+  const zip = await JSZip.loadAsync(data);
 
   const dbEntry = zip.file("collection.anki21") ?? zip.file("collection.anki2");
   if (!dbEntry) {
@@ -65,7 +79,9 @@ export async function parseApkg(buffer: Buffer): Promise<ApkgParseResult> {
   }
 
   const bytes = await dbEntry.async("uint8array");
-  const header = Buffer.from(bytes.slice(0, SQLITE_MAGIC.length)).toString("latin1");
+  // Manual byte-to-char decoding (not Buffer, which isn't available in the
+  // browser this now runs in) -- fine here since the magic header is plain ASCII.
+  const header = Array.from(bytes.slice(0, SQLITE_MAGIC.length), (byte) => String.fromCharCode(byte)).join("");
   if (header !== SQLITE_MAGIC) {
     throw new Error("This .apkg's collection file isn't a readable SQLite database.");
   }
@@ -91,7 +107,7 @@ export async function parseApkg(buffer: Buffer): Promise<ApkgParseResult> {
       const notetype = models[String(mid)];
       const fields = typeof flds === "string" ? flds.split("\x1f") : [];
 
-      if (!notetype || notetype.type !== 0 || fields.length !== 2) {
+      if (!notetype || notetype.type !== 0 || fields.length < 2) {
         skippedNotes += 1;
         continue;
       }

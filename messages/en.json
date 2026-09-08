@@ -485,7 +485,8 @@
     "card": {
       "eyebrow": "Pop quiz",
       "question": "Where did this page go?",
-      "answer": "Nowhere. It never existed in the first place."
+      "answer": "Nowhere. It never existed in the first place.",
+      "flipHint": "Tap to flip"
     },
     "ctaHome": "Back to home",
     "loginPrompt": "Looking to sign in instead?",
@@ -766,7 +767,11 @@
       "countCustomLabel": "Choose a number",
       "countAutoHint": "The AI decides how many cards are needed to cover what you want to learn.",
       "learningRequestLabel": "What do you want to learn?",
-      "learningRequestPlaceholder": "e.g. I want to learn the fundamentals of Kubernetes networking, focusing on Services, Ingress, DNS, and NetworkPolicies.",
+      "learningRequestPlaceholder": "e.g. I want to learn the planets in our solar system and one interesting fact about each.",
+      "learningRequestOrDocumentsHint": "Optional if you attach at least one document below.",
+      "attachDocumentsLabel": "Attach source material (optional)",
+      "documentsPendingHint": "Waiting for attached files to finish processing before you can generate.",
+      "generatedFromLabel": "Generated from:",
       "generateButton": "Generate",
       "generating": "Generating...",
       "generatingPhaseThinking": "Analyzing your topic...",
@@ -791,9 +796,9 @@
       "removeCard": "Remove card",
       "selectAll": "Select all",
       "deselectAll": "Deselect all",
-      "regenerateSelectionLimitHint": "Select up to {max} cards to regenerate together.",
-      "regenerateSelectionCapped": "Only the first {max} cards were selected. Regenerate works on up to {max} cards at a time.",
+      "regenerateSelectionHint": "Select any number of cards, including all of them, to regenerate with new instructions.",
       "regenerateSelectedLabel": "{count} selected",
+      "regenerateBatchProgress": "Regenerating {current} of {total}...",
       "clearSelection": "Clear",
       "regenerateSheetDescription": "Describe how you'd like these cards changed, and the AI will replace just the selected ones.",
       "regenerateInstructionPlaceholder": "e.g. These are too basic. Make them more practical and include a concrete example.",
@@ -814,6 +819,38 @@
       "uploadSuccess": "Media added.",
       "unsupportedType": "That file type isn't supported.",
       "fileTooLarge": "That file is too large."
+    },
+    "sourceDocuments": {
+      "addDocument": "Add PDF, TXT, Markdown, or a photo of a page",
+      "remove": "Remove",
+      "uploading": "Uploading... {percent}%",
+      "processing": "Reading document...",
+      "uploadSuccess": "Document added.",
+      "unsupportedType": "That file type isn't supported.",
+      "fileTooLarge": "That file is too large.",
+      "extractionFailed": "Couldn't read this file.",
+      "tooManyDocuments": "You can attach up to {max} documents.",
+      "charCountLabel": "{count} characters",
+      "viewTextHint": "Tap to check and edit the text we read from this file",
+      "extractedTextTitle": "Text read from this file",
+      "extractedTextDescription": "Photos and scanned pages go through automatic handwriting and text recognition, which can sometimes make mistakes. Check it below and fix anything that looks wrong before generating flashcards from it.",
+      "editTextSuccess": "Text updated."
+    },
+    "richText": {
+      "bold": "Bold",
+      "italic": "Italic",
+      "underline": "Underline",
+      "strikethrough": "Strikethrough",
+      "code": "Code",
+      "superscript": "Superscript",
+      "subscript": "Subscript",
+      "bulletList": "Bulleted list",
+      "orderedList": "Numbered list",
+      "textColor": "Text color",
+      "highlight": "Highlight",
+      "clearColor": "Remove color",
+      "clearHighlight": "Remove highlight",
+      "clearFormatting": "Clear formatting"
     }
   },
   "study": {

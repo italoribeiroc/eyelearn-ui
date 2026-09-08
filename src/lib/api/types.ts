@@ -118,6 +118,27 @@ export type AiGenerationDraftCard = {
 
 export type AiGenerationDraftStatus = "pending" | "confirmed" | "discarded";
 
+export type GenerationSourceDocument = {
+  id: number;
+  filename: string;
+  content_type: string;
+  size_bytes: number;
+  // Server-side extracted (or, for scanned pages/photos, vision-transcribed)
+  // text length. The draft's source_documents list (see AiGenerationDraft)
+  // only ever carries this shape -- the full text isn't repeated on every
+  // draft-status poll; see GenerationSourceDocumentDetail for that.
+  char_count: number;
+  created_at: string;
+};
+
+// Returned only by the upload-confirm and update-text calls, which is where
+// the uploader needs to actually see (and, for update, correct) what the
+// server read from their file -- most useful right after a photo or scanned
+// page goes through vision transcription.
+export type GenerationSourceDocumentDetail = GenerationSourceDocument & {
+  extracted_text: string;
+};
+
 export type AiGenerationDraft = {
   id: number;
   collection: number;
@@ -128,6 +149,7 @@ export type AiGenerationDraft = {
   // means it's not finished yet -- see generateNextAiBatch().
   target_count: number;
   cards: AiGenerationDraftCard[];
+  source_documents: GenerationSourceDocument[];
 };
 
 export type AiGenerationConfirmResult = {
