@@ -11,7 +11,7 @@ import { CollectionLimitBanner } from "@/components/flashcards/collection-limit-
 import { CollectionViewToggle, type CollectionViewMode } from "@/components/flashcards/collection-view-toggle";
 import { FlashcardFormDialog } from "@/components/flashcards/flashcard-form-dialog";
 import { FlashcardLimitBanner } from "@/components/flashcards/flashcard-limit-banner";
-import { FlashcardListItem } from "@/components/flashcards/flashcard-list-item";
+import { FlashcardSearchList } from "@/components/flashcards/flashcard-search-list";
 import { ImportExportMenu } from "@/components/flashcards/import-export-menu";
 import { PricingSection } from "@/components/marketing/pricing-section";
 import { Button } from "@/components/ui/button";
@@ -190,11 +190,7 @@ export default async function CollectionDetailPage({
         {flashcards.length === 0 ? (
           <p className="text-sm text-foreground-muted">{t("noFlashcards")}</p>
         ) : (
-          <div className="space-y-2">
-            {flashcards.map((flashcard) => (
-              <FlashcardListItem key={flashcard.id} flashcard={flashcard} collectionId={collection.id} />
-            ))}
-          </div>
+          <FlashcardSearchList flashcards={flashcards} collectionId={collection.id} />
         )}
       </section>
     </div>

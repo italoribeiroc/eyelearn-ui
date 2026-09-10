@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useEffect, useImperativeHandle } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Color from "@tiptap/extension-color";
@@ -14,6 +14,7 @@ import {
   Baseline,
   Bold,
   Code,
+  GripHorizontal,
   Highlighter,
   Italic,
   List,
@@ -53,7 +54,13 @@ const HIGHLIGHT_COLORS = [
  * cursor -- not just recolored on click, but kept in sync with selection
  * changes too (see useEditorState below). The active style is a solid
  * brand-colored fill, deliberately not a subtle tint, since it needs to
- * read clearly against the toolbar's own muted background. */
+ * read clearly against the toolbar's own muted background.
+ *
+ * Every hover / aria-expanded override in the active branch is load-bearing:
+ * the `ghost` variant otherwise swaps the fill for `bg-muted` on hover (and
+ * `bg-muted/50` in dark mode, and on `aria-expanded` for the two popover
+ * triggers), which drops the turquoise out and leaves the near-black icon
+ * invisible on the dark toolbar. */
 const ToolbarButton = forwardRef<
   HTMLButtonElement,
   {
@@ -77,7 +84,16 @@ const ToolbarButton = forwardRef<
       title={label}
       className={cn(
         "size-7 rounded-md",
-        active && "bg-brand-turquoise text-brand-turquoise-foreground hover:bg-brand-turquoise hover:text-brand-turquoise-foreground",
+        active &&
+          cn(
+            "bg-brand-turquoise text-brand-turquoise-foreground",
+            "hover:bg-brand-turquoise hover:text-brand-turquoise-foreground",
+            "dark:hover:bg-brand-turquoise dark:hover:text-brand-turquoise-foreground",
+            "aria-expanded:bg-brand-turquoise aria-expanded:text-brand-turquoise-foreground",
+            // Subtle, contrast-safe hover feedback (dims/brightens the whole
+            // button uniformly instead of recoloring it).
+            "hover:brightness-95 dark:hover:brightness-110",
+          ),
       )}
     >
       {children}
@@ -134,6 +150,12 @@ export type RichTextEditorHandle = {
   focus: () => void;
 };
 
+// Ceiling for the drag-to-resize handle, so the editing area can't be
+// pulled taller than a dialog can comfortably show.
+const MAX_EDITOR_HEIGHT = 480;
+// One ArrowUp/ArrowDown press on the focused resize handle.
+const RESIZE_KEYBOARD_STEP = 24;
+
 export const RichTextEditor = forwardRef<
   RichTextEditorHandle,
   {
@@ -141,7 +163,9 @@ export const RichTextEditor = forwardRef<
     onChange: (html: string) => void;
     placeholder?: string;
     id?: string;
-    minHeightClassName?: string;
+    /** Starting height of the editing area, in px, and the floor the resize
+     * handle can't drag below. */
+    minHeight?: number;
     disabled?: boolean;
     /** Focuses the editor once, on mount -- Tiptap's own equivalent of a
      * native input's `autoFocus`, since a contentEditable doesn't support
@@ -149,10 +173,12 @@ export const RichTextEditor = forwardRef<
     autoFocus?: boolean;
   }
 >(function RichTextEditor(
-  { value, onChange, placeholder, id, minHeightClassName = "min-h-20", disabled, autoFocus },
+  { value, onChange, placeholder, id, minHeight = 80, disabled, autoFocus },
   ref,
 ) {
   const t = useTranslations("flashcards.richText");
+  const [resizing, setResizing] = useState(false);
+  const dragRef = useRef<{ startY: number; startHeight: number } | null>(null);
 
   const editor = useEditor({
     // Next.js renders this on the server first; Tiptap's own docs recommend
@@ -180,23 +206,63 @@ export const RichTextEditor = forwardRef<
     editorProps: {
       attributes: {
         id: id ?? "",
-        // resize-y + overflow-y-auto (CSS resize needs overflow != visible
-        // to show its drag handle at all) go on this element specifically,
-        // not on EditorContent's own className below -- that prop lands on
-        // Tiptap's outer wrapper div, a plain shrink-to-fit box with no
-        // height of its own, so resize/min-height there wouldn't actually
-        // constrain or grow the visible, scrollable editing surface.
+        // Sizing lives on this element (the contentEditable itself), not on
+        // EditorContent's className below -- that prop lands on Tiptap's
+        // outer wrapper div, a plain shrink-to-fit box with no height of its
+        // own, so a height set there wouldn't constrain or scroll the
+        // visible editing surface. `min-height` is the resting size and the
+        // floor the resize handle enforces; the handle sets `height`
+        // directly on this node while dragging (see beginResize below).
+        style: `min-height:${minHeight}px`,
         class: cn(
-          "prose-sm max-w-none resize-y overflow-y-auto outline-none",
+          "prose-sm max-w-none overflow-y-auto outline-none",
           "[&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5",
           "[&_code]:rounded [&_code]:bg-surface-muted [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-[0.85em]",
           "[&_p]:my-0",
           "px-2.5 py-2 text-sm",
-          minHeightClassName,
         ),
       },
     },
   });
+
+  const editorDom = () => editor?.view.dom as HTMLElement | undefined;
+
+  function beginResize(event: React.PointerEvent<HTMLDivElement>) {
+    const dom = editorDom();
+    if (!dom || disabled) return;
+    event.preventDefault();
+    dragRef.current = { startY: event.clientY, startHeight: dom.getBoundingClientRect().height };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setResizing(true);
+  }
+
+  function updateResize(event: React.PointerEvent<HTMLDivElement>) {
+    const drag = dragRef.current;
+    const dom = editorDom();
+    if (!drag || !dom) return;
+    const next = Math.min(
+      MAX_EDITOR_HEIGHT,
+      Math.max(minHeight, drag.startHeight + event.clientY - drag.startY),
+    );
+    dom.style.height = `${next}px`;
+  }
+
+  function endResize(event: React.PointerEvent<HTMLDivElement>) {
+    if (!dragRef.current) return;
+    dragRef.current = null;
+    setResizing(false);
+    event.currentTarget.releasePointerCapture?.(event.pointerId);
+  }
+
+  function nudgeResize(delta: number) {
+    const dom = editorDom();
+    if (!dom) return;
+    const next = Math.min(
+      MAX_EDITOR_HEIGHT,
+      Math.max(minHeight, dom.getBoundingClientRect().height + delta),
+    );
+    dom.style.height = `${next}px`;
+  }
 
   // Keeps the editor in sync when `value` changes from outside (e.g. the
   // form resetting after save, or switching which flashcard is being
@@ -243,7 +309,12 @@ export const RichTextEditor = forwardRef<
   if (!editor || !activeState) {
     // Same visual footprint as the real editor so the form doesn't jump
     // once Tiptap mounts client-side.
-    return <div className={cn("w-full rounded-lg border border-input bg-transparent", minHeightClassName)} />;
+    return (
+      <div
+        className="w-full rounded-lg border border-input bg-transparent"
+        style={{ minHeight }}
+      />
+    );
   }
 
   return (
@@ -251,6 +322,7 @@ export const RichTextEditor = forwardRef<
       className={cn(
         "w-full overflow-hidden rounded-lg border border-input bg-transparent transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 dark:bg-input/30",
         disabled && "pointer-events-none opacity-50",
+        resizing && "select-none",
       )}
     >
       <div className="flex flex-wrap items-center gap-0.5 border-b border-border/70 bg-surface-muted/40 p-1">
@@ -368,11 +440,34 @@ export const RichTextEditor = forwardRef<
         </ToolbarButton>
       </div>
 
-      {/* Sizing/resize classes live on editorProps.attributes.class above,
-          not here -- see its comment for why. This wrapper just needs to
-          not add its own visual box (border/background already live on the
-          outer container). */}
+      {/* Sizing lives on editorProps.attributes above, not on this wrapper --
+          see its comment for why. */}
       <EditorContent editor={editor} />
+
+      {disabled ? null : (
+        <div
+          role="separator"
+          aria-orientation="horizontal"
+          aria-label={t("resize")}
+          tabIndex={0}
+          onPointerDown={beginResize}
+          onPointerMove={updateResize}
+          onPointerUp={endResize}
+          onPointerCancel={endResize}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowUp") {
+              event.preventDefault();
+              nudgeResize(-RESIZE_KEYBOARD_STEP);
+            } else if (event.key === "ArrowDown") {
+              event.preventDefault();
+              nudgeResize(RESIZE_KEYBOARD_STEP);
+            }
+          }}
+          className="flex h-3.5 shrink-0 cursor-ns-resize touch-none items-center justify-center border-t border-border/70 bg-surface-muted/40 text-muted-foreground transition-colors hover:bg-surface-muted hover:text-foreground focus-visible:bg-surface-muted focus-visible:text-foreground focus-visible:outline-none"
+        >
+          <GripHorizontal className="size-3.5" aria-hidden="true" />
+        </div>
+      )}
     </div>
   );
 });

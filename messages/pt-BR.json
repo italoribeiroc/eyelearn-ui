@@ -850,7 +850,27 @@
       "highlight": "Destaque",
       "clearColor": "Remover cor",
       "clearHighlight": "Remover destaque",
-      "clearFormatting": "Limpar formatação"
+      "clearFormatting": "Limpar formatação",
+      "resize": "Arraste para redimensionar"
+    },
+    "search": {
+      "collectionsPlaceholder": "Buscar coleções",
+      "flashcardsPlaceholder": "Buscar flashcards",
+      "clear": "Limpar busca",
+      "resultCount": "{count, plural, one {# resultado} other {# resultados}}",
+      "noCollections": "Nenhuma coleção corresponde à sua busca.",
+      "noFlashcards": "Nenhum flashcard corresponde à sua busca."
+    },
+    "filters": {
+      "typeLabel": "Tipo",
+      "allTypes": "Todos os tipos",
+      "withMedia": "Com mídia",
+      "sortLabel": "Ordenar",
+      "sortNewest": "Mais recentes primeiro",
+      "sortOldest": "Mais antigos primeiro",
+      "sortTitleAsc": "Título de A a Z",
+      "sortTitleDesc": "Título de Z a A",
+      "empty": "Nenhum flashcard corresponde aos filtros selecionados."
     }
   },
   "study": {
@@ -959,5 +979,11 @@
         "messageMin": "Conte um pouco mais para sabermos como ajudar (pelo menos 10 caracteres)."
       }
     }
+  },
+  "appError": {
+    "title": "Algo deu errado",
+    "subtitle": "Essa página não carregou. Tentar de novo costuma resolver. Se continuar acontecendo, entre novamente.",
+    "retry": "Tentar de novo",
+    "goToLogin": "Ir para o login"
   }
 }

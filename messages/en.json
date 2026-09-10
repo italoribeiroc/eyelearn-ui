@@ -850,7 +850,27 @@
       "highlight": "Highlight",
       "clearColor": "Remove color",
       "clearHighlight": "Remove highlight",
-      "clearFormatting": "Clear formatting"
+      "clearFormatting": "Clear formatting",
+      "resize": "Drag to resize"
+    },
+    "search": {
+      "collectionsPlaceholder": "Search collections",
+      "flashcardsPlaceholder": "Search flashcards",
+      "clear": "Clear search",
+      "resultCount": "{count, plural, one {# match} other {# matches}}",
+      "noCollections": "No collections match your search.",
+      "noFlashcards": "No flashcards match your search."
+    },
+    "filters": {
+      "typeLabel": "Type",
+      "allTypes": "All types",
+      "withMedia": "With media",
+      "sortLabel": "Sort",
+      "sortNewest": "Newest first",
+      "sortOldest": "Oldest first",
+      "sortTitleAsc": "Title A to Z",
+      "sortTitleDesc": "Title Z to A",
+      "empty": "No flashcards match the selected filters."
     }
   },
   "study": {
@@ -959,5 +979,11 @@
         "messageMin": "Say a bit more so we know how to help (at least 10 characters)."
       }
     }
+  },
+  "appError": {
+    "title": "Something went wrong",
+    "subtitle": "That page did not load. Trying again usually fixes it. If it keeps happening, sign in again.",
+    "retry": "Try again",
+    "goToLogin": "Go to login"
   }
 }

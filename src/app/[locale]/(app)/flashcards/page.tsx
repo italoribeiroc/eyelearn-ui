@@ -1,10 +1,9 @@
 import { Layers, Plus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { CollectionAccordionList } from "@/components/flashcards/collection-accordion-list";
-import { CollectionCard } from "@/components/flashcards/collection-card";
 import { CollectionFormDialog } from "@/components/flashcards/collection-form-dialog";
 import { CollectionLimitBanner } from "@/components/flashcards/collection-limit-banner";
-import { CollectionViewToggle, type CollectionViewMode } from "@/components/flashcards/collection-view-toggle";
+import { CollectionsBrowser } from "@/components/flashcards/collections-browser";
+import { type CollectionViewMode } from "@/components/flashcards/collection-view-toggle";
 import { PlanUpgradeDialog } from "@/components/billing/plan-upgrade-dialog";
 import { PricingSection } from "@/components/marketing/pricing-section";
 import { Button } from "@/components/ui/button";
@@ -67,20 +66,11 @@ export default async function FlashcardsPage({
           <p className="max-w-sm text-sm text-foreground-muted">{t("emptyDescription")}</p>
         </div>
       ) : (
-        <>
-          <div className="flex justify-end">
-            <CollectionViewToggle view={viewMode} />
-          </div>
-          {viewMode === "list" ? (
-            <CollectionAccordionList items={rootCollections} allCollections={allCollections} />
-          ) : (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {rootCollections.map((collection) => (
-                <CollectionCard key={collection.id} collection={collection} />
-              ))}
-            </div>
-          )}
-        </>
+        <CollectionsBrowser
+          allCollections={allCollections}
+          rootCollections={rootCollections}
+          view={viewMode}
+        />
       )}
     </div>
   );

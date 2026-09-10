@@ -305,7 +305,7 @@ export function FlashcardFormDialog({
               id="card-prompt"
               value={prompt}
               onChange={setPrompt}
-              minHeightClassName="min-h-16"
+              minHeight={72}
               autoFocus
             />
           </div>
@@ -326,7 +326,7 @@ export function FlashcardFormDialog({
           {cardType === "basic" ? (
             <div className="grid gap-2">
               <Label htmlFor="card-answer">{t("answerLabel")}</Label>
-              <RichTextEditor id="card-answer" value={answer} onChange={setAnswer} minHeightClassName="min-h-14" />
+              <RichTextEditor id="card-answer" value={answer} onChange={setAnswer} minHeight={56} />
             </div>
           ) : null}
 
