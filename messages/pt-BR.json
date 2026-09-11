@@ -714,7 +714,7 @@
       "progressLabel": "Progresso",
       "progressCount": "{current} de {total} cartões",
       "showAnswer": "Mostrar resposta",
-      "ratingRecorded": "Entendido. Carregando o próximo cartão...",
+      "ratingRecorded": "Avaliação registrada.",
       "ratings": {
         "again": "De novo",
         "hard": "Difícil",
@@ -735,7 +735,9 @@
         "learning": "Aprendendo",
         "review": "Revisão",
         "relearning": "Reaprendendo"
-      }
+      },
+      "undoRating": "Voltar",
+      "undoFailed": "Não foi possível desfazer. Tente novamente."
     },
     "importExport": {
       "importButton": "Importar",

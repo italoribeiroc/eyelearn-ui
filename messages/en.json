@@ -714,7 +714,7 @@
       "progressLabel": "Progress",
       "progressCount": "{current} of {total} cards",
       "showAnswer": "Show answer",
-      "ratingRecorded": "Got it. Loading the next card...",
+      "ratingRecorded": "Rating recorded.",
       "ratings": {
         "again": "Again",
         "hard": "Hard",
@@ -735,7 +735,9 @@
         "learning": "Learning",
         "review": "Review",
         "relearning": "Relearning"
-      }
+      },
+      "undoRating": "Go back",
+      "undoFailed": "Could not undo that. Try again."
     },
     "importExport": {
       "importButton": "Import",

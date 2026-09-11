@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, type CSSProperties } from "react";
-import { CheckCircle2, PartyPopper, XCircle } from "lucide-react";
+import { CheckCircle2, Loader2, PartyPopper, Undo2, XCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MediaDisplay } from "@/components/flashcards/media-display";
@@ -63,6 +64,11 @@ async function postReview(flashcardId: number, submission: ReviewSubmission): Pr
   return res.json();
 }
 
+async function postUndoReview(flashcardId: number): Promise<void> {
+  const res = await fetch(`/api/flashcards/cards/${flashcardId}/review/undo`, { method: "POST" });
+  if (!res.ok) throw new Error("Failed to undo review");
+}
+
 export function StudySession({
   title,
   backHref,
@@ -80,6 +86,7 @@ export function StudySession({
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [typedAnswer, setTypedAnswer] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [undoing, setUndoing] = useState(false);
   const [result, setResult] = useState<ReviewResult | null>(null);
   const [reviewedCount, setReviewedCount] = useState(0);
 
@@ -107,6 +114,26 @@ export function StudySession({
       setReviewedCount((c) => c + 1);
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  // Lets a mis-tapped rating (or a wrong multiple-choice/typed-answer
+  // submission) be corrected before moving to the next card: reverts the
+  // review server-side (see ReviewService.undo_last_review) and re-opens
+  // this same card for another attempt, keeping whatever the user already
+  // typed. Only ever available for the card currently on screen -- it's
+  // gone the moment goNext() resets `result`.
+  async function handleUndo() {
+    setUndoing(true);
+    try {
+      await postUndoReview(item.flashcard.id);
+      setResult(null);
+      setReviewedCount((c) => Math.max(c - 1, 0));
+      if (item.flashcard.card_type === "multiple_choice") setSelectedOption(null);
+    } catch {
+      toast.error(t("undoFailed"));
+    } finally {
+      setUndoing(false);
     }
   }
 
@@ -202,8 +229,16 @@ export function StudySession({
       </div>
 
       {result ? (
-        <div className="flex justify-end">
-          <Button type="button" onClick={goNext}>
+        <div className="flex justify-end gap-2">
+          <Button type="button" variant="outline" onClick={handleUndo} disabled={undoing}>
+            {undoing ? (
+              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+            ) : (
+              <Undo2 className="size-4" aria-hidden="true" />
+            )}
+            {t("undoRating")}
+          </Button>
+          <Button type="button" onClick={goNext} disabled={undoing}>
             {index + 1 >= initialQueue.length ? t("finish") : t("nextCard")}
           </Button>
         </div>
@@ -270,7 +305,11 @@ function BasicCard({
         <MediaDisplay items={answerMedia} />
       </div>
       {!result ? (
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        // Bigger, taller buttons on narrow screens: a 2x2 grid has plenty of
+        // room to spare there, and a full-width row of 4 doesn't appear
+        // until sm:, where the smaller size (matching the rest of the app's
+        // compact controls) fits comfortably instead.
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-2">
           {RATINGS.map((rating) => (
             <Button
               key={rating.value}
@@ -279,7 +318,7 @@ function BasicCard({
               size="sm"
               disabled={submitting}
               onClick={() => onRate(rating.value)}
-              className={RATING_STYLES[rating.value].className}
+              className={cn("h-14 text-base sm:h-9 sm:text-[0.8rem]", RATING_STYLES[rating.value].className)}
               style={RATING_STYLES[rating.value].style}
             >
               {t(`ratings.${rating.labelKey}`)}

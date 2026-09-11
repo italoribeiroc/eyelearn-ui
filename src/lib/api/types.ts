@@ -182,6 +182,10 @@ export type ReviewResult = {
   lapses: number;
 };
 
+/** Response from undoing the most recent review -- same shape as ReviewResult
+ * minus `correct`, which only ever described the review being undone. */
+export type UndoReviewResult = Omit<ReviewResult, "correct">;
+
 export type CollectionGoalProgress = {
   collection: number;
   target_date: string;

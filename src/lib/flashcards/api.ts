@@ -12,6 +12,7 @@ import type {
   ReviewResult,
   ReviewSubmission,
   StudyQueueItem,
+  UndoReviewResult,
 } from "@/lib/api/types";
 import { getValidAccessToken } from "@/lib/auth/session";
 
@@ -174,6 +175,14 @@ export async function submitReview(
     method: "POST",
     headers,
     body: JSON.stringify(data),
+  });
+}
+
+export async function undoReview(flashcardId: number): Promise<UndoReviewResult> {
+  const headers = await authHeaders();
+  return djangoFetchJson<UndoReviewResult>(`/api/flashcards/flashcards/${flashcardId}/review/undo/`, {
+    method: "POST",
+    headers,
   });
 }
 
