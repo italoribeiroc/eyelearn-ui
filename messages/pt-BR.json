@@ -737,7 +737,13 @@
         "relearning": "Reaprendendo"
       },
       "undoRating": "Voltar",
-      "undoFailed": "Não foi possível desfazer. Tente novamente."
+      "undoFailed": "Não foi possível desfazer. Tente novamente.",
+      "cardStyle": {
+        "reveal": "Botão de revelar",
+        "flip": "Cartão giratório",
+        "flipHint": "Toque ou pressione Enter para virar",
+        "flipBackHint": "Toque ou pressione Enter para ver a pergunta novamente"
+      }
     },
     "importExport": {
       "importButton": "Importar",

@@ -737,7 +737,13 @@
         "relearning": "Relearning"
       },
       "undoRating": "Go back",
-      "undoFailed": "Could not undo that. Try again."
+      "undoFailed": "Could not undo that. Try again.",
+      "cardStyle": {
+        "reveal": "Reveal button",
+        "flip": "Flip card",
+        "flipHint": "Tap or press Enter to flip",
+        "flipBackHint": "Tap or press Enter to see the question again"
+      }
     },
     "importExport": {
       "importButton": "Import",

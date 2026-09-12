@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useState } from "react";
 import { CheckCircle2, Loader2, PartyPopper, Undo2, XCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
@@ -8,6 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MediaDisplay } from "@/components/flashcards/media-display";
 import { RichTextContent } from "@/components/flashcards/rich-text-content";
+import { FlipBasicCard } from "@/components/flashcards/study/flip-basic-card";
+import { RatingButtons } from "@/components/flashcards/study/rating-buttons";
+import { StudyCardStyleToggle } from "@/components/flashcards/study/study-card-style-toggle";
+import { useStudyCardStyle } from "@/hooks/use-study-card-style";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import type {
@@ -19,39 +23,15 @@ import type {
   StudyQueueItem,
 } from "@/lib/api/types";
 
-// Same idea as RATING_STYLES below: color signals meaning at a glance.
-// "new"/"learning" cards haven't stuck yet (mint/warning), "review" is a
-// card that has graduated to the long-term schedule (success), and
+// Same idea as RATING_STYLES (see ./ratings): color signals meaning at a
+// glance. "new"/"learning" cards haven't stuck yet (mint/warning), "review"
+// is a card that has graduated to the long-term schedule (success), and
 // "relearning" flags one that was forgotten and needs attention (error).
 const STATE_BADGE_STYLES: Record<ReviewSchedulingState, string> = {
   new: "bg-brand-mint/15 text-brand-turquoise",
   learning: "bg-warning/10 text-warning",
   review: "bg-success/10 text-success",
   relearning: "bg-error/10 text-error",
-};
-
-export const RATINGS: { value: ReviewRating; labelKey: string }[] = [
-  { value: 1, labelKey: "again" },
-  { value: 2, labelKey: "hard" },
-  { value: 3, labelKey: "good" },
-  { value: 4, labelKey: "easy" },
-];
-
-// Again -> Hard -> Good -> Easy on a red-to-green gradient, so the meaning
-// of each button is visible at a glance (not just from its label). "Good"
-// sits between the warning and success tokens with no named token of its
-// own, so it's built with color-mix() instead of a new hardcoded hex value.
-export const RATING_STYLES: Record<ReviewRating, { className?: string; style?: CSSProperties }> = {
-  1: { className: "border-error bg-error/10 text-error hover:bg-error/15" },
-  2: { className: "border-warning bg-warning/10 text-warning hover:bg-warning/15" },
-  3: {
-    style: {
-      borderColor: "color-mix(in oklch, var(--color-warning), var(--color-success) 55%)",
-      backgroundColor: "color-mix(in oklch, var(--color-warning), var(--color-success) 55%, transparent 90%)",
-      color: "color-mix(in oklch, var(--color-warning), var(--color-success) 55%)",
-    },
-  },
-  4: { className: "border-success bg-success/10 text-success hover:bg-success/15" },
 };
 
 async function postReview(flashcardId: number, submission: ReviewSubmission): Promise<ReviewResult> {
@@ -89,6 +69,7 @@ export function StudySession({
   const [undoing, setUndoing] = useState(false);
   const [result, setResult] = useState<ReviewResult | null>(null);
   const [reviewedCount, setReviewedCount] = useState(0);
+  const [cardStyle, setCardStyle] = useStudyCardStyle();
 
   const item = initialQueue[index];
   const isDone = index >= initialQueue.length;
@@ -176,56 +157,86 @@ export function StudySession({
       </div>
 
       <div className="rounded-lg border border-border bg-surface p-6 shadow-[var(--shadow-soft)]">
-        <span
-          className={cn(
-            "rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide",
-            STATE_BADGE_STYLES[item.state],
-          )}
-        >
-          {t(`states.${item.state}`)}
-        </span>
-        <RichTextContent
-          html={item.flashcard.prompt}
-          className="mt-4 font-heading text-xl font-semibold text-foreground"
-        />
-        <MediaDisplay items={item.flashcard.media.filter((media) => media.side === "prompt")} />
+        <div className="flex items-center justify-between gap-2">
+          <span
+            className={cn(
+              "rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide",
+              STATE_BADGE_STYLES[item.state],
+            )}
+          >
+            {t(`states.${item.state}`)}
+          </span>
+          <StudyCardStyleToggle style={cardStyle} onChange={setCardStyle} />
+        </div>
 
-        {item.flashcard.card_type === "basic" ? (
-          <BasicCard
-            revealed={revealed}
+        {item.flashcard.card_type === "basic" && cardStyle === "flip" ? (
+          <FlipBasicCard
+            // Remounts fresh for every card: without this, moving from a
+            // flipped card straight to a new unrevealed one would animate
+            // the *same* rotating element from 180deg back to 0deg, and
+            // for the first half of that reverse rotation the back face
+            // (already showing the new card's answer, since React swaps
+            // props before the CSS transition catches up) is briefly the
+            // one facing the viewer -- a spoiler flash. A fresh node has no
+            // prior transform to transition from, so it just paints
+            // unrevealed with no animation.
+            key={item.flashcard.id}
+            prompt={item.flashcard.prompt}
+            promptMedia={item.flashcard.media.filter((media) => media.side === "prompt")}
             answer={item.flashcard.answer}
             answerMedia={item.flashcard.media.filter((media) => media.side === "answer")}
+            revealed={revealed}
+            onToggle={() => setRevealed((current) => !current)}
             result={result}
             submitting={submitting}
-            onReveal={() => setRevealed(true)}
             onRate={(rating) => submit({ rating })}
           />
-        ) : null}
+        ) : (
+          <>
+            <RichTextContent
+              html={item.flashcard.prompt}
+              className="mt-4 font-heading text-xl font-semibold text-foreground"
+            />
+            <MediaDisplay items={item.flashcard.media.filter((media) => media.side === "prompt")} />
 
-        {item.flashcard.card_type === "multiple_choice" ? (
-          <MultipleChoiceCard
-            options={item.flashcard.options}
-            selectedOption={selectedOption}
-            result={result}
-            submitting={submitting}
-            onSelect={(optionIndex) => {
-              setSelectedOption(optionIndex);
-              submit({ selected_option: optionIndex });
-            }}
-          />
-        ) : null}
+            {item.flashcard.card_type === "basic" ? (
+              <BasicCard
+                revealed={revealed}
+                answer={item.flashcard.answer}
+                answerMedia={item.flashcard.media.filter((media) => media.side === "answer")}
+                result={result}
+                submitting={submitting}
+                onReveal={() => setRevealed(true)}
+                onRate={(rating) => submit({ rating })}
+              />
+            ) : null}
 
-        {item.flashcard.card_type === "typed_answer" ? (
-          <TypedAnswerCard
-            value={typedAnswer}
-            onChange={setTypedAnswer}
-            answer={item.flashcard.answer}
-            answerMedia={item.flashcard.media.filter((media) => media.side === "answer")}
-            result={result}
-            submitting={submitting}
-            onSubmit={() => submit({ submitted_answer: typedAnswer.trim() })}
-          />
-        ) : null}
+            {item.flashcard.card_type === "multiple_choice" ? (
+              <MultipleChoiceCard
+                options={item.flashcard.options}
+                selectedOption={selectedOption}
+                result={result}
+                submitting={submitting}
+                onSelect={(optionIndex) => {
+                  setSelectedOption(optionIndex);
+                  submit({ selected_option: optionIndex });
+                }}
+              />
+            ) : null}
+
+            {item.flashcard.card_type === "typed_answer" ? (
+              <TypedAnswerCard
+                value={typedAnswer}
+                onChange={setTypedAnswer}
+                answer={item.flashcard.answer}
+                answerMedia={item.flashcard.media.filter((media) => media.side === "answer")}
+                result={result}
+                submitting={submitting}
+                onSubmit={() => submit({ submitted_answer: typedAnswer.trim() })}
+              />
+            ) : null}
+          </>
+        )}
       </div>
 
       {result ? (
@@ -304,30 +315,7 @@ function BasicCard({
         <RichTextContent html={answer} className="text-sm text-foreground" />
         <MediaDisplay items={answerMedia} />
       </div>
-      {!result ? (
-        // Bigger, taller buttons on narrow screens: a 2x2 grid has plenty of
-        // room to spare there, and a full-width row of 4 doesn't appear
-        // until sm:, where the smaller size (matching the rest of the app's
-        // compact controls) fits comfortably instead.
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-2">
-          {RATINGS.map((rating) => (
-            <Button
-              key={rating.value}
-              type="button"
-              variant="outline"
-              size="sm"
-              disabled={submitting}
-              onClick={() => onRate(rating.value)}
-              className={cn("h-14 text-base sm:h-9 sm:text-[0.8rem]", RATING_STYLES[rating.value].className)}
-              style={RATING_STYLES[rating.value].style}
-            >
-              {t(`ratings.${rating.labelKey}`)}
-            </Button>
-          ))}
-        </div>
-      ) : (
-        <p className="text-sm font-medium text-foreground-muted">{t("ratingRecorded")}</p>
-      )}
+      <RatingButtons result={result} submitting={submitting} onRate={onRate} />
     </div>
   );
 }

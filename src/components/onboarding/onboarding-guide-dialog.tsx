@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { RATINGS, RATING_STYLES } from "@/components/flashcards/study/study-session";
+import { RATINGS, RATING_STYLES } from "@/components/flashcards/study/ratings";
 import { MasteryIllustration, WelcomeIllustration } from "@/components/onboarding/onboarding-illustrations";
 import { cn } from "@/lib/utils";
 
