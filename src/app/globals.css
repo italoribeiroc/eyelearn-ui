@@ -223,3 +223,32 @@
   color: var(--color-muted-foreground);
   pointer-events: none;
 }
+
+/* Thin, theme-matched scrollbar for a few internally-scrolling panels (e.g.
+   a large collection's virtualized flashcard list) -- the browser default
+   otherwise renders as a bare, full-width system scrollbar flush against
+   rounded card edges, with no breathing room. Opt-in via this class rather
+   than a global `*` rule, so it doesn't affect scroll areas that haven't
+   asked for it. Tailwind v4 has no built-in scrollbar utilities and this
+   repo has no scrollbar plugin, hence a plain rule here. */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 9999px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-foreground-muted);
+}

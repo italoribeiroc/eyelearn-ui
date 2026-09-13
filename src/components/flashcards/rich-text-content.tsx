@@ -1,3 +1,6 @@
+"use client";
+
+import { useMemo } from "react";
 import DOMPurify from "isomorphic-dompurify";
 import { cn } from "@/lib/utils";
 
@@ -19,13 +22,20 @@ const ALLOWED_ATTR = ["style"];
  * through this, never a raw `dangerouslySetInnerHTML`, so a card imported
  * from an untrusted .apkg/CSV can't inject a script or an event handler.
  * `isomorphic-dompurify` (not the plain `dompurify` package) specifically
- * because this renders from both Server and Client Components -- plain
- * DOMPurify assumes a browser `window` and breaks during SSR. Sanitizing on
- * render (not on save) means tightening ALLOWED_TAGS later automatically
+ * because plain DOMPurify assumes a browser `window` -- this still runs
+ * fine wherever a Server Component renders it (Next.js renders a "use
+ * client" leaf like this one server-side too on first load), it's just
+ * that the sanitize call itself is memoized below, which only pays off on
+ * a client-side re-render, hence the explicit client boundary. Sanitizing
+ * on render (not on save) means tightening ALLOWED_TAGS later automatically
  * covers content saved before that change too.
  */
 export function RichTextContent({ html, className }: { html: string; className?: string }) {
-  const safeHtml = DOMPurify.sanitize(html, { ALLOWED_TAGS, ALLOWED_ATTR });
+  // A large flashcard list re-renders every visible RichTextContent on
+  // every parent re-render (e.g. typing in the list's search box) even
+  // though `html` itself usually hasn't changed -- memoizing avoids
+  // re-running DOMPurify's own parse/sanitize pass for unchanged content.
+  const safeHtml = useMemo(() => DOMPurify.sanitize(html, { ALLOWED_TAGS, ALLOWED_ATTR }), [html]);
 
   return (
     <div

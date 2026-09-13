@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +10,13 @@ import type { Flashcard } from "@/lib/api/types";
 import { DeleteConfirmDialog } from "./delete-confirm-dialog";
 import { FlashcardFormDialog } from "./flashcard-form-dialog";
 
-export function FlashcardListItem({
+/** Wrapped in memo() since a large collection's list renders many of these
+ * at once (see FlashcardSearchList's virtualized list) -- `flashcard` is a
+ * stable reference from the page's fetched array, so a shallow prop
+ * comparison is enough to skip re-rendering items whose own data hasn't
+ * changed when the list re-renders for unrelated reasons (typing in the
+ * search box, scrolling the virtualized window). */
+function FlashcardListItemImpl({
   flashcard,
   collectionId,
 }: {
@@ -60,3 +67,5 @@ export function FlashcardListItem({
     </div>
   );
 }
+
+export const FlashcardListItem = memo(FlashcardListItemImpl);

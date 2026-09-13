@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { ArrowUpDown, Paperclip, SlidersHorizontal } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,17 @@ const SORT_LABEL_KEYS: Record<SortMode, string> = {
   "title-desc": "filters.sortTitleDesc",
 };
 const SORT_OPTIONS = Object.keys(SORT_LABEL_KEYS) as SortMode[];
+
+// Only the row-mounting step is virtualized -- search/filter/sort below
+// still run over the full in-memory array exactly as before. A large
+// collection (1000+ cards) would otherwise mount that many full
+// FlashcardListItem subtrees at once; this caps DOM node count to roughly
+// the visible viewport regardless of how many cards match the current
+// filters. ESTIMATED_ROW_HEIGHT_PX is just react-virtual's initial guess --
+// actual heights are measured per row (see measureElement below) since a
+// card's rendered height varies a little with its content.
+const ESTIMATED_ROW_HEIGHT_PX = 88;
+const ROW_GAP_PX = 8; // matches the space-y-2 gap this replaces
 
 /**
  * Searchable, filterable, sortable list of the flashcards in one
@@ -97,6 +109,15 @@ export function FlashcardSearchList({
 
   const typeLabel = typeFilter === "all" ? t("filters.allTypes") : tType(typeFilter);
   const isFiltered = trimmed.length > 0 || typeFilter !== "all" || mediaOnly;
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const rowVirtualizer = useVirtualizer({
+    count: visible.length,
+    getScrollElement: () => scrollRef.current,
+    estimateSize: () => ESTIMATED_ROW_HEIGHT_PX,
+    overscan: 8,
+    gap: ROW_GAP_PX,
+  });
 
   return (
     <div className="space-y-3">
@@ -175,10 +196,28 @@ export function FlashcardSearchList({
           {trimmed ? t("search.noFlashcards") : t("filters.empty")}
         </p>
       ) : (
-        <div className="space-y-2">
-          {visible.map(({ flashcard }) => (
-            <FlashcardListItem key={flashcard.id} flashcard={flashcard} collectionId={collectionId} />
-          ))}
+        <div ref={scrollRef} className="thin-scrollbar max-h-[32rem] overflow-y-auto rounded-lg pr-3">
+          <div style={{ height: rowVirtualizer.getTotalSize(), position: "relative" }}>
+            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+              const { flashcard } = visible[virtualRow.index];
+              return (
+                <div
+                  key={flashcard.id}
+                  data-index={virtualRow.index}
+                  ref={rowVirtualizer.measureElement}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    transform: `translateY(${virtualRow.start}px)`,
+                  }}
+                >
+                  <FlashcardListItem flashcard={flashcard} collectionId={collectionId} />
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
