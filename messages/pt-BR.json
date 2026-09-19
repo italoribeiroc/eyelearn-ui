@@ -993,5 +993,16 @@
     "subtitle": "Essa página não carregou. Tentar de novo costuma resolver. Se continuar acontecendo, entre novamente.",
     "retry": "Tentar de novo",
     "goToLogin": "Ir para o login"
+  },
+  "installPrompt": {
+    "title": "Adicione o Eye Learn à sua tela de início",
+    "description": "Abra como um app, em tela cheia e a um toque de distância.",
+    "close": "Fechar",
+    "steps": {
+      "more": "Toque no botão ... na parte de baixo do Safari.",
+      "share": "Toque no ícone de Compartilhar.",
+      "showMore": "Toque em Ver Mais.",
+      "addToHome": "Toque em Adicionar à Tela de Início."
+    }
   }
 }

@@ -43,7 +43,10 @@ export async function generateMetadata({
     description: t("description"),
     // Keeps the iOS "Add to Home Screen" suggested name short ("Eye Learn")
     // instead of the full <title> tag, which iOS otherwise truncates awkwardly.
+    // capable: makes the home-screen icon launch full screen like an app
+    // (see IosInstallPrompt), instead of just opening a Safari tab.
     appleWebApp: {
+      capable: true,
       title: "Eye Learn",
     },
     verification: {

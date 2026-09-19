@@ -993,5 +993,16 @@
     "subtitle": "That page did not load. Trying again usually fixes it. If it keeps happening, sign in again.",
     "retry": "Try again",
     "goToLogin": "Go to login"
+  },
+  "installPrompt": {
+    "title": "Add Eye Learn to your home screen",
+    "description": "Open it like an app, full screen and one tap away.",
+    "close": "Close",
+    "steps": {
+      "more": "Tap the ... button at the bottom of Safari.",
+      "share": "Tap the Share icon.",
+      "showMore": "Tap Show More.",
+      "addToHome": "Tap Add to Home Screen."
+    }
   }
 }
