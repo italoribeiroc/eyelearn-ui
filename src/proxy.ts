@@ -13,7 +13,7 @@ const handleI18nRouting = createMiddleware(routing);
 // refresh-token lifetime, then clicked -- is sent straight to /login,
 // instead of the layout's redirect racing a parallel-rendered page whose
 // own data fetch throws a 401 first and surfaces the error boundary.
-const PROTECTED_SEGMENTS = new Set(["dashboard", "account", "flashcards", "study", "help"]);
+const PROTECTED_SEGMENTS = new Set(["dashboard", "account", "flashcards", "study", "exam", "help"]);
 
 function firstSegmentAfterLocale(pathname: string): string {
   const segments = pathname.split("/").filter(Boolean);

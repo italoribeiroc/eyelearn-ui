@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Check, HelpCircle, Languages, LayoutDashboard, Layers, LogOut, Menu, Moon, Sun, User } from "lucide-react";
+import { Check, ClipboardCheck, HelpCircle, Languages, LayoutDashboard, Layers, LogOut, Menu, Moon, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
@@ -94,6 +94,19 @@ export function AppNav({ isPro = false }: { isPro?: boolean }) {
               {t("flashcards")}
             </Link>
           </Button>
+          <Button
+            asChild
+            type="button"
+            variant="ghost"
+            size="sm"
+            aria-current={pathname.startsWith("/exam") ? "page" : undefined}
+            className={cn(pathname.startsWith("/exam") && "bg-muted text-foreground")}
+          >
+            <Link href="/exam">
+              <ClipboardCheck className="size-4" aria-hidden="true" />
+              {t("examNav")}
+            </Link>
+          </Button>
           <Button asChild type="button" variant="ghost" size="sm">
             <Link href="/account">
               <User className="size-4" aria-hidden="true" />
@@ -141,6 +154,16 @@ export function AppNav({ isPro = false }: { isPro?: boolean }) {
                   <Link href="/flashcards" className={menuItemClass}>
                     <Layers className="size-4" aria-hidden="true" />
                     {t("flashcards")}
+                  </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link
+                    href="/exam"
+                    aria-current={pathname.startsWith("/exam") ? "page" : undefined}
+                    className={cn(menuItemClass, pathname.startsWith("/exam") && "bg-muted")}
+                  >
+                    <ClipboardCheck className="size-4" aria-hidden="true" />
+                    {t("examNav")}
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>

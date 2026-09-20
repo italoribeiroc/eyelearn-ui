@@ -599,16 +599,51 @@
       "finishedDescription": "Your study timer has finished."
     },
     "setGoalCta": "Set a study goal",
-    "ctaTitle": "Start your first study session",
-    "ctaDescription": "Organize your notes into flashcard collections, then study whenever you're ready.",
-    "ctaButton": "Go to flashcards",
-    "ctaDailyTitle": "Today's study is ready",
-    "ctaDailyDescription": "{count} cards are due across your goals today.",
-    "ctaDailyButton": "Study today's goal",
-    "ctaCustomButton": "Custom study",
-    "ctaProgress": "{completed} of {total} studied today",
     "flashcards": "Flashcards",
-    "menu": "Menu"
+    "menu": "Menu",
+    "examNav": "Exam",
+    "studyModes": {
+      "heading": "Ways to study",
+      "progressLabel": "Today's goal progress",
+      "progress": "{completed} of {total} studied today",
+      "hero": {
+        "noCollections": {
+          "title": "Create your first collection",
+          "description": "Organize your notes into flashcard collections. Once you have one, every way to study unlocks.",
+          "button": "Create a collection"
+        },
+        "goalDue": {
+          "title": "Today's goal is ready",
+          "description": "{count, plural, one {# card is} other {# cards are}} due across your goals today.",
+          "button": "Study today's goal"
+        },
+        "goalDone": {
+          "title": "Today's goal is done",
+          "description": "Great work, nothing more is due today. Keep the momentum with another way to study.",
+          "button": "Study more"
+        },
+        "noGoal": {
+          "title": "Set a goal, get a daily plan",
+          "description": "Pick a target date for a collection and Eye Learn works out how many cards to study each day. Or jump into any way to study below.",
+          "button": "Set a study goal"
+        }
+      },
+      "otherWaysHeading": "Other ways to study",
+      "lockedHint": "Create a collection to unlock these.",
+      "custom": {
+        "title": "Custom study",
+        "description": "Mix due cards from any collections into one session."
+      },
+      "exam": {
+        "title": "Exam",
+        "description": "Test yourself on random or hand-picked cards, timed or not.",
+        "last": "Last: {percent}%"
+      },
+      "collection": {
+        "title": "Study a collection",
+        "description": "Open a collection and review its due cards."
+      }
+    }
   },
   "flashcards": {
     "title": "Your flashcards",
@@ -1003,6 +1038,157 @@
       "share": "Tap the Share icon.",
       "showMore": "Tap Show More.",
       "addToHome": "Tap Add to Home Screen."
+    }
+  },
+  "exam": {
+    "setup": {
+      "title": "Exam",
+      "description": "Test yourself on your flashcards. Nothing here changes your study schedule, streak, or goals.",
+      "noCollections": "You don't have any collections yet. Create one and add some flashcards to take an exam.",
+      "collectionsHeading": "1. Choose collections",
+      "cardCount": "{count, plural, one {# card} other {# cards}}",
+      "emptySelectionHint": "Select at least one collection.",
+      "poolSummary": "{collections, plural, one {# collection} other {# collections}} selected, {cards, plural, one {# card} other {# cards}} available.",
+      "cardsHeading": "2. Choose the cards",
+      "tabRandom": "Random cards",
+      "tabPick": "Pick specific cards",
+      "randomDescription": "We'll pick random cards from the collections you selected.",
+      "countLabel": "Number of cards",
+      "countAll": "All",
+      "capHint": "An exam can have at most {max} cards.",
+      "pickNeedsCollections": "Select a collection above to see its cards.",
+      "loadingCards": "Loading cards...",
+      "loadCardsFailed": "Some cards could not be loaded. Deselect and reselect the collection to try again.",
+      "timeHeading": "3. Time limit",
+      "timeSwitch": "Set a time limit",
+      "minutesLabel": "Minutes",
+      "minutesUnit": "minutes",
+      "presetMinutes": "{minutes} min",
+      "timedHint": "When time runs out you can finish right away or keep going without a timer. Answers given after the deadline are marked as late.",
+      "untimedHint": "No timer. Take as long as you need.",
+      "startHintEmpty": "Choose collections and cards to start.",
+      "startSummaryTimed": "{count, plural, one {# question} other {# questions}} in {minutes} min",
+      "startSummaryUntimed": "{count, plural, one {# question} other {# questions}}, no time limit",
+      "startButton": "Start exam"
+    },
+    "picker": {
+      "selectedCount": "{count} of {max} selected",
+      "matchCount": "{count, plural, one {# match} other {# matches}}",
+      "selectAll": "Select all",
+      "selectAllMatching": "Select all matching",
+      "clear": "Clear",
+      "limitReached": "You reached the limit of {max} cards for one exam.",
+      "noMatches": "No cards match your search."
+    },
+    "errors": {
+      "empty_pool": "There are no cards to build an exam from. Pick different collections or cards.",
+      "too_many_cards": "An exam can have at most 200 cards.",
+      "too_many_in_progress": "You already have 10 exams in progress. Finish or discard one first.",
+      "invalid_time_limit": "The time limit must be between 1 and 300 minutes.",
+      "no_cards": "There are no missed cards left to retake.",
+      "generic": "Something went wrong. Please try again."
+    },
+    "session": {
+      "title": "Exam",
+      "startedAt": "started at {time}",
+      "progressLabel": "Progress",
+      "answeredOf": "{answered} of {total} answered",
+      "questionOf": "Question {number} of {total}",
+      "optionsLabel": "Answer options",
+      "typedPlaceholder": "Type your answer",
+      "saveAnswer": "Save",
+      "showAnswer": "Show answer",
+      "selfGradePrompt": "How did you do?",
+      "gotIt": "I got it",
+      "missedIt": "I missed it",
+      "saving": "Saving...",
+      "saved": "Answer saved",
+      "notAnsweredYet": "Not answered yet",
+      "saveFailed": "This answer could not be saved.",
+      "saveFailedToast": "Could not save an answer. Check your connection and retry.",
+      "retry": "Retry",
+      "previous": "Previous",
+      "next": "Next",
+      "navigatorLabel": "Questions",
+      "goToQuestion": "Go to question {number} ({state})",
+      "stateAnswered": "answered",
+      "stateUnanswered": "not answered",
+      "stateFailed": "not saved",
+      "remaining": "left",
+      "elapsed": "elapsed",
+      "overtime": "over time",
+      "leave": "Leave for now",
+      "finishExam": "Finish exam",
+      "confirmTitle": "Finish this exam?",
+      "confirmUnanswered": "{count, plural, one {# question is} other {# questions are}} still unanswered. Unanswered questions count as incorrect.",
+      "confirmAllAnswered": "You answered every question. You'll see your results right away.",
+      "keepWorking": "Keep working",
+      "finishNow": "Finish now",
+      "finishFailed": "Could not finish the exam. Please try again.",
+      "announceTimeUp": "Time is up.",
+      "announceOneMinute": "One minute remaining.",
+      "sessionExpired": "Your session expired. Log in again and your saved answers will be waiting."
+    },
+    "timeUp": {
+      "title": "Time's up",
+      "description": "You answered {answered} of {total} questions. You can finish now, or keep going without a timer.",
+      "keepGoing": "Keep going without a timer",
+      "finish": "Finish exam",
+      "keepGoingHint": "Answers you give after the deadline are marked as late in your results."
+    },
+    "results": {
+      "title": "Your result",
+      "scoreLine": "{correct} of {total} correct",
+      "timeTaken": "Finished in {time}",
+      "timeTakenOfLimit": "Finished in {time} of {limit}",
+      "timedOut": "{missing, plural, one {# question was} other {# questions were}} still open when time ran out. You answered {late} of them afterwards ({lateCorrect} correct).",
+      "statCorrect": "Correct",
+      "statIncorrect": "Incorrect",
+      "statUnanswered": "Unanswered",
+      "statLate": "Answered late",
+      "statTotal": "Total",
+      "retakeMissed": "Retake missed cards ({count})",
+      "newExam": "New exam",
+      "backToDashboard": "Back to dashboard",
+      "reviewHeading": "Review",
+      "filterLabel": "Filter questions",
+      "filterAll": "All ({count})",
+      "filterIncorrect": "Incorrect ({count})",
+      "filterUnanswered": "Unanswered ({count})",
+      "nothingHere": "Nothing to show here.",
+      "questionNumber": "Question {number}",
+      "afterTime": "After time",
+      "cardDeleted": "Card deleted",
+      "yourAnswer": "Your answer",
+      "correctAnswer": "Correct answer",
+      "noAnswer": "No answer",
+      "selfGotIt": "You marked it as correct",
+      "selfMissedIt": "You marked it as missed",
+      "alsoAccepted": "(also accepted: {answers})",
+      "status": {
+        "correct": "Correct",
+        "incorrect": "Incorrect",
+        "unanswered": "Unanswered"
+      }
+    },
+    "resume": {
+      "heading": "{count, plural, one {You have an exam in progress} other {You have # exams in progress}}",
+      "untitled": "Exam",
+      "progress": "{answered} of {total} answered",
+      "timed": "{minutes} min limit",
+      "resume": "Resume",
+      "discard": "Discard exam",
+      "discardTitle": "Discard this exam?",
+      "discardDescription": "Your answers so far will be deleted. This cannot be undone."
+    },
+    "history": {
+      "heading": "Past exams",
+      "untitled": "Exam",
+      "correctOf": "{correct} of {total} correct",
+      "timedOut": "Timed out",
+      "delete": "Delete exam",
+      "deleteTitle": "Delete this exam?",
+      "deleteDescription": "Its results will be removed from your history. This cannot be undone."
     }
   }
 }

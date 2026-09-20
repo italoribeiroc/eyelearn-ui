@@ -599,16 +599,51 @@
       "finishedDescription": "Seu cronômetro de estudo terminou."
     },
     "setGoalCta": "Definir uma meta de estudo",
-    "ctaTitle": "Comece sua primeira sessão de estudo",
-    "ctaDescription": "Organize suas anotações em coleções de flashcards e estude quando estiver pronto.",
-    "ctaButton": "Ir para os flashcards",
-    "ctaDailyTitle": "Seu estudo de hoje está pronto",
-    "ctaDailyDescription": "{count} cartões estão pendentes nas suas metas hoje.",
-    "ctaDailyButton": "Estudar a meta de hoje",
-    "ctaCustomButton": "Estudo personalizado",
-    "ctaProgress": "{completed} de {total} estudados hoje",
     "flashcards": "Flashcards",
-    "menu": "Menu"
+    "menu": "Menu",
+    "examNav": "Simulado",
+    "studyModes": {
+      "heading": "Formas de estudar",
+      "progressLabel": "Progresso da meta de hoje",
+      "progress": "{completed} de {total} estudados hoje",
+      "hero": {
+        "noCollections": {
+          "title": "Crie sua primeira coleção",
+          "description": "Organize suas anotações em coleções de flashcards. Com uma coleção, todas as formas de estudar são liberadas.",
+          "button": "Criar uma coleção"
+        },
+        "goalDue": {
+          "title": "A meta de hoje está pronta",
+          "description": "{count, plural, one {# cartão está pendente} other {# cartões estão pendentes}} nas suas metas hoje.",
+          "button": "Estudar a meta de hoje"
+        },
+        "goalDone": {
+          "title": "Meta de hoje concluída",
+          "description": "Ótimo trabalho, não há mais nada pendente hoje. Mantenha o ritmo com outra forma de estudar.",
+          "button": "Estudar mais"
+        },
+        "noGoal": {
+          "title": "Defina uma meta e receba um plano diário",
+          "description": "Escolha uma data alvo para uma coleção e o Eye Learn calcula quantos cartões estudar por dia. Ou vá direto para qualquer forma de estudar abaixo.",
+          "button": "Definir uma meta de estudo"
+        }
+      },
+      "otherWaysHeading": "Outras formas de estudar",
+      "lockedHint": "Crie uma coleção para liberar estas opções.",
+      "custom": {
+        "title": "Estudo personalizado",
+        "description": "Misture cartões pendentes de várias coleções em uma sessão."
+      },
+      "exam": {
+        "title": "Simulado",
+        "description": "Teste-se com cartões aleatórios ou escolhidos, com ou sem tempo.",
+        "last": "Último: {percent}%"
+      },
+      "collection": {
+        "title": "Estudar uma coleção",
+        "description": "Abra uma coleção e revise os cartões pendentes dela."
+      }
+    }
   },
   "flashcards": {
     "title": "Seus flashcards",
@@ -1003,6 +1038,157 @@
       "share": "Toque no ícone de Compartilhar.",
       "showMore": "Toque em Ver Mais.",
       "addToHome": "Toque em Adicionar à Tela de Início."
+    }
+  },
+  "exam": {
+    "setup": {
+      "title": "Simulado",
+      "description": "Teste-se com seus flashcards. Nada aqui altera seu cronograma de estudo, sua sequência ou suas metas.",
+      "noCollections": "Você ainda não tem coleções. Crie uma e adicione flashcards para fazer um simulado.",
+      "collectionsHeading": "1. Escolha as coleções",
+      "cardCount": "{count, plural, one {# cartão} other {# cartões}}",
+      "emptySelectionHint": "Selecione pelo menos uma coleção.",
+      "poolSummary": "{collections, plural, one {# coleção selecionada} other {# coleções selecionadas}}, {cards, plural, one {# cartão disponível} other {# cartões disponíveis}}.",
+      "cardsHeading": "2. Escolha os cartões",
+      "tabRandom": "Cartões aleatórios",
+      "tabPick": "Escolher cartões",
+      "randomDescription": "Vamos sortear cartões das coleções que você selecionou.",
+      "countLabel": "Número de cartões",
+      "countAll": "Todos",
+      "capHint": "Um simulado pode ter no máximo {max} cartões.",
+      "pickNeedsCollections": "Selecione uma coleção acima para ver os cartões dela.",
+      "loadingCards": "Carregando cartões...",
+      "loadCardsFailed": "Alguns cartões não puderam ser carregados. Desmarque e marque a coleção novamente para tentar de novo.",
+      "timeHeading": "3. Limite de tempo",
+      "timeSwitch": "Definir um limite de tempo",
+      "minutesLabel": "Minutos",
+      "minutesUnit": "minutos",
+      "presetMinutes": "{minutes} min",
+      "timedHint": "Quando o tempo acabar, você pode encerrar na hora ou continuar sem cronômetro. Respostas dadas depois do prazo são marcadas como atrasadas.",
+      "untimedHint": "Sem cronômetro. Leve o tempo que precisar.",
+      "startHintEmpty": "Escolha coleções e cartões para começar.",
+      "startSummaryTimed": "{count, plural, one {# questão} other {# questões}} em {minutes} min",
+      "startSummaryUntimed": "{count, plural, one {# questão} other {# questões}}, sem limite de tempo",
+      "startButton": "Iniciar simulado"
+    },
+    "picker": {
+      "selectedCount": "{count} de {max} selecionados",
+      "matchCount": "{count, plural, one {# resultado} other {# resultados}}",
+      "selectAll": "Selecionar todos",
+      "selectAllMatching": "Selecionar todos os resultados",
+      "clear": "Limpar",
+      "limitReached": "Você atingiu o limite de {max} cartões por simulado.",
+      "noMatches": "Nenhum cartão corresponde à sua busca."
+    },
+    "errors": {
+      "empty_pool": "Não há cartões para montar o simulado. Escolha outras coleções ou cartões.",
+      "too_many_cards": "Um simulado pode ter no máximo 200 cartões.",
+      "too_many_in_progress": "Você já tem 10 simulados em andamento. Termine ou descarte um antes.",
+      "invalid_time_limit": "O limite de tempo deve ficar entre 1 e 300 minutos.",
+      "no_cards": "Não há cartões errados para refazer.",
+      "generic": "Algo deu errado. Tente novamente."
+    },
+    "session": {
+      "title": "Simulado",
+      "startedAt": "iniciado às {time}",
+      "progressLabel": "Progresso",
+      "answeredOf": "{answered} de {total} respondidas",
+      "questionOf": "Questão {number} de {total}",
+      "optionsLabel": "Alternativas",
+      "typedPlaceholder": "Digite sua resposta",
+      "saveAnswer": "Salvar",
+      "showAnswer": "Mostrar resposta",
+      "selfGradePrompt": "Como você se saiu?",
+      "gotIt": "Acertei",
+      "missedIt": "Errei",
+      "saving": "Salvando...",
+      "saved": "Resposta salva",
+      "notAnsweredYet": "Ainda não respondida",
+      "saveFailed": "Não foi possível salvar esta resposta.",
+      "saveFailedToast": "Não foi possível salvar uma resposta. Verifique sua conexão e tente de novo.",
+      "retry": "Tentar de novo",
+      "previous": "Anterior",
+      "next": "Próxima",
+      "navigatorLabel": "Questões",
+      "goToQuestion": "Ir para a questão {number} ({state})",
+      "stateAnswered": "respondida",
+      "stateUnanswered": "não respondida",
+      "stateFailed": "não salva",
+      "remaining": "restante",
+      "elapsed": "decorrido",
+      "overtime": "tempo extra",
+      "leave": "Sair por enquanto",
+      "finishExam": "Encerrar simulado",
+      "confirmTitle": "Encerrar este simulado?",
+      "confirmUnanswered": "{count, plural, one {# questão ainda não foi respondida} other {# questões ainda não foram respondidas}}. Questões sem resposta contam como erradas.",
+      "confirmAllAnswered": "Você respondeu todas as questões. O resultado aparece na hora.",
+      "keepWorking": "Continuar",
+      "finishNow": "Encerrar agora",
+      "finishFailed": "Não foi possível encerrar o simulado. Tente novamente.",
+      "announceTimeUp": "O tempo acabou.",
+      "announceOneMinute": "Falta um minuto.",
+      "sessionExpired": "Sua sessão expirou. Entre novamente e suas respostas salvas estarão lá."
+    },
+    "timeUp": {
+      "title": "O tempo acabou",
+      "description": "Você respondeu {answered} de {total} questões. Pode encerrar agora ou continuar sem cronômetro.",
+      "keepGoing": "Continuar sem cronômetro",
+      "finish": "Encerrar simulado",
+      "keepGoingHint": "Respostas dadas depois do prazo aparecem como atrasadas no resultado."
+    },
+    "results": {
+      "title": "Seu resultado",
+      "scoreLine": "{correct} de {total} corretas",
+      "timeTaken": "Concluído em {time}",
+      "timeTakenOfLimit": "Concluído em {time} de {limit}",
+      "timedOut": "{missing, plural, one {# questão estava em aberto} other {# questões estavam em aberto}} quando o tempo acabou. Você respondeu {late} delas depois ({lateCorrect, plural, one {# correta} other {# corretas}}).",
+      "statCorrect": "Corretas",
+      "statIncorrect": "Erradas",
+      "statUnanswered": "Sem resposta",
+      "statLate": "Respondidas com atraso",
+      "statTotal": "Total",
+      "retakeMissed": "Refazer os cartões errados ({count})",
+      "newExam": "Novo simulado",
+      "backToDashboard": "Voltar ao painel",
+      "reviewHeading": "Revisão",
+      "filterLabel": "Filtrar questões",
+      "filterAll": "Todas ({count})",
+      "filterIncorrect": "Erradas ({count})",
+      "filterUnanswered": "Sem resposta ({count})",
+      "nothingHere": "Nada para mostrar aqui.",
+      "questionNumber": "Questão {number}",
+      "afterTime": "Após o tempo",
+      "cardDeleted": "Cartão excluído",
+      "yourAnswer": "Sua resposta",
+      "correctAnswer": "Resposta correta",
+      "noAnswer": "Sem resposta",
+      "selfGotIt": "Você marcou como acerto",
+      "selfMissedIt": "Você marcou como erro",
+      "alsoAccepted": "(também aceito: {answers})",
+      "status": {
+        "correct": "Correta",
+        "incorrect": "Errada",
+        "unanswered": "Sem resposta"
+      }
+    },
+    "resume": {
+      "heading": "{count, plural, one {Você tem um simulado em andamento} other {Você tem # simulados em andamento}}",
+      "untitled": "Simulado",
+      "progress": "{answered} de {total} respondidas",
+      "timed": "limite de {minutes} min",
+      "resume": "Continuar",
+      "discard": "Descartar simulado",
+      "discardTitle": "Descartar este simulado?",
+      "discardDescription": "Suas respostas até agora serão apagadas. Isso não pode ser desfeito."
+    },
+    "history": {
+      "heading": "Simulados anteriores",
+      "untitled": "Simulado",
+      "correctOf": "{correct} de {total} corretas",
+      "timedOut": "Tempo esgotado",
+      "delete": "Excluir simulado",
+      "deleteTitle": "Excluir este simulado?",
+      "deleteDescription": "O resultado será removido do seu histórico. Isso não pode ser desfeito."
     }
   }
 }

@@ -1,7 +1,18 @@
 import { NextResponse } from "next/server";
 import { djangoErrorResponse } from "@/lib/api/django-client";
-import { createFlashcard } from "@/lib/flashcards/api";
+import { createFlashcard, listFlashcards } from "@/lib/flashcards/api";
 import type { Flashcard } from "@/lib/api/types";
+
+/** Card list for one collection: the exam card picker loads these lazily per selected collection. */
+export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  try {
+    return NextResponse.json(await listFlashcards(Number(id)));
+  } catch (error) {
+    const { status, body } = djangoErrorResponse(error);
+    return NextResponse.json(body, { status });
+  }
+}
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

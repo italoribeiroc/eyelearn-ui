@@ -6,9 +6,11 @@ import { GoalIntroDialog } from "@/components/dashboard/goal-intro-dialog";
 import { OnboardingGuideDialog } from "@/components/onboarding/onboarding-guide-dialog";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { StreakWidget } from "@/components/dashboard/streak-widget";
-import { StartStudyingCta } from "@/components/dashboard/start-studying-cta";
+import { StudyModesSection } from "@/components/dashboard/study-modes-section";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { addDaysUTC, isoDate, mostRecentMondayUTC } from "@/lib/flashcards/date-utils";
+import { listCollections } from "@/lib/flashcards/api";
+import { listExams } from "@/lib/flashcards/exam-api";
 import { getGoalsSummary, getStreakCalendar } from "@/lib/flashcards/goals-api";
 import { getCurrentUser } from "@/lib/auth/session";
 
@@ -38,10 +40,24 @@ export default async function DashboardPage({
   }
 
   const monday = mostRecentMondayUTC();
-  const [summary, week] = await Promise.all([
+  const [summary, week, collectionsResult, lastExamResult] = await Promise.all([
     getGoalsSummary(),
     getStreakCalendar(isoDate(monday), isoDate(addDaysUTC(monday, 6))),
+    // The study-modes section only decorates the goal card, so a failure in
+    // either of these must never take the whole dashboard down.
+    listCollections().then(
+      (value) => ({ ok: true as const, value }),
+      () => ({ ok: false as const }),
+    ),
+    listExams({ status: "completed", limit: 1 }).then(
+      (value) => ({ ok: true as const, value }),
+      () => ({ ok: false as const }),
+    ),
   ]);
+  // If collections couldn't be loaded, assume some exist rather than
+  // greeting a returning user with "create your first collection".
+  const collectionCount = collectionsResult.ok ? collectionsResult.value.length : 1;
+  const lastExam = lastExamResult.ok ? (lastExamResult.value[0] ?? null) : null;
 
   return (
     <div className="space-y-8">
@@ -85,9 +101,12 @@ export default async function DashboardPage({
         />
       </div>
 
-      <StartStudyingCta
+      <StudyModesSection
         dailyDueCount={summary.daily_due_count}
         dailyTargetTotal={summary.daily_target_total}
+        hasActiveGoals={summary.active_goals.length > 0}
+        collectionCount={collectionCount}
+        lastExamPercent={lastExam?.summary?.score_percent ?? null}
       />
     </div>
   );

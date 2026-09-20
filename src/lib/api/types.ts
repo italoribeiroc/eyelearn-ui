@@ -225,3 +225,118 @@ export type ContactPayload = {
   message: string;
   locale: string;
 };
+
+export type ExamStatus = "in_progress" | "completed";
+export type ExamMode = "random" | "selected" | "retake";
+
+/**
+ * Score summary of a finished exam. `unanswered_when_time_ran_out` counts
+ * everything still open when the clock hit zero (answered late + never
+ * answered) and is 0 for an untimed or in-time exam.
+ */
+export type ExamSummary = {
+  total: number;
+  correct: number;
+  incorrect: number;
+  unanswered: number;
+  correct_in_time: number;
+  answered_after_time: { count: number; correct: number };
+  unanswered_when_time_ran_out: number;
+  timed_out: boolean;
+  time_taken_seconds: number | null;
+  score_percent: number;
+};
+
+type ExamHeader = {
+  id: number;
+  status: ExamStatus;
+  mode: ExamMode;
+  time_limit_seconds: number | null;
+  started_at: string;
+  ends_at: string | null;
+  finished_at: string | null;
+  source_labels: string[];
+  /** Server clock at response time, for correcting client clock skew. */
+  server_now: string;
+  total: number;
+  answered_count: number;
+};
+
+/** A history-list row: counts only, no questions. */
+export type ExamListItem = ExamHeader & { summary: ExamSummary | null };
+
+/** A question while the exam is running: never reveals the right answer. */
+export type ExamPlayerQuestion = {
+  id: number;
+  position: number;
+  card_type: CardType;
+  prompt: string;
+  /** Multiple choice: option text only. */
+  options: string[];
+  /** Only present for basic cards (needed for self-grading). */
+  answer: string | null;
+  media: FlashcardMediaItem[];
+  selected_option: number | null;
+  submitted_answer: string;
+  self_correct: boolean | null;
+  answered: boolean;
+};
+
+export type ExamResultQuestion = {
+  id: number;
+  position: number;
+  card_type: CardType;
+  prompt: string;
+  answer: string;
+  options: FlashcardOption[];
+  accepted_answers: string[];
+  media: FlashcardMediaItem[];
+  selected_option: number | null;
+  submitted_answer: string;
+  self_correct: boolean | null;
+  /** null = never answered. */
+  is_correct: boolean | null;
+  answered: boolean;
+  answered_after_time: boolean;
+  card_deleted: boolean;
+};
+
+export type ExamInProgress = ExamHeader & {
+  status: "in_progress";
+  summary: null;
+  questions: ExamPlayerQuestion[];
+};
+
+export type ExamResult = ExamHeader & {
+  status: "completed";
+  summary: ExamSummary;
+  questions: ExamResultQuestion[];
+};
+
+export type ExamDetail = ExamInProgress | ExamResult;
+
+export type ExamCreatePayload =
+  | { mode: "random"; collection_ids: number[]; count: number | null; time_limit_minutes: number | null }
+  | { mode: "selected"; card_ids: number[]; time_limit_minutes: number | null }
+  | { mode: "retake"; exam_id: number; time_limit_minutes: number | null };
+
+export type ExamAnswerPayload =
+  | { question_id: number; selected_option: number }
+  | { question_id: number; submitted_answer: string }
+  | { question_id: number; self_correct: boolean };
+
+export type ExamAnswerResult = {
+  question_id: number;
+  answered: boolean;
+  answered_count: number;
+  after_time: boolean;
+  server_now: string;
+};
+
+export type ExamStatusCheck = {
+  status: ExamStatus;
+  ends_at: string | null;
+  finished_at: string | null;
+  server_now: string;
+  answered_count: number;
+};

@@ -31,8 +31,15 @@ export async function refreshAccessToken(): Promise<string | null> {
 
     setAuthCookies(cookieStore, { access: data.access });
     return data.access;
-  } catch {
-    clearAuthCookies(cookieStore);
+  } catch (error) {
+    // Only a refresh token Django actually rejected means the session is
+    // over. A rate limit (429), a server error, or a network blip says
+    // nothing about the refresh token, so keep the cookies: wiping them
+    // here would log the user out for good over a problem that clears up
+    // by itself (the refresh endpoint is throttled, and a burst of
+    // parallel requests after the access token expires can hit that).
+    const rejected = error instanceof DjangoApiError && (error.status === 400 || error.status === 401);
+    if (rejected) clearAuthCookies(cookieStore);
     return null;
   }
 }
